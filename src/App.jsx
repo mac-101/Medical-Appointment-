@@ -7,20 +7,34 @@ import Appointment from './pages/appointment.jsx'
 import Profile from './pages/profile.jsx'
 import Register from './pages/register.jsx'
 
+// IMPORT LAYOUT COMPONENTS
+import Navbar from './components/Navbar.jsx'
+import Footer from './components/Footer.jsx'
+
 function App() {
   return (
     <Router>
-      <div className="App">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/profile/:id" element={<ProfileId />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/appointments" element={<Appointment />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/signup" element={<Register />} />
-        </Routes>
+      <div className="App min-h-screen flex flex-col bg-gray-50">
+        {/* Header shows on all pages */}
+        <Navbar />
+
+        {/* Dynamic Page Content */}
+        <main className="grow">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/profile/:id" element={<ProfileId />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/appointments" element={<Appointment />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/signup" element={<Register />} />
+          </Routes>
+        </main>
+
+        {/* Footer shows on all pages */}
+        <Footer />
       </div>
     </Router>
   );
 }
-export default App
+
+export default App;
