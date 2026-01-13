@@ -6,7 +6,7 @@ import Departments from '../componentPages/Department'; // Import your departmen
 
 function ProfileId() {
   // 1. CONSTANT TO SWITCH TYPE (Change to 'hospital' to see the difference)
-  const specialistType = 'hospital'; 
+  const specialistType = 'doctor'; 
   
   // 2. STATE FOR HOSPITAL VIEW (Toggle between Reviews and Departments)
   const [activeTab, setActiveTab] = useState('reviews');

@@ -5,7 +5,6 @@ import { User, Menu, X, Home, Search, Calendar } from 'lucide-react';
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
-  // Function to close menu when a link is clicked
   const closeMenu = () => setIsOpen(false);
 
   return (
@@ -24,13 +23,13 @@ export default function Navbar() {
           <Link to="/appointments" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">Appointments</Link>
         </div>
 
-        {/* Right Side: Profile & Burger */}
+        {/* Right Side */}
         <div className="flex items-center gap-2">
           <Link to="/profile" onClick={closeMenu} className="p-2 bg-blue-50 text-blue-600 rounded-full hover:bg-blue-100 transition-colors">
             <User size={20} />
           </Link>
 
-          {/* Burger Icon (Mobile Only) */}
+          {/* Burger Icon */}
           <button 
             onClick={() => setIsOpen(!isOpen)}
             className="md:hidden p-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
@@ -40,28 +39,28 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu Drawer */}
+      {/* Mobile Menu - Absolute Position (Slides OVER the page) */}
       {isOpen && (
-        <div className="md:hidden bg-white border-b border-gray-100 animate-in fade-in slide-in-from-top-5 duration-300">
-          <div className="flex flex-col p-4 space-y-4">
+        <div className="absolute top-16 left-0 w-full bg-white border-b border-gray-100 shadow-xl md:hidden animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="flex flex-col p-4 space-y-1">
             <Link 
               to="/" 
               onClick={closeMenu} 
-              className="flex items-center gap-3 p-3 text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-xl font-medium transition-all"
+              className="flex items-center gap-3 p-3 text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg font-medium"
             >
               <Home size={18} /> Home
             </Link>
             <Link 
               to="/search" 
               onClick={closeMenu} 
-              className="flex items-center gap-3 p-3 text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-xl font-medium transition-all"
+              className="flex items-center gap-3 p-3 text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg font-medium"
             >
               <Search size={18} /> Find Doctors
             </Link>
             <Link 
               to="/appointments" 
               onClick={closeMenu} 
-              className="flex items-center gap-3 p-3 text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-xl font-medium transition-all"
+              className="flex items-center gap-3 p-3 text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg font-medium"
             >
               <Calendar size={18} /> Appointments
             </Link>

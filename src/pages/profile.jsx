@@ -20,7 +20,7 @@ import Reviews from '../componentPages/Reviews'; // Assuming you have/will have 
 const Profile = () => {
   // 1. DEFINE THE USER ROLE
   // Options: 'patient', 'doctor', 'hospital'
-  const userRole = 'doctor'; 
+  const userRole = 'hospital'; 
 
   // 2. SET INITIAL STATE BASED ON ROLE
   // Patient -> records | Doctor -> reviews | Hospital -> department

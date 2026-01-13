@@ -6,6 +6,7 @@ import Search from './pages/search.jsx'
 import Appointment from './pages/appointment.jsx'
 import Profile from './pages/profile.jsx'
 import Register from './pages/register.jsx'
+import ScrollToTop from './components/ScrollTop.jsx'
 
 // IMPORT LAYOUT COMPONENTS
 import Navbar from './components/Navbar.jsx'
@@ -14,6 +15,7 @@ import Footer from './components/Footer.jsx'
 function App() {
   return (
     <Router>
+      <ScrollToTop/>
       <div className="App min-h-screen flex flex-col">
         {/* Header shows on all pages */}
         <Navbar />

@@ -45,7 +45,7 @@ const AppointmentBooking = () => {
     };
 
     return (
-        <div className="max-w-xl mx-auto bg-white border border-gray-200 shadow-sm">
+        <div className="max-w-xl mx-auto bg-white border border-gray-200">
             <div className="p-6 border-b border-gray-100">
                 <h1 className="text-2xl font-semibold text-gray-900">Book Appointment</h1>
                 <p className="text-sm text-gray-500 mt-1">Select your preferred date and time</p>
