@@ -14,7 +14,7 @@ import Footer from './components/Footer.jsx'
 function App() {
   return (
     <Router>
-      <div className="App min-h-screen flex flex-col bg-gray-50">
+      <div className="App min-h-screen flex flex-col">
         {/* Header shows on all pages */}
         <Navbar />
 
