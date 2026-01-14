@@ -33,7 +33,7 @@ const AppointmentBooking = ({ onClose, specialistType }) => {
             <div 
                 onClick={(e) => e.stopPropagation()} 
                 className="scrollUP relative w-full max-w-xl bg-white border border-gray-100 shadow-2xl 
-               h-[95lvh] md:h-auto md:max-h-[85vh] md:my-10
+               h-[90lvh] md:h-auto md:max-h-[85vh] md:my-10
                rounded-t-[2.5rem] md:rounded-2xl overflow-hidden flex flex-col transition-all"
 >
                 
