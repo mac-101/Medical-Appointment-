@@ -20,7 +20,7 @@ import Reviews from '../componentPages/Reviews'; // Assuming you have/will have 
 const Profile = () => {
   // 1. DEFINE THE USER ROLE
   // Options: 'patient', 'doctor', 'hospital'
-  const userRole = 'doctor'; 
+  const userRole = 'patient'; 
 
   // 2. SET INITIAL STATE BASED ON ROLE
   // Patient -> records | Doctor -> reviews | Hospital -> department
@@ -65,7 +65,7 @@ const Profile = () => {
       
       {/* 5. TOP ACTION BAR (Optional: Show Edit button here if viewing another section) */}
       <div className="flex justify-between items-center mb-8">
-         <div className="flex items-center gap-4">
+         <div className="flex flex-col md:flex-row md:items-center gap-4">
             <img
                 src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150"
                 className="w-20 h-20 rounded-full border-2 border-blue-600 object-cover"
