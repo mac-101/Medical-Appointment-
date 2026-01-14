@@ -17,6 +17,8 @@ function ProfileId() {
     setBooking(true);
   };
 
+  
+
   const data = {
     name: specialistType === 'doctor' ? "Dr. Maria Elena" : "City General Hospital",
     specialty: specialistType === 'doctor' ? "Psychologist" : "Multi-Specialty Care",
@@ -32,21 +34,46 @@ function ProfileId() {
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
-      <div className="sticky top-0 z-10 bg-white border-b border-gray-100 p-4 flex justify-between items-center">
-        <h2 className="font-black uppercase tracking-tighter text-lg">
-          {specialistType === 'doctor' ? "Doctor Profile" : "Hospital Detail"}
-        </h2>
-        <div className="flex gap-4">
-          <Share2 size={20} className="text-gray-400 cursor-pointer" />
-          <ShieldCheck size={20} className="text-blue-600" />
-        </div>
+      <div className="sticky top-0 z-30 w-full bg-white/80 backdrop-blur-md border-b border-gray-100/80 transition-all duration-300">
+  <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+    
+    {/* Left Side: Title with tighter tracking and bold weight */}
+    <div className="flex flex-col">
+      <h2 className="font-black uppercase tracking-tighter text-xl text-gray-900 leading-none">
+        {specialistType === 'doctor' ? "Doctor Profile" : "Hospital Detail"}
+      </h2>
+      <div className="flex items-center gap-1.5 mt-1">
+        <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+          Verified Provider
+        </span>
       </div>
+    </div>
+
+    {/* Right Side: Interactive Actions */}
+    <div className="flex items-center gap-3">
+      <button className="p-2.5 bg-gray-50 text-gray-400 hover:text-gray-900 hover:bg-gray-100 rounded-xl transition-all active:scale-95 group">
+        <Share2 size={18} className="group-hover:rotate-12 transition-transform" />
+      </button>
+      
+      <div className="h-8 w-px bg-gray-100 mx-1" /> {/* Visual Divider */}
+
+      <div className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 rounded-xl border border-blue-100">
+        <ShieldCheck size={18} className="text-blue-600" />
+        <span className="hidden sm:inline text-[10px] font-black text-blue-700 uppercase tracking-tighter">
+          TrustCore Verified
+        </span>
+      </div>
+    </div>
+
+  </div>
+</div>
 
       <div className="max-w-7xl mx-auto p-4 md:p-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
           {/* Profile Header */}
-          <div className="bg-white h-fit lg:sticky top-20 border border-gray-200 rounded-xl overflow-hidden transition-all">
+          <div className="bg-white zoomIN h-fit lg:sticky top-20 border border-gray-200 rounded-xl overflow-hidden transition-all">
             <div className="flex flex-col sm:flex-row">
               {/* Image Container: Flexible width on desktop, full width on mobile */}
               <div className="w-full sm:w-1/3 md:w-2/5 aspect-square sm:aspect-auto">
@@ -95,7 +122,7 @@ function ProfileId() {
 
 
           {/* TAB SECTION: Show toggle only if it's a hospital */}
-          <div className="bg-white border rounded-xl lg:col-span-2 border-gray-200">
+          <div className="bg-white border zoomIN rounded-xl lg:col-span-2 border-gray-200">
             <div className="flex border-b border-gray-100">
               {/* Always show Reviews Tab */}
               <button

@@ -41,7 +41,7 @@ export default function Navbar() {
 
       {/* Mobile Menu - Absolute Position (Slides OVER the page) */}
       {isOpen && (
-        <div className="absolute top-16 left-0 w-full bg-white border-b border-gray-100 shadow-xl md:hidden animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="absolute scrollDOWN top-16 left-0 w-full bg-white border-b border-gray-100 shadow-xl md:hidden animate-in fade-in slide-in-from-top-2 duration-200">
           <div className="flex flex-col p-4 space-y-1">
             <Link 
               to="/" 

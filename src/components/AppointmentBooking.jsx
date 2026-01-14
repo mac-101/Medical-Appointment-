@@ -21,6 +21,7 @@ const AppointmentBooking = ({ onClose, specialistType }) => {
         document.body.style.overflow = 'hidden';
         return () => { document.body.style.overflow = 'unset'; };
     }, []);
+    
 
     return (
         <div 
@@ -35,7 +36,7 @@ const AppointmentBooking = ({ onClose, specialistType }) => {
                 className="scrollUP relative w-full max-w-xl bg-white border border-gray-100 shadow-2xl 
                h-[90lvh] md:h-auto md:max-h-[85vh] md:my-10
                rounded-t-[2.5rem] md:rounded-2xl overflow-hidden flex flex-col transition-all"
->
+                >
                 
                 {/* ABSOLUTE HEADER */}
                 <header className="absolute top-0 left-0 w-full h-20 bg-white/90 backdrop-blur-sm border-b border-gray-50 px-8 flex justify-between items-center z-20">
