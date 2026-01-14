@@ -6,10 +6,16 @@ import Departments from '../componentPages/Department'; // Import your departmen
 
 function ProfileId() {
   // 1. CONSTANT TO SWITCH TYPE (Change to 'hospital' to see the difference)
-  const specialistType = 'doctor';
+  const specialistType = 'hospital'; // Options: 'doctor' or 'hospital'
 
   // 2. STATE FOR HOSPITAL VIEW (Toggle between Reviews and Departments)
   const [activeTab, setActiveTab] = useState('reviews');
+
+  const [booking, setBooking] = useState(false);
+
+  const handleBooking = () => {
+    setBooking(true);
+  };
 
   const data = {
     name: specialistType === 'doctor' ? "Dr. Maria Elena" : "City General Hospital",
@@ -78,8 +84,8 @@ function ProfileId() {
                   {data.bio}
                 </p>
                 <button
-                  // onClick={}
-                  className="w-fit rounded-lg mt-2 bg-gray-900 text-white p-4 text-sm font-bold hover:bg-blue-600 transition-all flex items-center justify-center gap-2 shadow-lg active:scale-[0.98]"
+                  onClick={handleBooking}
+                  className="w-fit rounded-lg mt-4 bg-gray-900 text-white p-4 text-sm font-bold hover:bg-blue-600 transition-all flex items-center justify-center gap-2 shadow-lg active:scale-[0.98]"
                 >
                   Book Appointment <Check size={18} />
                 </button>
@@ -119,6 +125,11 @@ function ProfileId() {
 
         </div>
       </div>
+
+      {/* Appointment Booking Modal */}
+      {booking && (
+        <AppointmentBooking onClose={() => setBooking(false)} specialistType={specialistType} />
+      )}
     </div>
   );
 }
