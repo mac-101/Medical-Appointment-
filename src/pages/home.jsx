@@ -1,5 +1,7 @@
 import React from 'react';
+import Article from '../componentPages/Article';
 import { Link } from 'react-router-dom';
+import AppointmentBooking from '../components/AppointmentBooking'
 import { Search, Bell, AlertCircle, Star, MapPin, ChevronRight, Stethoscope, Truck, ClipboardList } from 'lucide-react';
 
 export default function Home() {
@@ -10,20 +12,35 @@ export default function Home() {
     ];
 
     const topDoctors = [
-        { id: 1, name: "Dr. Maria Elena", specialty: "Psychologist", rating: 4.9, image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=200" },
-        { id: 2, name: "Dr. James Wilson", specialty: "Cardiologist", rating: 4.8, image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=200" },
-        { id: 3, name: "Dr. Sarah Chen", specialty: "Dermatologist", rating: 5.0, image: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&q=80&w=200" },
+        { id: 1, name: "Dr. Maria Elena", specialty: "Psychologist", rating: 4.9, image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=300" },
+        { id: 2, name: "Dr. James Wilson", specialty: "Cardiologist", rating: 4.8, image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=300" },
+        { id: 3, name: "Dr. Sarah Chen", specialty: "Dermatologist", rating: 5.0, image: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&q=80&w=300" },
+        { id: 4, name: "Dr. Robert Fox", specialty: "Neurologist", rating: 4.7, image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=300" },
+        { id: 5, name: "Dr. Arlene McCoy", specialty: "Pediatrician", rating: 4.9, image: "https://images.unsplash.com/photo-1651008376811-b90baee60c1f?auto=format&fit=crop&q=80&w=300" },
+        { id: 6, name: "Dr. Jerome Bell", specialty: "Orthopedic", rating: 4.6, image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=300" },
+        { id: 7, name: "Dr. Eleanor Pena", specialty: "Oncologist", rating: 4.8, image: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&q=80&w=300" },
+        { id: 8, name: "Dr. Marvin McKinney", specialty: "Surgeon", rating: 4.7, image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=300" },
+        { id: 9, name: "Dr. Leslie Alexander", specialty: "Dentist", rating: 4.9, image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=300" },
+        { id: 10, name: "Dr. Wade Warren", specialty: "General Physician", rating: 4.5, image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=300" }
     ];
 
     const hospitals = [
-        { id: 1, name: "City General", location: "Downtown", rating: 4.7, image: "https://images.unsplash.com/photo-1587350859728-11769227bfa9?auto=format&fit=crop&q=80&w=300" },
-        { id: 2, name: "St. Lukes Care", location: "North Wing", rating: 4.5, image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=300" },
+        { id: 1, name: "City General", location: "Downtown", rating: 4.7, image: "https://images.unsplash.com/photo-1512678080530-7760d81faba6?auto=format&fit=crop&q=80&w=500" },
+        { id: 2, name: "St. Lukes Care", location: "North Wing", rating: 4.5, image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=500" },
+        { id: 3, name: "Eastside Medical", location: "East District", rating: 4.8, image: "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&q=80&w=500" },
+        { id: 4, name: "Mayo Clinic", location: "West Side", rating: 4.9, image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=500" },
+        { id: 5, name: "Unity Health", location: "South Station", rating: 4.4, image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=500" },
+        { id: 6, name: "Grace Hospital", location: "Old Town", rating: 4.6, image: "https://images.unsplash.com/photo-1512678080530-7760d81faba6?auto=format&fit=crop&q=80&w=500" },
+        { id: 7, name: "Central Wellness", location: "Park Avenue", rating: 4.7, image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=500" },
+        { id: 8, name: "Mercy Clinic", location: "Industrial Road", rating: 4.3, image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=500" },
+        { id: 9, name: "Northstar Med", location: "Skyline Blvd", rating: 4.8, image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&q=80&w=500" },
+        { id: 10, name: "Legacy Hospital", location: "Heritage Square", rating: 4.9, image: "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&q=80&w=500" }
     ];
 
     return (
         <div className="min-h-screen w-full">
             {/* 1. Header */}
-            <header className="px-6 md:px-15 pt-12 pb-24 flex justify-between items-center max-w-7xl mx-auto bg-linear-to-br from-blue-700 via-blue-600 to-blue-500">
+            <header className="px-6 zoomIN md:px-15 pt-12 pb-24 flex justify-between items-center max-w-7xl mx-auto bg-linear-to-br from-blue-700 via-blue-600 to-blue-500">
                 <div className='md:flex items-end gap-5 '>
                     <div className="relative">
                         <img
@@ -52,8 +69,8 @@ export default function Home() {
             </header>
 
             {/* 2. Main Content Wrapper */}
-            <main className="relative -mt-16">
-                <div className="max-w-7xl bg-white rounded-t-[3.5rem] pt-12 mx-auto shadow-2xl min-h-screen pb-10">
+            <main className="relative scrollUP -mt-16">
+                <div className="max-w-7xl bg-white rounded-t-[3.5rem] pt-12 mx-auto min-h-screen pb-10">
 
 
 
@@ -91,15 +108,17 @@ export default function Home() {
                         </div>
                         <div className="flex overflow-x-auto gap-4 px-6 pb-4 no-scrollbar">
                             {topDoctors.map((doc) => (
-                                <div key={doc.id} className="min-w-40 md:min-w-50 bg-white border border-gray-100 rounded-3xl p-4 shadow-sm">
-                                    <img src={doc.image} alt={doc.name} className="w-full h-32 object-cover rounded-2xl mb-3" />
-                                    <h4 className="font-bold text-gray-800 text-sm truncate">{doc.name}</h4>
-                                    <p className="text-xs text-gray-400 mb-2">{doc.specialty}</p>
-                                    <div className="flex items-center gap-1 text-yellow-500">
-                                        <Star size={14} fill="currentColor" />
-                                        <span className="text-xs font-bold text-gray-700">{doc.rating}</span>
+                                <Link to='/profile/:id'>
+                                    <div key={doc.id} className="min-w-40 md:min-w-50 shadow-sm rounded-2xl p-3">
+                                        <img src={doc.image} alt={doc.name} className="w-full h-32 object-cover rounded-2xl mb-3" />
+                                        <h4 className="font-bold text-gray-800 text-sm truncate">{doc.name}</h4>
+                                        <p className="text-xs text-gray-400 mb-2">{doc.specialty}</p>
+                                        <div className="flex items-center gap-1 text-yellow-500">
+                                            <Star size={14} fill="currentColor" />
+                                            <span className="text-xs font-bold text-gray-700">{doc.rating}</span>
+                                        </div>
                                     </div>
-                                </div>
+                                </Link>
                             ))}
                         </div>
                     </section>
@@ -114,25 +133,31 @@ export default function Home() {
                         </div>
                         <div className="flex overflow-x-auto gap-4 px-6 pb-4 no-scrollbar">
                             {hospitals.map((hosp) => (
-                                <div key={hosp.id} className="min-w-65 md:min-w-[320px] bg-white border border-gray-100 rounded-3xl overflow-hidden shadow-sm flex flex-col">
-                                    <img src={hosp.image} alt={hosp.name} className="w-full h-40 object-cover" />
-                                    <div className="p-4 flex justify-between items-center">
-                                        <div>
-                                            <h4 className="font-bold text-gray-800">{hosp.name}</h4>
-                                            <div className="flex items-center gap-1 text-gray-400 text-xs">
-                                                <MapPin size={12} />
-                                                {hosp.location}
+                                <Link to='/profile/:id'>
+                                    <div key={hosp.id} className="min-w-65 md:min-w-[320px] bg-white rounded-2xl overflow-hidden shadow-sm flex flex-col">
+                                        <img src={hosp.image} alt={hosp.name} className="w-full h-40 object-cover" />
+                                        <div className="p-4 flex justify-between items-center">
+                                            <div>
+                                                <h4 className="font-bold text-gray-800">{hosp.name}</h4>
+                                                <div className="flex items-center gap-1 text-gray-400 text-xs">
+                                                    <MapPin size={12} />
+                                                    {hosp.location}
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center gap-1 px-2 py-1 bg-yellow-50 rounded-lg">
+                                                <Star size={14} className="text-yellow-500" fill="currentColor" />
+                                                <span className="text-xs font-bold text-gray-700">{hosp.rating}</span>
                                             </div>
                                         </div>
-                                        <div className="flex items-center gap-1 px-2 py-1 bg-yellow-50 rounded-lg">
-                                            <Star size={14} className="text-yellow-500" fill="currentColor" />
-                                            <span className="text-xs font-bold text-gray-700">{hosp.rating}</span>
-                                        </div>
                                     </div>
-                                </div>
+                                </Link>
                             ))}
                         </div>
                     </section>
+                    <section>
+                        <Article />
+                    </section>
+
                 </div>
             </main>
         </div>

@@ -8,35 +8,48 @@ import Profile from "./pages/profile.jsx";
 import Register from "./pages/register.jsx";
 import SignupPage from "./Authentcation/SignUp.jsx";
 import LoginPage from "./Authentcation/LoginIn.jsx";
+import ScrollToTop from './components/ScrollTop.jsx'
 
 // IMPORT LAYOUT COMPONENTS 
-// import Navbar from './components/Navbar.jsx'
-// import Footer from './components/Footer.jsx'
+import Navbar from './components/Navbar.jsx'
+import Footer from './components/Footer.jsx'
+
+// 1. Create a "Wrapper" or move the logic into a sub-component
+function AppContent() {
+  const location = useLocation();
+
+  // 2. Logic for dynamic paths: Use .startsWith() for profiles
+  const isProfilePage = location.pathname.startsWith('/profile/');
+  const isSignupPage = location.pathname === '/signup';
+  
+  const shouldHideFooter = isProfilePage || isSignupPage;
+
+  return (
+    <div className="App min-h-screen flex flex-col">
+      <Navbar />
+      <main className="grow">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/profile/:id" element={<ProfileId />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/appointments" element={<Appointment />} />
+          <Route path="/profile" element={<Profile />} />
+//           <Route path="/signup" element={<Register />} />
+           <Route path="/signup/patient" element={<SignupPage />} />
+            <Route path="/login" element={<LoginPage />} />
+        </Routes>
+      </main>
+      {!shouldHideFooter && <Footer />}
+      {/* Don't forget your MobileNav here if you want it! */}
+    </div>
+  );
+}
 
 function App() {
   return (
     <Router>
-      <div className="App min-h-screen flex flex-col bg-gray-50">
-        {/* Header shows on all pages */}
-        {/* <Navbar /> */}
-
-        {/* Dynamic Page Content */}
-        <main className="grow">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/profile/:id" element={<ProfileId />} />
-            <Route path="/search" element={<Search />} />
-            <Route path="/appointments" element={<Appointment />} />
-            <Route path="/profile" element={<Profile />} />
-            {/* <Route path="/signup" element={<Register />} /> */}
-            <Route path="/signup/patient" element={<SignupPage />} />
-            <Route path="/login" element={<LoginPage />} />
-          </Routes>
-        </main>
-
-        {/* Footer shows on all pages */}
-        {/* <Footer /> */}
-      </div>
+      <ScrollToTop />
+      <AppContent /> {/* Now useLocation works because it's INSIDE Router */}
     </Router>
   );
 }
