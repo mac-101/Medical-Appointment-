@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { User, ChevronRight, Calendar, Users, LayoutDashboard, Edit3, ArrowLeft, Receipt } from 'lucide-react';
 
 // 1. IMPORT YOUR NEW COMPONENTS
-import EditProfile from '../componentPages/EditProfile';
-import AppointmentsList from '../componentPages/Appointment';
-import PatientRecords from '../componentPages/PatientsRecords';
-import Departments from '../componentPages/Department';
-import MedicalRecords from '../componentPages/MedicalRecord';
+// import EditProfile from '../componentPages/EditProfile';
+// import AppointmentsList from '../componentPages/Appointment';
+// import PatientRecords from '../componentPages/PatientsRecords';
+// import Departments from '../componentPages/Department';
+// import MedicalRecords from '../componentPages/MedicalRecord';
 
 const Profile = () => {
   const [activeSection, setActiveSection] = useState(null);
