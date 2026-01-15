@@ -21,6 +21,32 @@ const Profile = () => {
     }
   };
 
+  const getRoleSummary = () => {
+    switch (userRole) {
+      case 'hospital':
+        return [
+          { label: 'Capacity', value: '500+', unit: 'beds' },
+          { label: 'Staff', value: '120', unit: 'MDs' },
+          { label: 'Rating', value: '4.9', unit: '⭐' }
+        ];
+      case 'doctor':
+        return [
+          { label: 'Patients', value: '1.2k', unit: '' },
+          { label: 'Experience', value: '12', unit: 'yrs' },
+          { label: 'Reviews', value: '450', unit: '' }
+        ];
+      default: // patient
+        return [
+          { label: 'Height', value: "5'8\"", unit: '' },
+          { label: 'Weight', value: '150', unit: 'lb' },
+          { label: 'Blood', value: 'O+', unit: '' }
+        ];
+    }
+  };
+
+  const summaryData = getRoleSummary();
+
+
   const [activeSection, setActiveSection] = useState(() => {
     if (userRole === 'patient') return 'records';
     if (userRole === 'doctor') return 'reviews';
@@ -29,7 +55,7 @@ const Profile = () => {
   });
 
   const allItems = [
-    { id: 'edit', icon: <Edit3 size={20} />, label: "Edit Profile", component: <EditProfile /> },
+    { id: 'edit', icon: <Edit3 size={20} />, label: "Edit Profile", component: <EditProfile userRole={userRole} /> },
     { id: 'appointment', icon: <Calendar size={20} />, label: "Appointment", component: <AppointmentsList /> },
     { id: 'patient', icon: <Users size={20} />, label: "Patient", component: <PatientRecords /> },
     { id: 'records', icon: <Receipt size={20} />, label: "Medical Record", component: <MedicalRecords /> },
@@ -49,56 +75,76 @@ const Profile = () => {
     return active ? active.component : <div className="p-8 text-center text-gray-400">Select a section</div>;
   };
 
-  const addDepartment = () => {
-    setActiveSection('department');
-  };
+  // const addDepartment = () => {
+  //   setActiveSection('department');
+  // };
 
   return (
     <div className="max-w-7xl mx-auto p-4 md:p-10 min-h-screen">
 
       {/* 1. PROFILE HEADER CARD - Scaled for all sizes */}
-      <div className="bg-white rounded-xl p-6 md:p-8 border-b-2 border-gray-100 mb-8 flex flex-col md:flex-row justify-between items-center gap-6">
+      <div className="px-4 py-8 md:px-0 mb-12 flex flex-col md:flex-row justify-between items-center gap-10">
+
+        {/* LEFT: AVATAR & IDENTITY */}
         <div className="flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
           <div className="relative">
             <img
               src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150"
-              className="w-24 h-24 md:w-30 md:h-30 rounded-full border-4 border-blue-50 object-cover shadow-inner"
+              className="w-24 h-24 md:w-28 md:h-28 rounded-full object-cover grayscale-20"
               alt="Profile"
             />
-            <div className="absolute bottom-1 right-1 w-6 h-6 bg-green-500 border-4 border-white rounded-full"></div>
+            <div className="absolute bottom-2 right-2 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
           </div>
-          <div>
-            <h1 className="text-3xl font-black text-gray-900 tracking-tight">Olivia Cartlee</h1>
-            <div className="flex items-center gap-2 mt-1 justify-center md:justify-start">
-              <span className="px-3 py-1 bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest rounded-full shadow-md shadow-blue-100">
+
+          <div className="space-y-1">
+            <h1 className="text-3xl font-black text-gray-900 tracking-tighter uppercase leading-none">
+              {userRole === 'hospital' ? "City Central Hospital" : "Olivia Cartlee"}
+            </h1>
+            <div className="flex items-center gap-3 justify-center md:justify-start mt-2">
+              <span className="text-[10px] font-black text-blue-600 uppercase tracking-[0.2em]">
                 {userRole}
               </span>
-              <span className="text-gray-400 text-xs font-bold uppercase tracking-tighter">Verified Member</span>
+              <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
+              <span className="text-gray-400 text-[10px] font-bold uppercase tracking-widest">
+                ID: #00234
+              </span>
             </div>
           </div>
         </div>
 
-        {activeSection !== 'edit' && (
+        {/* MIDDLE: DYNAMIC SUMMARY (Plane Spacing) */}
+        <div className="flex items-center gap-8 md:gap-14">
+          {summaryData.map((stat, index) => (
+            <div key={index} className="text-center group">
+              <p className="text-[10px] font-bold text-gray-300 uppercase tracking-widest mb-2 transition-colors group-hover:text-blue-400">
+                {stat.label}
+              </p>
+              <span className="text-xl font-black text-gray-900 tracking-tighter">
+                {stat.value}
+                {stat.unit && <span className="text-[10px] ml-0.5 text-gray-400 uppercase">{stat.unit}</span>}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* RIGHT: FLAT ACTIONS */}
+        <div className="flex flex-row md:flex-col gap-4 items-center md:items-end">
+          {activeSection !== 'edit' && (
+            <button
+              onClick={() => setActiveSection(userRole === 'hospital' ? 'department' : 'edit')}
+              className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-900 border-b-2 border-gray-900 pb-1 hover:text-blue-600 hover:border-blue-600 transition-all"
+            >
+              {userRole === 'hospital' ? "Add Depts" : "Edit Profile"}
+            </button>
+          )}
+
           <button
-            onClick={() => {
-              if (userRole === 'hospital') {
-                addDepartment();
-              } else {
-                setActiveSection('edit');
-              }
-            }}
-            className="w-full md:w-auto flex items-center justify-center gap-2 bg-gray-900 text-white hover:bg-blue-600 px-8 py-4 rounded-2xl text-xs font-black uppercase tracking-widest transition-all active:scale-95 shadow-lg shadow-gray-200"
+            onClick={switchUser}
+            className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-gray-900 transition-all"
           >
-            <Edit3 size={16} />
-            <span>
-              {userRole === 'hospital' ? "Add Departments" : "Edit Profile"}
-            </span>
+            Switch Role
           </button>
-        )}
-        <button
-          onClick={switchUser} value="switch between user types" className='px-4 py-2 bg-gray-100 text-gray-600 rounded-xl hover:bg-gray-200 transition-all text-xs font-bold'>
-          text users switch
-        </button>
+        </div>
       </div>
 
       {/* 2. MAIN INTERFACE - Split Layout for Desktop, Grid/Stack for Mobile */}
@@ -168,3 +214,36 @@ const Profile = () => {
 };
 
 export default Profile;
+
+
+
+// const Profile = () => {
+//   const [userRole, setUserRole] = useState('patient');
+//   const [activeSection, setActiveSection] = useState('records');
+
+// 1. DATA LOGIC FOR THE PLANE SUMMARY
+// const getRoleSummary = () => {
+//   switch (userRole) {
+//     case 'hospital':
+//       return [
+//         { label: 'Capacity', value: '500+', unit: 'beds' },
+//         { label: 'Staff', value: '120', unit: 'MDs' },
+//         { label: 'Rating', value: '4.9', unit: '⭐' }
+//       ];
+//     case 'doctor':
+//       return [
+//         { label: 'Patients', value: '1.2k', unit: '' },
+//         { label: 'Experience', value: '12', unit: 'yrs' },
+//         { label: 'Reviews', value: '450', unit: '' }
+//       ];
+//     default: // patient
+//       return [
+//         { label: 'Height', value: "5'8\"", unit: '' },
+//         { label: 'Weight', value: '150', unit: 'lb' },
+//         { label: 'Blood', value: 'O+', unit: '' }
+//       ];
+//   }
+// };
+
+// const summaryData = getRoleSummary();
+
