@@ -86,3 +86,44 @@
 .modern-calendar-wrapper .react-calendar__month-view__days__day--neighboringMonth {
     color: #e5e7eb !important;
 }
+
+.scrollUP {
+  animation: scrollUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.scrollDOWN {
+  animation: scrollDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.zoomIN {
+  animation: zoomIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes scrollUp {
+  0% {
+    transform: translateY(100%); /* Start off-screen */
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0); /* End at the defined position */
+    opacity: 1;
+  }
+}
+@keyframes zoomIn {
+  0% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}  
+@keyframes scrollDown {
+  0% {
+    transform: translateY(-100%); /* Start off-screen */
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0); /* End at the defined position */
+    opacity: 1;
+  }
+} 

@@ -40,7 +40,7 @@ export default function Home() {
     return (
         <div className="min-h-screen w-full">
             {/* 1. Header */}
-            <header className="px-6 md:px-15 pt-12 pb-24 flex justify-between items-center max-w-7xl mx-auto bg-linear-to-br from-blue-700 via-blue-600 to-blue-500">
+            <header className="px-6 zoomIN md:px-15 pt-12 pb-24 flex justify-between items-center max-w-7xl mx-auto bg-linear-to-br from-blue-700 via-blue-600 to-blue-500">
                 <div className='md:flex items-end gap-5 '>
                     <div className="relative">
                         <img
@@ -69,7 +69,7 @@ export default function Home() {
             </header>
 
             {/* 2. Main Content Wrapper */}
-            <main className="relative -mt-16">
+            <main className="relative scrollUP -mt-16">
                 <div className="max-w-7xl bg-white rounded-t-[3.5rem] pt-12 mx-auto min-h-screen pb-10">
 
 
