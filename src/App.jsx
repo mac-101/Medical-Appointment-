@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {useLocation} from 'react-router-dom';
 import Home from "./pages/home.jsx";
 import ProfileId from "./pages/profile_id.jsx";
 import Search from "./pages/search.jsx";
@@ -34,7 +35,7 @@ function AppContent() {
           <Route path="/search" element={<Search />} />
           <Route path="/appointments" element={<Appointment />} />
           <Route path="/profile" element={<Profile />} />
-//           <Route path="/signup" element={<Register />} />
+{/* //           <Route path="/signup" element={<Register />} /> */}
            <Route path="/signup/patient" element={<SignupPage />} />
             <Route path="/login" element={<LoginPage />} />
         </Routes>
