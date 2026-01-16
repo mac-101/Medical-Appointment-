@@ -21,8 +21,8 @@ function AppContent() {
 
   // 2. Logic for dynamic paths: Use .startsWith() for profiles
   const isProfilePage = location.pathname.startsWith('/profile/');
-  const isSignupPage = location.pathname === ('/signup');
-  const isSearchPage = location.pathname === ('/search', '/appointments');
+  const isSignupPage = location.pathname === '/signup' || location.pathname === '/signUp' || location.pathname === '/login';
+  const isSearchPage = location.pathname === '/search' || location.pathname === '/appointments';
   
   const shouldHideFooter = isProfilePage || isSignupPage;
   const shouldHideNavbar = isSearchPage || isSignupPage;
