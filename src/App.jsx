@@ -51,8 +51,32 @@ function AppContent() {
 function App() {
   return (
     <Router>
+<<<<<<< HEAD
       <ScrollToTop />
       <AppContent /> {/* Now useLocation works because it's INSIDE Router */}
+=======
+      <div className="App min-h-screen flex flex-col bg-gray-50">
+        {/* Header shows on all pages */}
+        {/* <Navbar /> */}
+
+        {/* Dynamic Page Content */}
+        <main className="grow">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/profile/:id" element={<ProfileId />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/appointments" element={<Appointment />} />
+            <Route path="/profile" element={<Profile />} />
+            {/* <Route path="/signup" element={<Register />} /> */}
+            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/login" element={<LoginPage />} />
+          </Routes>
+        </main>
+
+        {/* Footer shows on all pages */}
+        {/* <Footer /> */}
+      </div>
+>>>>>>> 85dbde4 (third commit)
     </Router>
   );
 }
