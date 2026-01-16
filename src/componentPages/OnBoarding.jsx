@@ -32,9 +32,8 @@ const Onboarding = ({ onFinish }) => {
       {slides.map((slide, index) => (
         <div
           key={slide.id}
-          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out bg-cover bg-center ${
-            index === currentSlide ? "opacity-100" : "opacity-0"
-          }`}
+          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out bg-cover bg-center ${index === currentSlide ? "opacity-100" : "opacity-0"
+            }`}
           style={{ backgroundImage: `url(${slide.bgImage})` }}
         />
       ))}
@@ -49,9 +48,8 @@ const Onboarding = ({ onFinish }) => {
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
-              className={`h-1.5 rounded-full transition-all duration-500 ${
-                currentSlide === index ? "w-12 bg-blue-500" : "w-4 bg-white/40"
-              }`}
+              className={`h-1.5 rounded-full transition-all duration-500 ${currentSlide === index ? "w-12 bg-blue-500" : "w-4 bg-white/40"
+                }`}
             />
           ))}
         </div>
@@ -89,7 +87,7 @@ const GetStarted = ({ onLogin, onSignUp }) => {
       <div className="flex flex-col items-center mt-10">
         <div className="w-24 h-24 mb-4 flex items-center justify-center bg-white rounded-3xl shadow-xl p-4">
           <div className="relative w-full h-full text-blue-600">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" /></svg>
           </div>
         </div>
         <h1 className="text-3xl font-black text-slate-800">Healthcare OS</h1>
@@ -101,7 +99,7 @@ const GetStarted = ({ onLogin, onSignUp }) => {
         <p className="text-xl font-black text-slate-800 mt-2">Let's get started!</p>
       </div>
 
-      <div className="w-full space-y-4 mb-10">
+      <div className="w-full max-w-sm space-y-4 mb-10">
         <button onClick={onLogin} className="w-full py-4 bg-blue-600 text-white font-bold text-lg rounded-full shadow-lg active:scale-95 transition-all">Login</button>
         <button onClick={onSignUp} className="w-full py-4 bg-transparent border-2 border-blue-400 text-blue-700 font-bold text-lg rounded-full active:scale-95 transition-all">Sign Up</button>
       </div>
@@ -111,7 +109,7 @@ const GetStarted = ({ onLogin, onSignUp }) => {
 };
 
 // --- 3. ROLE SELECTION COMPONENT ---
-const RoleSelection = () => {
+const RoleSelection = ({ onRoleSelected }) => {
   const [selectedRole, setSelectedRole] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -124,58 +122,79 @@ const RoleSelection = () => {
   const handleRoleSubmit = () => {
     if (!selectedRole) return alert("Please select a role first!");
     setIsProcessing(true);
-    setTimeout(() => {
-      setIsProcessing(false);
-      alert(`Role: ${selectedRole.toUpperCase()} selected. Ready for Hub!`);
-    }, 1200);
+    onRoleSelected(selectedRole);
+    setIsProcessing(false);
   };
 
   return (
-    <div className="min-h-screen w-full bg-linear-to-b from-white to-blue-50 flex flex-col px-8 py-12">
-      <div className="mb-10 text-center">
-        <h1 className="text-3xl font-black text-slate-800">Select Your Role</h1>
-        <p className="text-slate-500 mt-2">How will you be using HealthCore?</p>
-      </div>
-      <div className="space-y-4 flex-1">
-        {roles.map((role) => (
-          <button
-            key={role.id}
-            onClick={() => setSelectedRole(role.id)}
-            className={`w-full p-5 rounded-3xl border-2 transition-all flex items-center space-x-4 text-left ${
-              selectedRole === role.id ? "border-blue-600 bg-blue-50 shadow-md scale-[1.02]" : "border-slate-100 bg-white"
-            }`}
-          >
-            <span className="text-4xl bg-white p-3 rounded-2xl shadow-sm">{role.icon}</span>
-            <div>
-              <h3 className={`font-bold text-lg ${selectedRole === role.id ? "text-blue-700" : "text-slate-800"}`}>{role.title}</h3>
-              <p className="text-slate-500 text-sm">{role.desc}</p>
-            </div>
-          </button>
-        ))}
-      </div>
-      <button
-        onClick={handleRoleSubmit}
-        disabled={isProcessing}
-        className={`w-full py-4 mt-8 rounded-full font-bold text-lg shadow-xl transition-all ${
-          selectedRole ? "bg-blue-600 text-white active:scale-95" : "bg-slate-200 text-slate-400"
-        }`}
-      >
-        {isProcessing ? "Processing..." : "Continue"}
-      </button>
+    <div className="min-h-screen w-full bg-linear-to-b from-white to-blue-500 flex flex-col items-center py-12 px-8">
+  {/* The container below must be 'relative' so the absolute button stays INSIDE it */}
+  <div className='relative max-w-xl mx-auto min-h-[80vh] w-full flex flex-col'>
+    
+    <div className="mb-10 text-center">
+      <h1 className="text-3xl font-black text-slate-800">Select Your Role</h1>
+      <p className="text-slate-500 mt-2">How will you be using HealthCore?</p>
     </div>
+
+    <div className="space-y-4 flex-1 pb-32"> {/* Added padding-bottom so content doesn't hide behind button */}
+      {roles.map((role) => (
+        <button
+          key={role.id}
+          onClick={() => setSelectedRole(role.id)}
+          className={`w-full p-3 rounded-lg transition-all flex items-center space-x-4 text-left ${
+            selectedRole === role.id ? "shadow-md scale-[1.02]" : "border-slate-100 bg-white"
+          }`}
+        >
+          <span className={`text-4xl p-2 border-2 rounded-2xl shadow-sm ${selectedRole === role.id ? "bg-blue-700" : "bg-white"}`}></span>
+          <div>
+            <h3 className="font-bold text-lg text-slate-800">{role.title}</h3>
+            <p className="text-slate-500 text-sm">{role.desc}</p>
+          </div>
+        </button>
+      ))}
+    </div>
+
+    {/* Fixed Button Logic: Stays at bottom of the max-w-xl container */}
+    <button
+      onClick={handleRoleSubmit}
+      disabled={isProcessing}
+      className={`w-full py-4 rounded-full absolute bottom-0 font-bold text-lg shadow-xl transition-all ${
+        selectedRole ? "bg-blue-600 text-white active:scale-95" : "bg-slate-200 text-slate-400"
+      }`}
+    >
+      {isProcessing ? "Processing..." : "Continue"}
+    </button>
+
+  </div>
+</div>
   );
 };
 
 // --- MAIN APP CONTROLLER ---
-export default function FirstPage() {
+export default function FirstPage({ onFinalSelection }) {
   const [step, setStep] = useState('onboarding');
 
-  // This logic now correctly toggles between screens
+  // 2. Create a handler to capture the role and send it out
+  const handleRoleFinalized = (selectedRole) => {
+    console.log("Role captured in FirstPage:", selectedRole);
+
+    // Send it to the parent (App.js)
+    if (onFinalSelection) {
+      onFinalSelection(selectedRole);
+    }
+  };
+
   return (
     <main className="w-full min-h-screen bg-white">
       {step === 'onboarding' && <Onboarding onFinish={() => setStep('getstarted')} />}
+
+      {/* Route to Role selection on Sign Up */}
       {step === 'getstarted' && <GetStarted onSignUp={() => setStep('roles')} />}
-      {step === 'roles' && <RoleSelection />}
+
+      {/* 3. Pass the new handler to RoleSelection */}
+      {step === 'roles' && (
+        <RoleSelection onRoleSelected={handleRoleFinalized} />
+      )}
     </main>
   );
 }
