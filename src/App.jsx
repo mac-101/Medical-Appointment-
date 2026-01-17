@@ -6,10 +6,11 @@ import ProfileId from "./pages/profile_id.jsx";
 import Search from "./pages/search.jsx";
 import Appointment from "./pages/appointment.jsx";
 import Profile from "./pages/profile.jsx";
-import Register from "./pages/register.jsx";
+// import Register from "./pages/register.jsx";
 import SignupPage from "./Authentcation/SignUp.jsx";
 import LoginPage from "./Authentcation/LoginIn.jsx";
 import ScrollToTop from './components/ScrollTop.jsx'
+import FirstPage from "./componentPages/OnBoarding.jsx";
 
 // IMPORT LAYOUT COMPONENTS 
 import Navbar from './components/Navbar.jsx'
@@ -21,11 +22,12 @@ function AppContent() {
 
   // 2. Logic for dynamic paths: Use .startsWith() for profiles
   const isProfilePage = location.pathname.startsWith('/profile/');
-  const isSignupPage = location.pathname === '/signup' || location.pathname === '/signUp' || location.pathname === '/login';
+  const landing = location.pathname === '/landingPage';
+  const isSignupPage = location.pathname === '/signup' || location.pathname === '/signUp' || location.pathname === '/landingPageg';
   const isSearchPage = location.pathname === '/search' || location.pathname === '/appointments';
   
   const shouldHideFooter = isProfilePage || isSignupPage;
-  const shouldHideNavbar = isSearchPage || isSignupPage;
+  const shouldHideNavbar = isSearchPage || isSignupPage || landing;
 
   return (
     <div className="App min-h-screen flex flex-col">
@@ -37,12 +39,11 @@ function AppContent() {
           <Route path="/search" element={<Search />} />
           <Route path="/appointments" element={<Appointment />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/landingPage" element={<FirstPage />} />
            <Route path="/signup" element={<SignupPage />} />
-            <Route path="/login" element={<LoginPage />} />
         </Routes>
       </main>
       {!shouldHideFooter && <Footer />}
-      {/* Don't forget your MobileNav here if you want it! */}
     </div>
   );
 }
