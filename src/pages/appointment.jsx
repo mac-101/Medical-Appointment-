@@ -1,4 +1,4 @@
-import AppointmentsList from "../componentPages/Appointment";
+import AppointmentsList from "../Data/AppointmentList";
 
 export default function Appointment() {
 

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { MapPin, Award, Star, ShieldCheck, Share2, Check, LayoutDashboard, MessageSquare } from 'lucide-react';
 import Reviews from '../componentPages/Reviews';
 import AppointmentBooking from '../components/AppointmentBooking';
-import Departments from '../componentPages/Department'; // Import your department component
+import Departments from '../Data/Department'; // Import your department component
 
 function ProfileId() {
   // 1. CONSTANT TO SWITCH TYPE (Change to 'hospital' to see the difference)
