@@ -3,10 +3,10 @@ import { ChevronRight, Calendar, Users, LayoutDashboard, Edit3, ArrowLeft, Recei
 
 // IMPORT YOUR COMPONENTS
 import EditProfile from '../componentPages/EditProfile';
-import AppointmentsList from '../componentPages/Appointment';
+import AppointmentsList from '../Data/AppointmentList';
 import PatientRecords from '../componentPages/PatientsRecords';
-import Departments from '../componentPages/Department';
-import MedicalRecords from '../componentPages/MedicalRecord';
+import Departments from '../Data/Department';
+import MedicalRecords from '../Data/MedicalRecord';
 import Reviews from '../componentPages/Reviews';
 
 const Profile = () => {
