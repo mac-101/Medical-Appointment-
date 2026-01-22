@@ -65,7 +65,7 @@ export default function AppointmentsList() {
             </div>
 
             {/* BONUS: Applied your getStatusColor function here */}
-            <p className={`px-4 py-1 rounded-full font-medium ${getStatusColor(appointment.status)}`}>
+            <p className={`px-4 py-1 rounded-full cursor-pointer font-medium ${getStatusColor(appointment.status)}`}>
               {appointment.status}
             </p>
           </div>
