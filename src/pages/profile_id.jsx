@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { MapPin, Award, Star, ShieldCheck, Share2, Check, LayoutDashboard, MessageSquare } from 'lucide-react';
 import Reviews from '../componentPages/Reviews';
 import AppointmentBooking from '../components/AppointmentBooking';
@@ -12,12 +13,13 @@ function ProfileId() {
   const [activeTab, setActiveTab] = useState('reviews');
 
   const [booking, setBooking] = useState(false);
+  const navigate = useNavigate()
 
   const handleBooking = () => {
     setBooking(true);
   };
 
-  
+
 
   const data = {
     name: specialistType === 'doctor' ? "Dr. Maria Elena" : "City General Hospital",
@@ -35,39 +37,47 @@ function ProfileId() {
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
       <div className="sticky top-0 z-30 w-full bg-white/80 backdrop-blur-md border-b border-gray-100/80 transition-all duration-300">
-  <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-    
-    {/* Left Side: Title with tighter tracking and bold weight */}
-    <div className="flex flex-col">
-      <h2 className="font-black uppercase tracking-tighter text-xl text-gray-900 leading-none">
-        {specialistType === 'doctor' ? "Doctor Profile" : "Hospital Detail"}
-      </h2>
-      <div className="flex items-center gap-1.5 mt-1">
-        <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
-        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-          Verified Provider
-        </span>
+        <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+
+          {/* Left Side: Title with tighter tracking and bold weight */}
+          <div className="flex w-full  gap-4">
+            <button onClick={()=>{navigate(-1)}} className="text-slate-400 hover:text-slate-900 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <div>
+              <h2 className="font-black uppercase tracking-tighter text-xl text-gray-900 leading-none">
+
+                {specialistType === 'doctor' ? "Doctor Profile" : "Hospital Detail"}
+              </h2>
+              <div className="flex items-center gap-1.5 mt-1">
+                <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                  Verified Provider
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Side: Interactive Actions */}
+          <div className="flex items-center gap-3">
+            <button className="p-2.5 bg-gray-50 text-gray-400 hover:text-gray-900 hover:bg-gray-100 rounded-xl transition-all active:scale-95 group">
+              <Share2 size={18} className="group-hover:rotate-12 transition-transform" />
+            </button>
+
+            <div className="h-8 w-px bg-gray-100 mx-1" /> {/* Visual Divider */}
+
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 rounded-xl border border-blue-100">
+              <ShieldCheck size={18} className="text-blue-600" />
+              <span className="hidden sm:inline text-[10px] font-black text-blue-700 uppercase tracking-tighter">
+                TrustCore Verified
+              </span>
+            </div>
+          </div>
+
+        </div>
       </div>
-    </div>
-
-    {/* Right Side: Interactive Actions */}
-    <div className="flex items-center gap-3">
-      <button className="p-2.5 bg-gray-50 text-gray-400 hover:text-gray-900 hover:bg-gray-100 rounded-xl transition-all active:scale-95 group">
-        <Share2 size={18} className="group-hover:rotate-12 transition-transform" />
-      </button>
-      
-      <div className="h-8 w-px bg-gray-100 mx-1" /> {/* Visual Divider */}
-
-      <div className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 rounded-xl border border-blue-100">
-        <ShieldCheck size={18} className="text-blue-600" />
-        <span className="hidden sm:inline text-[10px] font-black text-blue-700 uppercase tracking-tighter">
-          TrustCore Verified
-        </span>
-      </div>
-    </div>
-
-  </div>
-</div>
 
       <div className="max-w-7xl mx-auto p-4 md:p-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

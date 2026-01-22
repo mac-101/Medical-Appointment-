@@ -1,5 +1,5 @@
 import React from 'react';
-import { Activity, Heart, Baby, Scan, Brain, Stethoscope } from 'lucide-react';
+import { Star } from 'lucide-react';
 
 const Departments = () => {
   // Elaborated data structure for Firebase integration
@@ -8,7 +8,6 @@ const Departments = () => {
       id: "dept_1",
       name: "Emergency",
       description: "24/7 Critical care and trauma response unit.",
-      icon: <Activity className="text-red-500" size={24} />,
       status: "Open 24/7",
       color: "border-l-red-500"
     },
@@ -16,7 +15,6 @@ const Departments = () => {
       id: "dept_2",
       name: "Cardiology",
       description: "Advanced heart health and cardiovascular surgery.",
-      icon: <Heart className="text-rose-500" size={24} />,
       status: "By Appt",
       color: "border-l-rose-500"
     },
@@ -24,7 +22,6 @@ const Departments = () => {
       id: "dept_3",
       name: "Pediatrics",
       description: "Specialized medical care for infants and children.",
-      icon: <Baby className="text-blue-500" size={24} />,
       status: "Open",
       color: "border-l-blue-500"
     },
@@ -32,7 +29,6 @@ const Departments = () => {
       id: "dept_4",
       name: "Radiology",
       description: "Diagnostic imaging, MRI, and X-ray services.",
-      icon: <Scan className="text-purple-500" size={24} />,
       status: "Open",
       color: "border-l-purple-500"
     },
@@ -40,7 +36,6 @@ const Departments = () => {
       id: "dept_5",
       name: "Neurology",
       description: "Brain and nervous system disorder treatments.",
-      icon: <Brain className="text-amber-500" size={24} />,
       status: "Limited",
       color: "border-l-amber-500"
     },
@@ -48,7 +43,6 @@ const Departments = () => {
       id: "dept_6",
       name: "General",
       description: "Routine checkups and internal medicine.",
-      icon: <Stethoscope className="text-emerald-500" size={24} />,
       status: "Open",
       color: "border-l-emerald-500"
     }
@@ -71,9 +65,7 @@ const Departments = () => {
             className={`group p-5 bg-white border border-gray-200 border-l-4 ${dept.color} hover:shadow-md transition-all cursor-pointer`}
           >
             <div className="flex justify-between items-start mb-3">
-              <div className="p-2 bg-gray-50 group-hover:bg-white transition-colors">
-                {dept.icon}
-              </div>
+                <Star size={10} fill/>
               <span className={`text-[9px] font-bold px-2 py-0.5 uppercase tracking-tighter ${
                 dept.status === 'Open 24/7' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'
               }`}>

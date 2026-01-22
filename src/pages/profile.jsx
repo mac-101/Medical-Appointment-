@@ -80,7 +80,7 @@ const Profile = () => {
   // };
 
   return (
-    <div className="max-w-7xl mx-auto p-4 md:p-10 min-h-screen">
+    <div className="max-w-7xl mx-auto px-2 pb-20 min-h-screen">
 
       {/* 1. PROFILE HEADER CARD - Scaled for all sizes */}
       <div className="px-4 py-8 md:px-0 mb-12 flex flex-col md:flex-row justify-between items-center gap-10">
@@ -183,14 +183,14 @@ const Profile = () => {
                   onClick={() => setActiveSection(null)}
                   className="lg:hidden flex items-center gap-2 text-blue-600 font-black text-[10px] uppercase tracking-widest bg-blue-50 px-4 py-2 rounded-xl"
                 >
-                  <ArrowLeft size={16} /> Back to Menu
+                  <ArrowLeft size={16} />Menu
                 </button>
                 <span className="text-[10px] font-black text-gray-300 uppercase tracking-widest">
                   {activeSection} View
                 </span>
               </div>
 
-              <div className="p-6 md:p-10 flex-1">
+              <div className="p-1 md:p-10 flex-1">
                 {renderActiveComponent()}
               </div>
             </div>
@@ -215,35 +215,4 @@ const Profile = () => {
 
 export default Profile;
 
-
-
-// const Profile = () => {
-//   const [userRole, setUserRole] = useState('patient');
-//   const [activeSection, setActiveSection] = useState('records');
-
-// 1. DATA LOGIC FOR THE PLANE SUMMARY
-// const getRoleSummary = () => {
-//   switch (userRole) {
-//     case 'hospital':
-//       return [
-//         { label: 'Capacity', value: '500+', unit: 'beds' },
-//         { label: 'Staff', value: '120', unit: 'MDs' },
-//         { label: 'Rating', value: '4.9', unit: '⭐' }
-//       ];
-//     case 'doctor':
-//       return [
-//         { label: 'Patients', value: '1.2k', unit: '' },
-//         { label: 'Experience', value: '12', unit: 'yrs' },
-//         { label: 'Reviews', value: '450', unit: '' }
-//       ];
-//     default: // patient
-//       return [
-//         { label: 'Height', value: "5'8\"", unit: '' },
-//         { label: 'Weight', value: '150', unit: 'lb' },
-//         { label: 'Blood', value: 'O+', unit: '' }
-//       ];
-//   }
-// };
-
-// const summaryData = getRoleSummary();
 
