@@ -1,245 +1,141 @@
 import React, { useState } from 'react';
-import Teeth from '../Images/teeth.png';
-import Heart from '../Images/heart.png';
-import Physical from '../Images/physical.png';
-import Dermatology from '../Images/dermatology.png';
-import Pediatrician from '../Images/pediatrician.png';
-import Orthopedics from '../Images/orthopedics.png';
-import doctor1 from '../Images/doctor1.png';
-import doctor2 from '../Images/doctor2.png';
-import doctor3 from '../Images/doctor3.png';
-import doctor4 from '../Images/doctor4.png';
-import doctor5 from '../Images/doctor5.png';
-import doctor6 from '../Images/doctor6.png';
-import doctor7 from '../Images/doctor7.png';
-import doctor8 from '../Images/doctor8.png';
-import doctor9 from '../Images/doctor9.png';
-import doctor10 from '../Images/doctor10.png';
+import { Search, ArrowLeft, Star, ChevronRight } from 'lucide-react';
 
-// Changed name to FindDoctors to avoid conflict with the Search icon
-function FindDoctors() {
-  const [activeView, setActiveView] = useState('categories');
+const CATEGORIES = [
+  { name: "Dentistry", count: 22, img: "https://cdn-icons-png.flaticon.com/512/3467/3467561.png" },
+  { name: "Cardiology", count: 26, img: "https://cdn-icons-png.flaticon.com/512/833/833472.png" },
+  { name: "Psychologist", count: 20, img: "https://cdn-icons-png.flaticon.com/512/2643/2643120.png" },
+  { name: "Dermatologist", count: 19, img: "https://cdn-icons-png.flaticon.com/512/2813/2813136.png" },
+  { name: "Pediatrician", count: 18, img: "https://cdn-icons-png.flaticon.com/512/1041/1041926.png" },
+  { name: "Orthopedics", count: 29, img: "https://cdn-icons-png.flaticon.com/512/2992/2992147.png" },
+];
+
+const DOCTORS = [
+  { name: "Dr. John Doe", role: "Cardiology", exp: 10, rate: 4.8, img: "https://img.freepik.com/free-photo/doctor-offering-medical-teleconsultation_23-2149329007.jpg" },
+  { name: "Dr. Sarah Chen", role: "Dermatology", exp: 11, rate: 4.0, img: "https://img.freepik.com/free-photo/female-doctor-hospital-with-stethoscope_23-2148827756.jpg" },
+  { name: "Dr. James Wilson", role: "Dentistry", exp: 13, rate: 4.9, img: "https://img.freepik.com/free-photo/medium-shot-smiley-doctor-with-stethoscope_23-2148827763.jpg" },
+  { name: "Dr. Elena Rossi", role: "Pediatrician", exp: 8, rate: 4.7, img: "https://img.freepik.com/free-photo/smiling-female-doctor-with-white-coat-stethoscope_23-2148827761.jpg" },
+];
+
+export default function FindDoctors() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+
+  // Filter logic: Searches by Name OR Role
+  const filteredDoctors = DOCTORS.filter(doc => 
+    doc.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    doc.role.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleCategoryClick = (catName) => {
+    setSearchTerm(catName);
+    setIsSearching(true);
+  };
+
+  const handleBack = () => {
+    if (isSearching) {
+      setSearchTerm("");
+      setIsSearching(false);
+    } else {
+      window.history.back(); // Goes to -1
+    }
+  };
 
   return (
-    <div className='find-doctors w-full min-h-screen bg-gray-50'>
-      {/* 1. HEADER SECTION */}
-      <div className='top-find flex flex-col md:flex-row justify-between items-center gap-4 p-5 md:p-10 max-w-7xl mx-auto'>
-        <h1 className='font-bold text-2xl md:text-3xl text-blue-500'>
-          {activeView === 'categories' ? 'Categories' : activeView}
-        </h1>
-
-        <div className='find-search w-full md:w-80 outline-1 outline-gray-300 h-11 flex items-center bg-white rounded-2xl px-4 gap-2 shadow-sm'>
-          <i className="bi bi-search text-gray-400 cursor-pointer"></i>
-          <input type="text" placeholder="Search doctors..." className='outline-none w-full text-sm' />
-        </div>
-      </div>
-
-      {/* 2. THE SWITCHING LOGIC */}
-      {activeView === 'categories' ? (
-        // RESPONSIVE CATEGORY GRID
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 p-5 md:p-10 justify-items-center max-w-7xl m-auto">
-
-          <div
-            onClick={() => setActiveView('Dentistry')}
-            className="h-64 bg-white shadow-md w-full max-w-sm rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 border-2 border-transparent transition-all"
+    <div className='w-full min-h-screen bg-white font-sans'>
+      {/* NAVIGATION HEADER */}
+      <nav className='sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-slate-100 px-6 py-4'>
+        <div className='max-w-7xl mx-auto flex items-center gap-4'>
+          <button 
+            onClick={handleBack}
+            className='p-2 hover:bg-blue-50 rounded-full text-[#0f172a] transition-colors'
           >
-            <img src={Teeth} alt="Dentistry" className='w-12 mb-2' />
-            <h6 className='text-gray-400 text-sm'>22 Specialist</h6>
-            <p className="font-bold text-2xl md:text-3xl text-blue-600">Dentistry</p>
-          </div>
-
-          <div
-            onClick={() => setActiveView('Cardiology')}
-            className="h-64 bg-white shadow-md w-full max-w-sm rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 border-2 border-transparent transition-all"
-          >
-            <img src={Heart} alt="Cardiology" className='w-12 mb-2' />
-            <h6 className='text-gray-400 text-sm'>26 Specialist</h6>
-            <p className="font-bold text-2xl text-blue-600">Cardiology</p>
-          </div>
-
-          <div
-            onClick={() => setActiveView("Psychologist")}
-            className="h-64 bg-white shadow-md w-full max-w-sm rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 border-2 border-transparent transition-all"
-          >
-            <img src={Physical} alt="Psychologist" className='w-12 mb-2' />
-            <h6 className='text-gray-400 text-sm'>20 Specialist</h6>
-            <p className="font-bold text-2xl text-blue-600">Psychologist</p>
-          </div>
-
-          <div
-            onClick={() => setActiveView("Dermatologist")}
-            className="h-64 bg-white shadow-md w-full max-w-sm rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 border-2 border-transparent transition-all"
-          >
-            <img src={Dermatology} alt="Dermatologist" className='w-12 mb-2' />
-            <h6 className='text-gray-400 text-sm'>19 Specialist</h6>
-            <p className="font-bold text-2xl text-blue-600">Dermatologist</p>
-          </div>
-
-          <div
-            onClick={() => setActiveView("Pediatrician")}
-            className="h-64 bg-white shadow-md w-full max-w-sm rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 border-2 border-transparent transition-all"
-          >
-            <img src={Pediatrician} alt="Pediatrician" className='w-12 mb-2' />
-            <h6 className='text-gray-400 text-sm'>18 Specialist</h6>
-            <p className="font-bold text-2xl text-blue-600">Pediatrician</p>
-          </div>
-
-          <div
-            onClick={() => setActiveView("Orthopedics")}
-            className="h-64 bg-white shadow-md w-full max-w-sm rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 border-2 border-transparent transition-all"
-          >
-            <img src={Orthopedics} alt="Orthopedics" className='w-12 mb-2' />
-            <h6 className='text-gray-400 text-sm'>29 Specialist</h6>
-            <p className="font-bold text-2xl text-blue-600">Orthopedics</p>
-          </div>
-        </div>
-      ) : (
-        <div className="p-5 md:p-10 max-w-7xl mx-auto">
-          <button
-            onClick={() => setActiveView('categories')}
-            className="text-blue-500 mb-6 hover:underline font-medium flex items-center gap-2"
-          >
-            ← Back to All Categories
+            <ArrowLeft size={24} />
           </button>
+          
+          <div className='relative flex-1 group'>
+            <Search className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors ${searchTerm ? 'text-blue-500' : 'text-slate-400'}`} size={18} />
+            <input 
+              type="text" 
+              placeholder="Search by name or specialty..." 
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setIsSearching(e.target.value.length > 0);
+              }}
+              className='w-full bg-slate-50 border border-slate-100 py-3 pl-12 pr-4 rounded-2xl outline-none focus:border-blue-500 focus:bg-white transition-all text-sm font-medium' 
+            />
+          </div>
+        </div>
+      </nav>
 
-          <div className="bg-white p-4 md:p-8 rounded-2xl shadow-sm text-center">
-            <h2 className='text-xl font-semibold mb-6'>Available {activeView} Doctors</h2>
+      <main className="max-w-7xl mx-auto p-6">
+        {!isSearching ? (
+          <>
+            <div className="flex justify-between items-end mb-6">
+              <div>
+                <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-500 mb-1">Explore</h2>
+                <h1 className="text-3xl font-black text-[#0f172a] tracking-tighter">Specialities</h1>
+              </div>
+            </div>
 
-            {/* RESPONSIVE DOCTOR GRID */}
-            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center'>
+            {/* SMALL CATEGORY CARDS */}
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+              {CATEGORIES.map((cat) => (
+                <div
+                  key={cat.name}
+                  onClick={() => handleCategoryClick(cat.name)}
+                  className="group p-4 bg-white border border-slate-100 rounded-2xl cursor-pointer hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/10 transition-all text-center"
+                >
+                  <div className="w-12 h-12 bg-blue-50 rounded-xl mx-auto mb-3 flex items-center justify-center group-hover:bg-blue-500 transition-colors">
+                    <img src={cat.img} alt="" className='w-7 h-7 object-contain group-hover:brightness-0 group-hover:invert transition-all' />
+                  </div>
+                  <p className="font-bold text-sm text-[#0f172a] mb-1">{cat.name}</p>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">{cat.count} Doctors</p>
+                </div>
+              ))}
+            </div>
+          </>
+        ) : (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="flex items-center justify-between mb-8">
+               <h2 className="text-xl font-black text-[#0f172a]">
+                 Results for <span className="text-blue-500">"{searchTerm}"</span>
+               </h2>
+               <span className="text-xs font-bold text-slate-400 uppercase">{filteredDoctors.length} Found</span>
+            </div>
 
-              {/* CARD 1 */} 
-              <div className='overflow-hidden w-full max-w-[320px] h-105 rounded-2xl shadow-md hover:border-blue-500 border-2 border-transparent transition-all relative group'>
-                <img src={doctor1} alt="Doctor" className='object-cover w-full h-full transition-transform duration-500 group-hover:scale-105' />
-                <div className='absolute bottom-4 left-1/2 -translate-x-1/2 w-[90%] bg-white/80 backdrop-blur-sm p-4 shadow-lg rounded-2xl text-left'>
-                  <b className='block text-lg'>Dr. John Doe</b>
-                  <h3 className='text-blue-600 text-sm'>Cardiologist</h3>
-                  <h5 className='text-gray-600 text-xs'>Experience: 10 years</h5>
-                  <div className='mt-1 flex items-center gap-1'>
-                    <i className="bi bi-star-fill text-orange-500 text-xs"></i>
-                    <b className='text-xs'>4.8</b>
+            {/* DOCTOR LIST GRID */}
+            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'>
+              {filteredDoctors.length > 0 ? filteredDoctors.map((doc, i) => (
+                <div key={i} className='group bg-white rounded-3xl border border-slate-100 overflow-hidden hover:border-blue-200 transition-all shadow-sm hover:shadow-xl hover:shadow-blue-500/5'>
+                  <div className="relative aspect-square overflow-hidden">
+                    <img src={doc.img} alt={doc.name} className='object-cover w-full h-full group-hover:scale-105 transition-transform duration-700' />
+                    <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-2 py-1 rounded-lg flex items-center gap-1 shadow-sm">
+                      <Star size={12} className="fill-blue-500 text-blue-500" />
+                      <span className="text-[10px] font-black text-[#0f172a]">{doc.rate}</span>
+                    </div>
+                  </div>
+                  
+                  <div className='p-5'>
+                    <h3 className='text-blue-500 text-[10px] font-black uppercase tracking-widest mb-1'>{doc.role}</h3>
+                    <b className='block text-[#0f172a] text-lg mb-4 tracking-tight'>{doc.name}</b>
+                    
+                    <button className="w-full bg-[#0f172a] hover:bg-blue-600 text-white py-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 group/btn">
+                      Book Appointment 
+                      <ChevronRight size={14} className="group-hover/btn:translate-x-1 transition-transform" />
+                    </button>
                   </div>
                 </div>
-              </div>
-
-              {/* CARD 2 */}
-              <div className='overflow-hidden w-full max-w-[320px] h-105 rounded-2xl shadow-md hover:border-blue-500 border-2 border-transparent transition-all relative group'>
-                <img src={doctor2} alt="Doctor" className='object-cover w-full h-full transition-transform duration-500 group-hover:scale-105' />
-                <div className='absolute bottom-4 left-1/2 -translate-x-1/2 w-[90%] bg-white/80 backdrop-blur-sm p-4 shadow-lg rounded-2xl text-left'>
-                  <b className='block text-lg'>Dr. Sarah Chen</b>
-                  <h3 className='text-blue-600 text-sm'>Dermatologist</h3>
-                  <h5 className='text-gray-600 text-xs'>Experience: 11 years</h5>
-                  <div className='mt-1 flex items-center gap-1'>
-                    <i className="bi bi-star-fill text-orange-500 text-xs"></i>
-                    <b className='text-xs'>4.0</b>
-                  </div>
+              )) : (
+                <div className="col-span-full py-20 text-center">
+                  <p className="text-slate-400 font-bold italic">No doctors found matching that search.</p>
                 </div>
-              </div>
-
-              {/* CARD 3 */}
-              <div className='overflow-hidden w-full max-w-[320px] h-105 rounded-2xl shadow-md hover:border-blue-500 border-2 border-transparent transition-all relative group'>
-                <img src={doctor3} alt="Doctor" className='object-cover w-full h-full transition-transform duration-500 group-hover:scale-105' />
-                <div className='absolute bottom-4 left-1/2 -translate-x-1/2 w-[90%] bg-white/80 backdrop-blur-sm p-4 shadow-lg rounded-2xl text-left'>
-                  <b className='block text-lg'>Dr. James Wilson</b>
-                  <h3 className='text-blue-600 text-sm'>Neurologist</h3>
-                  <h5 className='text-gray-600 text-xs'>Experience: 13 years</h5>
-                  <div className='mt-1 flex items-center gap-1'>
-                    <i className="bi bi-star-fill text-orange-500 text-xs"></i>
-                    <b className='text-xs'>4.8</b>
-                  </div>
-                </div>
-              </div>
-
-              {/* CARD 4 */}
-              <div className='overflow-hidden w-full max-w-[320px] h-105 rounded-2xl shadow-md hover:border-blue-500 border-2 border-transparent transition-all relative group'>
-                <img src={doctor4} alt="Doctor" className='object-cover w-full h-full transition-transform duration-500 group-hover:scale-105' />
-                <div className='absolute bottom-4 left-1/2 -translate-x-1/2 w-[90%] bg-white/80 backdrop-blur-sm p-4 shadow-lg rounded-2xl text-left'>
-                  <b className='block text-lg'>Dr. James Wilson</b>
-                  <h3 className='text-blue-600 text-sm'>Orthopedic</h3>
-                  <h5 className='text-gray-600 text-xs'>Experience: 15 years</h5>
-                  <div className='mt-1 flex items-center gap-1'>
-                    <i className="bi bi-star-fill text-orange-500 text-xs"></i>
-                    <b className='text-xs'>4.6</b>
-                  </div>
-                </div>
-              </div>
-
-              {/* CARD 5 */}
-              <div className='overflow-hidden w-full max-w-[320px] h-105 rounded-2xl shadow-md hover:border-blue-500 border-2 border-transparent transition-all relative group'>
-                <img src={doctor5} alt="Doctor" className='object-cover w-full h-full transition-transform duration-500 group-hover:scale-105' />
-                <div className='absolute bottom-4 left-1/2 -translate-x-1/2 w-[90%] bg-white/80 backdrop-blur-sm p-4 shadow-lg rounded-2xl text-left'>
-                  <b className='block text-lg'>Dr. James Wilson</b>
-                  <h3 className='text-blue-600 text-sm'>Infectious</h3>
-                  <h5 className='text-gray-600 text-xs'>Experience: 9 years</h5>
-                  <div className='mt-1 flex items-center gap-1'>
-                    <i className="bi bi-star-fill text-orange-500 text-xs"></i>
-                    <b className='text-xs'>3.5</b>
-                  </div>
-                </div>
-              </div>
-
-              {/* CARD 6 */}
-              <div className='overflow-hidden w-full max-w-[320px] h-105 rounded-2xl shadow-md hover:border-blue-500 border-2 border-transparent transition-all relative group'>
-                <img src={doctor6} alt="Doctor" className='object-cover w-full h-full transition-transform duration-500 group-hover:scale-105' />
-                <div className='absolute bottom-4 left-1/2 -translate-x-1/2 w-[90%] bg-white/80 backdrop-blur-sm p-4 shadow-lg rounded-2xl text-left'>
-                  <b className='block text-lg'>Dr. James Wilson</b>
-                  <h3 className='text-blue-600 text-sm'>Nephrologist</h3>
-                  <h5 className='text-gray-600 text-xs'>Experience: 19 years</h5>
-                  <div className='mt-1 flex items-center gap-1'>
-                    <i className="bi bi-star-fill text-orange-500 text-xs"></i>
-                    <b className='text-xs'>3.9</b>
-                  </div>
-                </div>
-              </div>
-
-              {/* CARD 7 */}
-              <div className='overflow-hidden w-full max-w-[320px] h-105 rounded-2xl shadow-md hover:border-blue-500 border-2 border-transparent transition-all relative group'>
-                <img src={doctor7} alt="Doctor" className='object-cover w-full h-full transition-transform duration-500 group-hover:scale-105' />
-                <div className='absolute bottom-4 left-1/2 -translate-x-1/2 w-[90%] bg-white/80 backdrop-blur-sm p-4 shadow-lg rounded-2xl text-left'>
-                  <b className='block text-lg'>Dr. James Wilson</b>
-                  <h3 className='text-blue-600 text-sm'>Pulmonologist</h3>
-                  <h5 className='text-gray-600 text-xs'>Experience: 5 years</h5>
-                  <div className='mt-1 flex items-center gap-1'>
-                    <i className="bi bi-star-fill text-orange-500 text-xs"></i>
-                    <b className='text-xs'>4.2</b>
-                  </div>
-                </div>
-              </div>
-
-              {/* CARD 8 */}
-              <div className='overflow-hidden w-full max-w-[320px] h-105 rounded-2xl shadow-md hover:border-blue-500 border-2 border-transparent transition-all relative group'>
-                <img src={doctor8} alt="Doctor" className='object-cover w-full h-full transition-transform duration-500 group-hover:scale-105' />
-                <div className='absolute bottom-4 left-1/2 -translate-x-1/2 w-[90%] bg-white/80 backdrop-blur-sm p-4 shadow-lg rounded-2xl text-left'>
-                  <b className='block text-lg'>Dr. James Wilson</b>
-                  <h3 className='text-blue-600 text-sm'>Ophthalmologist</h3>
-                  <h5 className='text-gray-600 text-xs'>Experience: 10 years</h5>
-                  <div className='mt-1 flex items-center gap-1'>
-                    <i className="bi bi-star-fill text-orange-500 text-xs"></i>
-                    <b className='text-xs'>4.2</b>
-                  </div>
-                </div>
-              </div>
-
-              {/* CARD 9 */}
-              <div className='overflow-hidden w-full max-w-[320px] h-105 rounded-2xl shadow-md hover:border-blue-500 border-2 border-transparent transition-all relative group'>
-                <img src={doctor9} alt="Doctor" className='object-cover w-full h-full transition-transform duration-500 group-hover:scale-105' />
-                <div className='absolute bottom-4 left-1/2 -translate-x-1/2 w-[90%] bg-white/80 backdrop-blur-sm p-4 shadow-lg rounded-2xl text-left'>
-                  <b className='block text-lg'>Dr. James Wilson</b>
-                  <h3 className='text-blue-600 text-sm'>Pediatrician</h3>
-                  <h5 className='text-gray-600 text-xs'>Experience: 8 years</h5>
-                  <div className='mt-1 flex items-center gap-1'>
-                    <i className="bi bi-star-fill text-orange-500 text-xs"></i>
-                    <b className='text-xs'>4.4</b>
-                  </div>
-                </div>
-              </div>
-
+              )}
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </main>
     </div>
   );
 }
-
-export default FindDoctors;
