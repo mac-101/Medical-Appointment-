@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, ArrowLeft, Star, ChevronRight } from 'lucide-react';
+// import { useLocation } from 'react-router-dom';
 
 const CATEGORIES = [
   { name: "Dentistry", count: 22, img: "https://cdn-icons-png.flaticon.com/512/3467/3467561.png" },
@@ -17,9 +18,18 @@ const DOCTORS = [
   { name: "Dr. Elena Rossi", role: "Pediatrician", exp: 8, rate: 4.7, img: "https://img.freepik.com/free-photo/smiling-female-doctor-with-white-coat-stethoscope_23-2148827761.jpg" },
 ];
 
+// const location = useLocation();
+
 export default function FindDoctors() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearching, setIsSearching] = useState(false);
+
+  // useEffect(() => {
+  //   if (location.state?.incomingSearch) {
+  //     setSearchTerm(location.state.incomingSearch);
+  //     setIsSearching(true);
+  //   }
+  // }, [location.state]);
 
   // Filter logic: Searches by Name OR Role
   const filteredDoctors = DOCTORS.filter(doc => 
@@ -75,7 +85,6 @@ export default function FindDoctors() {
             <div className="flex justify-between items-end mb-6">
               <div>
                 <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-500 mb-1">Explore</h2>
-                <h1 className="text-3xl font-black text-[#0f172a] tracking-tighter">Specialities</h1>
               </div>
             </div>
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import Article from '../componentPages/Article';
 import { Link } from 'react-router-dom';
-import AppointmentBooking from '../components/AppointmentBooking'
+import { useNavigate } from 'react-router-dom';
 import { Search, Bell, AlertCircle, Star, MapPin, ChevronRight, Stethoscope, Truck, ClipboardList } from 'lucide-react';
 
 export default function Home() {
@@ -10,6 +10,7 @@ export default function Home() {
         { id: 2, name: "Ambulance", icon: <Truck size={28} />, color: "bg-red-500", link: "/emergency" },
         { id: 3, name: "Reports", icon: <ClipboardList size={28} />, color: "bg-blue-500", link: "/reports" },
     ];
+    const navigate = useNavigate()
 
     const topDoctors = [
         { id: 1, name: "Dr. Maria Elena", specialty: "Psychologist", rating: 4.9, image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=300" },
@@ -36,6 +37,13 @@ export default function Home() {
         { id: 9, name: "Northstar Med", location: "Skyline Blvd", rating: 4.8, image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&q=80&w=500" },
         { id: 10, name: "Legacy Hospital", location: "Heritage Square", rating: 4.9, image: "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&q=80&w=500" }
     ];
+
+    const handleSearch = (e) => {
+        if (e.key === 'Enter' && e.target.value.trim() !== "") {
+            // Navigate to the search page and pass the term in the state
+            navigate('/search', { state: { incomingSearch: e.target.value } });
+        }
+    };
 
     return (
         <div className="min-h-screen w-full">
@@ -81,6 +89,7 @@ export default function Home() {
                             <input
                                 type="text"
                                 placeholder="Search doctors, clinics..."
+                                onKeyDown={handleSearch} // Listen for Enter key
                                 className="w-full bg-gray-50 border border-gray-100 py-4 pl-12 pr-4 rounded-2xl outline-none focus:ring-2 focus:ring-blue-100 transition-all"
                             />
                         </div>

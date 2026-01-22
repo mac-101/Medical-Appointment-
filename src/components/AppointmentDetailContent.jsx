@@ -7,9 +7,9 @@ const getStatusStyle = (status) => {
     return "bg-gray-50 text-gray-500";
 };
 
-const DetailContent = ({ data, isModal, onClick }) => (
-    <div className={`bg-white rounded-2xl h-90lvh `}>
-        <div className="h-2 bg-blue-600"></div>
+const AppointmentDetail = ({ data, isModal, onClick }) => (
+    <div className={`bg-white rounded-2xl h-full md:max-w-lg`}>
+        <div className="h- bg-blue-600"></div>
         <div className="p-6 md:p-8">
             <div className="flex justify-between items-start">
                 <span className="text-[10px] font-bold text-blue-700 uppercase tracking-[0.2em] bg-blue-50 px-2 py-1 rounded">
@@ -67,4 +67,4 @@ const DetailContent = ({ data, isModal, onClick }) => (
     </div>
 );
 
-export default DetailContent
+export default AppointmentDetail
