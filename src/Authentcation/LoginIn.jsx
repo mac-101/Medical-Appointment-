@@ -1,31 +1,40 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { loginUser } from "../services/firebaseAuth"; // Path to your logic file
 
-const LoginPage = ({ onclick }) => {
+const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      console.log("Logged in:", { email, password });
-    }, 1500);
+
+    const result = await loginUser(email, password);
+
+    setIsLoading(false);
+
+    if (result.success) {
+      console.log("Welcome back:", result.user.email);
+      navigate('/'); // Send them to the dashboard
+    } else {
+      // You can get more specific with error handling here
+      alert(`Login Failed: ${result.error}`);
+    }
   };
 
   return (
-    <div className="w-full h-full flex items-center justify-center bg-white">
+    <div className="w-full h-full flex items-center justify-center bg-white animate-in fade-in duration-500">
       <div className="w-full max-w-sm px-4">
         
-        {/* Simple Branding */}
         <div className="mb-10 text-left">
           <h1 className="text-4xl font-bold text-slate-900 tracking-tight">Sign In</h1>
           <p className="text-slate-500 mt-2">Enter your details to access Healthcore OS</p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-5">
-          {/* Email Field */}
           <div>
             <label className="block text-sm font-semibold text-slate-700 mb-1">Email Address</label>
             <input
@@ -38,7 +47,6 @@ const LoginPage = ({ onclick }) => {
             />
           </div>
 
-          {/* Password Field */}
           <div>
             <div className="flex justify-between mb-1">
               <label className="text-sm font-semibold text-slate-700">Password</label>
@@ -54,7 +62,6 @@ const LoginPage = ({ onclick }) => {
             />
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             disabled={isLoading}
@@ -68,11 +75,10 @@ const LoginPage = ({ onclick }) => {
           </button>
         </form>
 
-        {/* Footer Link */}
         <p className="mt-8 text-sm text-slate-600">
           Don't have an account?{" "}
           <span 
-            onClick={onclick} 
+            onClick={handleLogin} 
             className="text-blue-700 font-bold cursor-pointer hover:underline"
           >
             Create an account
