@@ -9,8 +9,12 @@ import Profile from "./pages/profile.jsx";
 // import Register from "./pages/register.jsx";
 import SignupPage from "./Authentcation/SignUp.jsx";
 import LoginPage from "./Authentcation/LoginIn.jsx";
+// <<<<<<< HEAD
 import ScrollToTop from './components/ScrollTop.jsx'
 import FirstPage from "./componentPages/OnBoarding.jsx";
+// =======
+import Emergency from "./pages/Emergeny.jsx";
+// >>>>>>> 2e25ecf (Chisom Update)
 
 // IMPORT LAYOUT COMPONENTS 
 import Navbar from './components/Navbar.jsx'
@@ -51,10 +55,9 @@ function AppContent() {
 function App() {
   return (
     <Router>
-<<<<<<< HEAD
+
       <ScrollToTop />
-      <AppContent /> {/* Now useLocation works because it's INSIDE Router */}
-=======
+      {/* <AppContent /> Now useLocation works because it's INSIDE Router */}
       <div className="App min-h-screen flex flex-col bg-gray-50">
         {/* Header shows on all pages */}
         {/* <Navbar /> */}
@@ -67,6 +70,7 @@ function App() {
             <Route path="/search" element={<Search />} />
             <Route path="/appointments" element={<Appointment />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/emergency" element={<Emergency />} />
             {/* <Route path="/signup" element={<Register />} /> */}
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/login" element={<LoginPage />} />
@@ -76,7 +80,7 @@ function App() {
         {/* Footer shows on all pages */}
         {/* <Footer /> */}
       </div>
->>>>>>> 85dbde4 (third commit)
+{/* >>>>>>> 85dbde4 (third commit) */}
     </Router>
   );
 }

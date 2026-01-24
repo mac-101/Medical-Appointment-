@@ -1,11 +1,11 @@
-<<<<<<< HEAD
-import { useState } from "react";
-import { PatientLogin } from "../componentPages/LoginsComponents.jsx";
-=======
+// <<<<<<< HEAD
 import { useState, useEffect } from "react";
+// import { useState } from "react";
+import { PatientLogin } from "../componentPages/LoginsComponents.jsx";
+// =======
 import { Link } from "react-router-dom";
 import { Mail, Lock, User, Building, Stethoscope, Eye, EyeOff, AlertCircle, Check } from 'lucide-react';
->>>>>>> 85dbde4 (third commit)
+// >>>>>>> 85dbde4 (third commit)
 
 // --- COMPONENT 1: GET STARTED (PLAIN) ---
 const GetStarted = ({ onContinue, onLogin }) => {
@@ -22,7 +22,7 @@ const GetStarted = ({ onContinue, onLogin }) => {
         <p className="text-slate-500 font-medium mt-1 uppercase tracking-[0.2em] text-[10px]">Inspiring Health Everyday</p>
       </div>
 
-<<<<<<< HEAD
+{/* <<<<<<< HEAD */}
       <div className="text-center">
         <h2 className="text-2xl font-semibold text-slate-900">Stay healthy and fit</h2>
         <p className="text-slate-500 mt-2">Let's get started with your account</p>
@@ -45,7 +45,7 @@ const GetStarted = ({ onContinue, onLogin }) => {
 const RoleSelection = ({ onRoleSelected }) => {
   const [selectedRole, setSelectedRole] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
-=======
+// =======
   const [errors, setErrors] = useState({
     fullName: "",
     email: "",
@@ -132,7 +132,7 @@ const RoleSelection = ({ onRoleSelected }) => {
     });
     return newErrors;
   };
->>>>>>> 85dbde4 (third commit)
+// >>>>>>> 85dbde4 (third commit)
 
   // Check if form is valid
   const isFormValid = () => {
@@ -247,7 +247,7 @@ const RoleSelection = ({ onRoleSelected }) => {
     { id: 'hospital', title: 'Hospital', desc: 'Management & Administration' },
   ];
 
-<<<<<<< HEAD
+// <<<<<<< HEAD
   const handleRoleSubmit = () => {
     if (!selectedRole) return alert("Please select a role first!");
     setIsProcessing(true);
@@ -257,20 +257,20 @@ const RoleSelection = ({ onRoleSelected }) => {
     }, 500);
   };
 
-  return (
-    <div className="min-h-screen w-full bg-white flex flex-col items-center py-16 px-8">
-      <div className='relative max-w-md mx-auto min-h-[70vh] w-full flex flex-col'>
-        <div className="mb-12 text-left">
-          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Select Role</h1>
-          <p className="text-slate-500 mt-2">Choose how you will use the platform</p>
-=======
-  // Password requirements checklist
-  const passwordRequirements = [
-    { label: "At least 8 characters", met: (pwd) => pwd.length >= 8 },
-    { label: "Contains a number", met: (pwd) => /(?=.*[0-9])/.test(pwd) },
-    { label: "Contains a special character", met: (pwd) => /(?=.*[!@#$%^&*])/.test(pwd) },
-    { label: "Contains an uppercase letter", met: (pwd) => /(?=.*[A-Z])/.test(pwd) },
-  ];
+//   return (
+//     <div className="min-h-screen w-full bg-white flex flex-col items-center py-16 px-8">
+//       <div className='relative max-w-md mx-auto min-h-[70vh] w-full flex flex-col'>
+//         <div className="mb-12 text-left">
+//           <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Select Role</h1>
+//           <p className="text-slate-500 mt-2">Choose how you will use the platform</p>
+// {/* ======= */}
+//   // Password requirements checklist
+//   const passwordRequirements = [
+//     { label: "At least 8 characters", met: (pwd) => pwd.length >= 8 },
+//     { label: "Contains a number", met: (pwd) => /(?=.*[0-9])/.test(pwd) },
+//     { label: "Contains a special character", met: (pwd) => /(?=.*[!@#$%^&*])/.test(pwd) },
+//     { label: "Contains an uppercase letter", met: (pwd) => /(?=.*[A-Z])/.test(pwd) },
+//   ];
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
@@ -672,7 +672,7 @@ const RoleSelection = ({ onRoleSelected }) => {
               </Link>
             </p>
           </form>
->>>>>>> 85dbde4 (third commit)
+{/* >>>>>>> 85dbde4 (third commit) */}
         </div>
 
         <div className="space-y-3 flex-1">

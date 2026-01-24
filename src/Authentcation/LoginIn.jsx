@@ -1,29 +1,29 @@
-<<<<<<< HEAD
-import React, { useState } from 'react';
+// // <<<<<<< HEAD
+// import React, { useState } from 'react';
 
-const LoginPage = ({ onclick }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+// const LoginPage = ({ onclick }) => {
+//   const [email, setEmail] = useState('');
+//   const [password, setPassword] = useState('');
+//   const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      console.log("Logged in:", { email, password });
-    }, 1500);
-  };
+//   const handleLogin = (e) => {
+//     e.preventDefault();
+//     setIsLoading(true);
+//     setTimeout(() => {
+//       setIsLoading(false);
+//       console.log("Logged in:", { email, password });
+//     }, 1500);
+//   };
 
-  return (
-    <div className="w-full h-full flex items-center justify-center bg-white">
-      <div className="w-full max-w-sm px-4">
+//   return (
+//     <div className="w-full h-full flex items-center justify-center bg-white">
+//       <div className="w-full max-w-sm px-4">
         
-        {/* Simple Branding */}
-        <div className="mb-10 text-left">
-          <h1 className="text-4xl font-bold text-slate-900 tracking-tight">Sign In</h1>
-          <p className="text-slate-500 mt-2">Enter your details to access Healthcore OS</p>
-=======
+//         {/* Simple Branding */}
+//         <div className="mb-10 text-left">
+//           <h1 className="text-4xl font-bold text-slate-900 tracking-tight">Sign In</h1>
+//           <p className="text-slate-500 mt-2">Enter your details to access Healthcore OS</p>
+// ======
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Mail, Lock, User, Building, Stethoscope, Eye, EyeOff, AlertCircle, Check } from 'lucide-react';
@@ -564,7 +564,7 @@ export default function LoginPage() {
               </p>
             </form>
           )}
->>>>>>> 85dbde4 (third commit)
+{/* >>>>>>> 85dbde4 (third commit) */}
         </div>
 
         <form onSubmit={handleLogin} className="space-y-5">
@@ -626,4 +626,3 @@ export default function LoginPage() {
   );
 };
 
-export default LoginPage;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Check, X } from 'lucide-react';
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
+// import Calendar from 'react-calendar';
+// import 'react-calendar/dist/Calendar.css';
 
 const AppointmentBooking = ({ onClose, specialistType }) => {
     const [date, setDate] = useState(new Date());
