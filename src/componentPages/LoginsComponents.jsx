@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoginPage from "../Authentcation/LoginIn.jsx";
+import {signUpUser} from '../services/firebaseAuth.jsx'
 
 const PatientLogin = ({ getUser, loggingIn, pickRole }) => {
     const [fullName, setFullName] = useState('');
@@ -13,7 +14,7 @@ const PatientLogin = ({ getUser, loggingIn, pickRole }) => {
     const navigate = useNavigate();
     const selectedRole = getUser;
     const [isLogin, setisLogin] = useState(loggingIn);
-    
+
     const goSign = () => {
         setisLogin(!isLogin);
     };
@@ -29,15 +30,31 @@ const PatientLogin = ({ getUser, loggingIn, pickRole }) => {
         bgImage = "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1200";
     }
 
-    const handleSignUp = (e) => {
+    const handleSignUp = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-        setTimeout(() => {
-            setIsLoading(false);
-            console.log("Form Submitted:", { fullName, email, password, location, specialty, role: selectedRole });
-            alert(`Account created successfully!`);
+
+        // Package the data for the external function
+        const dataToSave = {
+            email,
+            password,
+            fullName,
+            role: selectedRole,
+            // Only include these if they aren't empty
+            specialty: selectedRole === 'doctor' ? specialty : null,
+            location: selectedRole === 'hospital' ? location : null
+        };
+
+        const result = await signUpUser(dataToSave);
+
+        setIsLoading(false);
+
+        if (result.success) {
+            console.log("Profile Created with empty image object!");
             navigate('/');
-        }, 1500);
+        } else {
+            alert(result.error);
+        }
     };
 
     return (
@@ -139,11 +156,10 @@ const PatientLogin = ({ getUser, loggingIn, pickRole }) => {
                                 <button
                                     type="submit"
                                     disabled={isLoading}
-                                    className={`w-full py-4 mt-4 rounded-lg font-bold text-lg transition-all flex justify-center items-center ${
-                                        isLoading 
-                                        ? "bg-slate-200 text-slate-400" 
-                                        : "bg-[#0f172a] text-white hover:bg-[#1e293b] active:scale-[0.99]"
-                                    }`}
+                                    className={`w-full py-4 mt-4 rounded-lg font-bold text-lg transition-all flex justify-center items-center ${isLoading
+                                            ? "bg-slate-200 text-slate-400"
+                                            : "bg-[#0f172a] text-white hover:bg-[#1e293b] active:scale-[0.99]"
+                                        }`}
                                 >
                                     {isLoading ? "Processing..." : "Create Account"}
                                 </button>
