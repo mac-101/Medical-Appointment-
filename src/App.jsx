@@ -47,7 +47,7 @@ function AppContent() {
             }
           />
           <Route path="/landingpage" element={<FirstPage />} />
-          <Route path="/emergency" element=<Emergency/>} />
+          <Route path="/emergency" element={<Emergency/>} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/doctor/:id" element={<ProfileId />} />
           <Route path="/hospital/:id" element={<ProfileId />} />
