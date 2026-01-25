@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import Home from "./pages/home.jsx";
 import ProfileId from "./pages/profile_id.jsx";
 import Search from "./pages/search.jsx";
+import Emergency from ".pages/emergency.jsx"
 import Appointment from "./pages/appointment.jsx";
 import Profile from "./pages/profile.jsx";
 // import Register from "./pages/register.jsx";
@@ -44,7 +45,9 @@ function AppContent() {
                 <Profile />
               </AuthGate>
             }
-          />          <Route path="/landingpage" element={<FirstPage />} />
+          />
+          <Route path="/landingpage" element={<FirstPage />} />
+          <Route path="/emergency" element=<Emergency/>} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/doctor/:id" element={<ProfileId />} />
           <Route path="/hospital/:id" element={<ProfileId />} />
