@@ -40,7 +40,7 @@ export default function Home() {
                 </div>
 
                 <Link
-                    to="/appointment"
+                    to="/emergency"
                     className="relative flex items-center gap-2 px-4 py-2 bg-red-500/20 backdrop-blur-md rounded-2xl border border-white/30 hover:bg-red-500/40 transition-all group"
                 >
                     <div className="relative flex items-center justify-center">
