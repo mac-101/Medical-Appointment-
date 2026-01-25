@@ -4,10 +4,9 @@ import { useLocation } from 'react-router-dom';
 import Home from "./pages/home.jsx";
 import ProfileId from "./pages/profile_id.jsx";
 import Search from "./pages/search.jsx";
-import Emergency from ".pages/emergency.jsx"
+import Emergency from "./pages/emergency.jsx"
 import Appointment from "./pages/appointment.jsx";
 import Profile from "./pages/profile.jsx";
-// import Register from "./pages/register.jsx";
 import AuthGate from "./services/AuthGate.jsx";
 import SignupPage from "./Authentcation/SignUp.jsx";
 import ScrollToTop from './components/ScrollTop.jsx'
