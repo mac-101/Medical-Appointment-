@@ -9,8 +9,12 @@ import Profile from "./pages/profile.jsx";
 // import Register from "./pages/register.jsx";
 import AuthGate from "./services/AuthGate.jsx";
 import SignupPage from "./Authentcation/SignUp.jsx";
+
 import ScrollToTop from './components/ScrollTop.jsx'
 import FirstPage from "./componentPages/OnBoarding.jsx";
+// =======
+import Emergency from "./pages/Emergeny.jsx";
+// >>>>>>> 2e25ecf (Chisom Update)
 
 // IMPORT LAYOUT COMPONENTS 
 import Navbar from './components/Navbar.jsx'
@@ -46,6 +50,7 @@ function AppContent() {
             }
           />          <Route path="/landingpage" element={<FirstPage />} />
           <Route path="/signup" element={<SignupPage />} />
+            <Route path="/emergency" element={<Emergency />} />
           <Route path="/doctor/:id" element={<ProfileId />} />
           <Route path="/hospital/:id" element={<ProfileId />} />
         </Routes>
