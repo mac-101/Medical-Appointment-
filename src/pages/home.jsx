@@ -10,7 +10,7 @@ export default function Home() {
     // 1. ALL hooks at the top - Order matters!
     const navigate = useNavigate();
     const { userData, loading: authLoading } = useAuth();
-    const { topDoctors, hospitals, loading: directoryLoading } = useDirectory(2);
+    const { topDoctors, hospitals, loading: directoryLoading } = useDirectory();
 
     // 2. Loading state (only blocks if directory data is missing)
     if (directoryLoading) {
