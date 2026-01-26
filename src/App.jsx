@@ -11,6 +11,7 @@ import SignupPage from "./Authentcation/SignUp.jsx";
 import ScrollToTop from './components/ScrollTop.jsx'
 import FirstPage from "./componentPages/OnBoarding.jsx";
 import ProtectedRoute from "./services/protectedRoute.jsx";
+import { AuthProvider } from "./services/useAuthContext.jsx";
 
 // IMPORT LAYOUT COMPONENTS 
 import Navbar from './components/Navbar.jsx'
@@ -46,7 +47,7 @@ function AppContent() {
             }
           />
           <Route path="/landingpage" element={<FirstPage />} />
-          <Route path="/emergency" element={<Emergency/>} />
+          <Route path="/emergency" element={<Emergency />} />
           <Route path='/login' element={<SignupPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/doctor/:id" element={<ProfileId />} />
@@ -60,10 +61,12 @@ function AppContent() {
 
 function App() {
   return (
+    <AuthProvider>
       <Router>
         <ScrollToTop />
         <AppContent /> {/* Now useLocation works because it's INSIDE Router */}
       </Router>
+    </AuthProvider>
   );
 }
 
