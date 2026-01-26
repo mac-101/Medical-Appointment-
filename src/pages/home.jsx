@@ -1,21 +1,35 @@
-import React from 'react';
+import { React } from 'react';
 import Article from '../componentPages/Article';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { topDoctors, hospitals } from '../Data/MockData';
+import { useDirectory } from '../Data/MockData';
 import { Search, AlertCircle, Star, MapPin, ChevronRight, Stethoscope, Truck, ClipboardList } from 'lucide-react';
 
 export default function Home() {
+    // 1. ALL hooks must be at the top
+    const navigate = useNavigate();
+    const { topDoctors, hospitals, loading } = useDirectory();
+
+    // 2. NOW you can handle the loading state
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-blue-600">
+                <div className="flex flex-col items-center gap-4">
+                    <div className="w-12 h-12 border-4 border-white/20 border-t-white rounded-full animate-spin" />
+                    <p className="text-white font-bold tracking-widest text-xs uppercase">Loading Directory...</p>
+                </div>
+            </div>
+        );
+    }
+
     const categories = [
         { id: 1, name: "Top Doctors", icon: <Stethoscope size={28} />, color: "bg-blue-600", link: "/search" },
         { id: 2, name: "Ambulance", icon: <Truck size={28} />, color: "bg-red-500", link: "/emergency" },
         { id: 3, name: "Reports", icon: <ClipboardList size={28} />, color: "bg-blue-500", link: "/reports" },
     ];
-    const navigate = useNavigate()
 
     const handleSearch = (e) => {
         if (e.key === 'Enter' && e.target.value.trim() !== "") {
-            // Navigate to the search page and pass the term in the state
             navigate('/search', { state: { incomingSearch: e.target.value } });
         }
     };
@@ -99,7 +113,7 @@ export default function Home() {
                                     key={doc.id}
                                 >
                                     <div className="min-w-40 md:min-w-50 shadow-sm rounded-2xl p-3 border border-slate-50 hover:border-blue-500 transition-all bg-white group">
-                                        <img src={doc.image} alt={doc.name} className="w-full h-32 object-cover rounded-2xl mb-3 group-hover:scale-105 transition-transform" />
+                                        <img src={doc.image?.url} alt={doc.name} className="w-full h-32 object-cover rounded-2xl mb-3 group-hover:scale-105 transition-transform" />
                                         <h4 className="font-bold text-[#0f172a] text-sm truncate">{doc.name}</h4>
                                         <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">{doc.specialty}</p>
                                         <div className="flex items-center gap-1 text-blue-500">
@@ -120,29 +134,29 @@ export default function Home() {
                                 See All <ChevronRight size={16} />
                             </Link>
                         </div>
-                       <div className="flex overflow-x-auto gap-4 px-6 pb-4 no-scrollbar">
-    {hospitals.map((hosp) => (
-        /* FIX: Use backticks and the specific hospital ID */
-        <Link to={`/hospital/${hosp.id}`} key={hosp.id}>
-            <div className="min-w-65 md:min-w-[320px] bg-white rounded-2xl overflow-hidden shadow-sm flex flex-col border border-transparent hover:border-blue-500 transition-all">
-                <img src={hosp.image} alt={hosp.name} className="w-full h-40 object-cover" />
-                <div className="p-4 flex justify-between items-center">
-                    <div>
-                        <h4 className="font-bold text-[#0f172a]">{hosp.name}</h4>
-                        <div className="flex items-center gap-1 text-gray-400 text-xs font-medium">
-                            <MapPin size={12} className="text-blue-500" />
-                            {hosp.location}
+                        <div className="flex overflow-x-auto gap-4 px-6 pb-4 no-scrollbar">
+                            {hospitals.map((hosp) => (
+                                /* FIX: Use backticks and the specific hospital ID */
+                                <Link to={`/hospital/${hosp.id}`} key={hosp.id}>
+                                    <div className="min-w-65 md:min-w-[320px] bg-white rounded-2xl overflow-hidden shadow-sm flex flex-col border border-transparent hover:border-blue-500 transition-all">
+                                        <img src={hosp.image?.url} alt={hosp.name} className="w-full h-40 object-cover" />
+                                        <div className="p-4 flex justify-between items-center">
+                                            <div>
+                                                <h4 className="font-bold text-[#0f172a]">{hosp.name}</h4>
+                                                <div className="flex items-center gap-1 text-gray-400 text-xs font-medium">
+                                                    <MapPin size={12} className="text-blue-500" />
+                                                    {hosp.location}
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center gap-1 px-2 py-1 bg-blue-50 rounded-lg">
+                                                <Star size={14} className="text-blue-500" fill="currentColor" />
+                                                <span className="text-xs font-bold text-[#0f172a]">{hosp.rating}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Link>
+                            ))}
                         </div>
-                    </div>
-                    <div className="flex items-center gap-1 px-2 py-1 bg-blue-50 rounded-lg">
-                        <Star size={14} className="text-blue-500" fill="currentColor" />
-                        <span className="text-xs font-bold text-[#0f172a]">{hosp.rating}</span>
-                    </div>
-                </div>
-            </div>
-        </Link>
-    ))}
-</div>
                     </section>
                     <section>
                         <Article />

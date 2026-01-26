@@ -3,15 +3,17 @@ import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { MapPin, Award, Star, ShieldCheck, Share2, Check, LayoutDashboard, MessageSquare } from 'lucide-react';
 
 // IMPORT YOUR DATA
-import { topDoctors, hospitals } from '../Data/MockData'; // Adjust path as needed
+import { useDirectory } from '../Data/MockData'; // Adjust path as needed
 import Reviews from '../componentPages/Reviews';
 import AppointmentBooking from '../components/AppointmentBooking';
 import Departments from '../Data/Department';
 
 function ProfileId() {
+  const { topDoctors, hospitals, loading } = useDirectory();
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+
   
   // 1. DETERMINE TYPE based on the URL path (e.g., /doctor/1 vs /hospital/1)
   const isHospital = location.pathname.includes('hospital');
@@ -27,6 +29,8 @@ function ProfileId() {
     : topDoctors.find(d => d.id.toString() === id);
 
   // Fallback if data hasn't loaded or ID is wrong
+
+  if (loading) return <p>Loading directory...</p>;
   if (!profileData) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
@@ -44,7 +48,7 @@ function ProfileId() {
     specialty: isHospital ? "Multi-Specialty Care" : profileData.specialty,
     rating: profileData.rating,
     experience: isHospital ? `Located in ${profileData.location}` : "12+ Years Experience",
-    image: profileData.image,
+    image: profileData.image.url,
     bio: isHospital 
       ? `State-of-the-art medical facility located in ${profileData.location}, dedicated to providing top-tier patient care.`
       : `Dr. ${profileData.name} is a leading ${profileData.specialty} with a focus on patient-centered recovery and advanced clinical techniques.`
