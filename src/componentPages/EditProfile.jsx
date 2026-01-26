@@ -5,13 +5,14 @@ import { Camera, Check, Loader2 } from 'lucide-react';
 const EditProfile = ({ userData }) => {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState(null);
-  
+
   // 1. IMAGE CAPTURE LOGIC
   const [selectedImage, setSelectedImage] = useState(null); // The actual File object
   const [previewUrl, setPreviewUrl] = useState(userData?.image?.url || null);
 
   const [formData, setFormData] = useState({
     name: userData?.name || "",
+    image: selectedImage || userData?.image || {},
     specialty: userData?.specialty || "",
     location: userData?.location || ""
   });
@@ -26,13 +27,56 @@ const EditProfile = ({ userData }) => {
 
   const handleSave = async () => {
     setLoading(true);
-    // Note: selectedImage is currently ignored here as per instructions
-    const result = await updateUserInfo(userData.uid, formData);
-    if (result.success) {
-      setStatus('success');
-      setTimeout(() => setStatus(null), 3000);
+    let imageUrl = formData.image; // Keep existing image by default
+
+    // 1. Only run upload logic if a NEW image was selected
+    if (selectedImage) {
+      try {
+        const data = new FormData();
+        data.append("file", selectedImage);
+        // Ensure "health core profiles" is exactly as written in Cloudinary (usually lowercase/no spaces)
+        data.append("upload_preset", "health core profiles");
+
+        const response = await fetch('https://api.cloudinary.com/v1_1/dwn42jqmq/image/upload', {
+          method: 'POST',
+          body: data // Now 'data' is defined in the same scope!
+        });
+
+        const imgData = await response.json();
+
+        if (imgData.error) {
+          throw new Error(imgData.error.message);
+        }
+
+        // Update the imageUrl variable with the new Cloudinary data
+        imageUrl = {
+          url: imgData.secure_url,
+          public_id: imgData.public_id
+        };
+      } catch (error) {
+        console.error("Image Upload Error:", error);
+        alert("Failed to upload image: " + error.message);
+        setLoading(false);
+        return; // Stop execution if upload fails
+      }
     }
-    setLoading(false);
+
+    // 2. Final Step: Save to Firebase
+    try {
+      const updateData = {
+        ...formData,
+        image: imageUrl,
+      };
+
+      await updateUserInfo(userData.uid, updateData);
+      setStatus('success');
+      setTimeout(() => setStatus(null), 2000);
+    } catch (firebaseError) {
+      console.error("Firebase Update Error:", firebaseError);
+      alert("Profile updated on Cloudinary, but failed to save to database.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -43,13 +87,12 @@ const EditProfile = ({ userData }) => {
           <h2 className="text-2xl font-black text-blue-900 uppercase tracking-tighter">Edit_Profile</h2>
           <p className="text-[10px] font-bold text-blue-400 uppercase tracking-[0.2em]">{userData?.role}_Access</p>
         </div>
-        
-        <button 
+
+        <button
           onClick={handleSave}
           disabled={loading}
-          className={`flex items-center gap-2 text-[10px] font-black uppercase tracking-widest px-8 py-4 rounded-xl transition-all active:scale-95 ${
-            status === 'success' ? 'bg-green-500 text-white' : 'bg-blue-600 text-white shadow-lg shadow-blue-100'
-          }`}
+          className={`flex items-center gap-2 text-[10px] font-black uppercase tracking-widest px-8 py-4 rounded-xl transition-all active:scale-95 ${status === 'success' ? 'bg-green-500 text-white' : 'bg-blue-600 text-white shadow-lg shadow-blue-100'
+            }`}
         >
           {loading ? <Loader2 size={14} className="animate-spin" /> : status === 'success' ? <Check size={14} /> : null}
           {loading ? 'Syncing...' : status === 'success' ? 'Saved' : 'Save Changes'}
@@ -77,14 +120,14 @@ const EditProfile = ({ userData }) => {
 
         {/* INPUT FIELDS */}
         <div className="flex-1 space-y-8">
-          <InputGroup label="Display Name" value={formData.name} onChange={(val) => setFormData({...formData, name: val})} />
-          
+          <InputGroup label="Display Name" value={formData.name} onChange={(val) => setFormData({ ...formData, name: val })} />
+
           {(userData?.role === 'doctor' || userData?.role === 'hospital') && (
-            <InputGroup label="Specialization" value={formData.specialty} onChange={(val) => setFormData({...formData, specialty: val})} />
+            <InputGroup label="Specialization" value={formData.specialty} onChange={(val) => setFormData({ ...formData, specialty: val })} />
           )}
 
           {userData?.role === 'hospital' && (
-            <InputGroup label="Facility Location" value={formData.location} onChange={(val) => setFormData({...formData, location: val})} />
+            <InputGroup label="Facility Location" value={formData.location} onChange={(val) => setFormData({ ...formData, location: val })} />
           )}
         </div>
       </div>
@@ -96,11 +139,11 @@ const EditProfile = ({ userData }) => {
 const InputGroup = ({ label, value, onChange }) => (
   <div className="group">
     <label className="text-[10px] font-black text-blue-400 uppercase tracking-widest block mb-2">{label}</label>
-    <input 
-      type="text" 
+    <input
+      type="text"
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full pb-2 bg-transparent border-b-2 border-blue-50 outline-none font-black text-blue-900 focus:border-blue-600 transition-all" 
+      className="w-full pb-2 bg-transparent border-b-2 border-blue-50 outline-none font-black text-blue-900 focus:border-blue-600 transition-all"
     />
   </div>
 );

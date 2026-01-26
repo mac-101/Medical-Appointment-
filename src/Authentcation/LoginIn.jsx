@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from "../services/firebaseAuth"; // Path to your logic file
 
-const LoginPage = () => {
+const LoginPage = ({pickRole}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -28,6 +28,12 @@ const LoginPage = () => {
   return (
     <div className="w-full h-full flex items-center justify-center bg-white animate-in fade-in duration-500">
       <div className="w-full max-w-sm px-4">
+
+        <button onClick={pickRole} className="text-slate-400 mb-8 hover:text-slate-900 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
         
         <div className="mb-10 text-left">
           <h1 className="text-4xl font-bold text-slate-900 tracking-tight">Sign In</h1>

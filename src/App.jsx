@@ -4,13 +4,13 @@ import { useLocation } from 'react-router-dom';
 import Home from "./pages/home.jsx";
 import ProfileId from "./pages/profile_id.jsx";
 import Search from "./pages/search.jsx";
+import Emergency from "./pages/emergency.jsx"
 import Appointment from "./pages/appointment.jsx";
 import Profile from "./pages/profile.jsx";
-// import Register from "./pages/register.jsx";
-import AuthGate from "./services/AuthGate.jsx";
 import SignupPage from "./Authentcation/SignUp.jsx";
 import ScrollToTop from './components/ScrollTop.jsx'
 import FirstPage from "./componentPages/OnBoarding.jsx";
+import ProtectedRoute from "./services/protectedRoute.jsx";
 
 // IMPORT LAYOUT COMPONENTS 
 import Navbar from './components/Navbar.jsx'
@@ -23,7 +23,7 @@ function AppContent() {
   // 2. Logic for dynamic paths: Use .startsWith() for profiles
   const isProfilePage = location.pathname.startsWith('/doctor/') || location.pathname.startsWith('/hospital/');
   const landing = location.pathname === '/landingPage';
-  const isSignupPage = location.pathname === '/signup' || location.pathname === '/signUp' || location.pathname === '/landingpage';
+  const isSignupPage = location.pathname === '/signup' || location.pathname === '/signUp' || location.pathname === '/landingpage' || location.pathname === '/login';
   const isSearchPage = location.pathname === '/search' || location.pathname === '/appointments';
 
   const shouldHideFooter = isProfilePage || isSignupPage || landing;
@@ -40,12 +40,14 @@ function AppContent() {
           <Route
             path="/profile"
             element={
-              <AuthGate>
+              <ProtectedRoute>
                 <Profile />
-              </AuthGate>
+              </ProtectedRoute>
             }
           />
           <Route path="/landingpage" element={<FirstPage />} />
+          <Route path="/emergency" element={<Emergency/>} />
+          <Route path='/login' element={<SignupPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/doctor/:id" element={<ProfileId />} />
           <Route path="/hospital/:id" element={<ProfileId />} />

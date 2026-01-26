@@ -170,7 +170,7 @@ const PatientLogin = ({ getUser, loggingIn, pickRole }) => {
                             </p>
                         </>
                     ) : (
-                        <LoginPage onclick={goSign} />
+                        <LoginPage onclick={goSign} pickRole={pickRole} />
                     )}
                 </div>
             </div>

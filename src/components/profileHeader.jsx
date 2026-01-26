@@ -9,7 +9,7 @@ const ProfileHeader = ({ userData }) => {
 
       <div className="relative">
         <img
-          src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150&h=150"
+          src={userData.image?.url || "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150&h=150"}
           alt="Profile"
           className="w-15 h-15 md:w-32 md:h-32 rounded-full border-4 border-white/30 shadow-lg object-cover"
         />
