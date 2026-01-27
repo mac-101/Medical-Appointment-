@@ -12,45 +12,40 @@ export default function AppointmentsList({ userRole }) {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // FETCH REAL DATA WITH ID LOOKUP
   useEffect(() => {
     const userId = auth.currentUser?.uid;
     if (!userId) return;
 
     const appointmentsRef = ref(db, 'bookings');
-    const isSpecialist = userRole === 'doctor' || userRole === 'hospital';
+    const isSpecialist = userRole?.toLowerCase() === 'doctor' || userRole?.toLowerCase() === 'hospital';
     const roleKey = isSpecialist ? 'specialistId' : 'patientId';
-
+    
     const q = query(appointmentsRef, orderByChild(roleKey), equalTo(userId));
 
     const unsubscribe = onValue(q, async (snapshot) => {
       const data = snapshot.val();
       if (data) {
         const appointmentEntries = Object.entries(data);
-
+        
         const listWithNames = await Promise.all(
           appointmentEntries.map(async ([id, value]) => {
             let displayTitle = "";
 
-            // Check: If I am the patient in this booking, show the Specialist's name
+            // Use the ID check logic for 100% accuracy
             if (value.patientId === userId) {
+              // I am the patient, show the doctor's name
               displayTitle = value.specialistName || "Medical Provider";
-            }
-            // Otherwise, I am the specialist, so fetch the Patient's name
-            else {
+            } else {
+              // I am the doctor, fetch the patient's name
               try {
                 const userSnap = await get(ref(db, `users/${value.patientId}`));
                 displayTitle = userSnap.exists() ? userSnap.val().name : "Unknown Patient";
               } catch (err) {
-                displayTitle = "New Patient";
+                displayTitle = "New Patient Request";
               }
             }
 
-            return {
-              id,
-              ...value,
-              displayTitle
-            };
+            return { id, ...value, displayTitle };
           })
         );
 
@@ -64,7 +59,6 @@ export default function AppointmentsList({ userRole }) {
     return () => unsubscribe();
   }, [userRole]);
 
-  // STATUS UPDATE FUNCTION
   const updateAppointmentStatus = async (appointmentId, newStatus) => {
     try {
       const appointmentRef = ref(db, `bookings/${appointmentId}`);
@@ -78,10 +72,11 @@ export default function AppointmentsList({ userRole }) {
   };
 
   const getStatusStyles = (status) => {
+    const s = status?.toLowerCase();
     const base = "px-3 py-1 rounded-full text-[10px] font-black uppercase border ";
-    if (status === "Confirmed") return base + "bg-green-50 text-green-600 border-green-100";
-    if (status === "Pending") return base + "bg-amber-50 text-amber-600 border-amber-100";
-    if (status === "Cancelled") return base + "bg-red-50 text-red-600 border-red-100";
+    if (s === "confirmed") return base + "bg-green-50 text-green-600 border-green-100";
+    if (s === "pending") return base + "bg-amber-50 text-amber-600 border-amber-100";
+    if (s === "cancelled") return base + "bg-red-50 text-red-600 border-red-100";
     return base + "bg-gray-50 text-gray-500 border-gray-100";
   };
 
@@ -102,7 +97,6 @@ export default function AppointmentsList({ userRole }) {
 
   return (
     <div className="w-full min-h-screen bg-white">
-      {/* Header */}
       <header className="px-6 py-6 flex flex-col md:flex-row justify-between items-center gap-4 border-b border-slate-50 sticky top-0 bg-white/90 backdrop-blur-md z-10">
         <div className="flex items-center gap-4 w-full md:w-auto">
           <button onClick={() => navigate(-1)} className="p-2 hover:bg-slate-50 rounded-full text-[#0f172a]">
@@ -110,7 +104,6 @@ export default function AppointmentsList({ userRole }) {
           </button>
           <h1 className="text-2xl font-black text-[#0f172a] tracking-tight uppercase">Appointments</h1>
         </div>
-
         <div className="relative w-full md:w-80">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
           <input
@@ -124,7 +117,6 @@ export default function AppointmentsList({ userRole }) {
       </header>
 
       <main className="max-w-7xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* LIST SECTION */}
         <div className="lg:col-span-7 space-y-4">
           {filteredAppointments.map((appointment) => (
             <div
@@ -147,43 +139,38 @@ export default function AppointmentsList({ userRole }) {
               <div className={getStatusStyles(appointment.status)}>{appointment.status}</div>
             </div>
           ))}
-          {filteredAppointments.length === 0 && (
-            <p className="text-center text-slate-400 mt-10 font-medium">No appointments found.</p>
-          )}
         </div>
 
-        {/* DESKTOP DETAIL PANEL */}
         <div className="hidden lg:block lg:col-span-5">
           <div className="sticky top-28 h-[550px]">
             {selectedAppointment ? (
-              <AppointmentDetail
-                data={selectedAppointment}
-                isMobile={false}
-                onUpdateStatus={updateAppointmentStatus}
+              <AppointmentDetail 
+                data={selectedAppointment} 
+                isMobile={false} 
+                onUpdateStatus={updateAppointmentStatus} 
                 role={userRole}
               />
             ) : (
               <div className="h-full border-2 border-dashed border-slate-100 rounded-2xl flex items-center justify-center text-slate-300 flex-col p-10 text-center">
                 <Calendar size={48} className="mb-4 opacity-20" />
-                <p className="text-sm font-bold uppercase tracking-widest">Select an appointment to view details</p>
+                <p className="text-sm font-bold uppercase tracking-widest">Select an appointment</p>
               </div>
             )}
           </div>
         </div>
       </main>
 
-      {/* MOBILE SLIDE-UP SHEET */}
       {selectedAppointment && (
         <div className="lg:hidden fixed inset-0 z-50 flex items-end justify-center">
           <div className="absolute inset-0 bg-[#0f172a]/40 backdrop-blur-sm" onClick={() => setSelectedAppointment(null)} />
-          <div className="relative h-[85vh] w-full scrollUP animate-in slide-in-from-bottom-full duration-500 ease-out shadow-2xl">
-            <AppointmentDetail
-              data={selectedAppointment}
-              isMobile={true}
-              onUpdateStatus={updateAppointmentStatus}
-              role={userRole}
+          <div className="relative h-[85vh] w-full animate-in slide-in-from-bottom-full duration-500 ease-out">
+            <AppointmentDetail 
+              data={selectedAppointment} 
+              isMobile={true} 
               isModal={true}
               onClick={() => setSelectedAppointment(null)}
+              onUpdateStatus={updateAppointmentStatus}
+              role={userRole}
             />
           </div>
         </div>
