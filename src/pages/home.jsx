@@ -46,11 +46,9 @@ export default function Home() {
                         <img
                             src={userData?.image?.url || "https://ui-avatars.com/api/?name=User&background=0D8ABC&color=fff"}
                             alt="Profile"
-                            className="w-20 h-20 md:w-32 md:h-32 rounded-full border-4 border-white/30 shadow-xl object-cover bg-blue-400"
+                            className="w-20 h-20 md:w-32 md:h-32 rounded-full border-1 border-white/30 shadow-xl object-cover bg-blue-400"
                         />
-                        {userData && (
-                            <span className="absolute bottom-1 right-1 w-5 h-5 bg-green-500 border-4 border-blue-600 rounded-full"></span>
-                        )}
+                        
                     </div>
                     <div className="mt-4 md:mt-0">
                         <h1 className="text-xl md:text-2xl font-medium text-blue-100">Welcome,</h1>
@@ -63,7 +61,7 @@ export default function Home() {
 
                 <Link
                     to="/emergency"
-                    className="relative hidden sm:flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 hover:bg-red-500 transition-all duration-300 group"
+                    className="relative flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 hover:bg-red-500 transition-all duration-300 group"
                 >
                     <AlertCircle size={20} className="text-white group-hover:animate-bounce" />
                     <span className="text-white font-bold text-xs tracking-widest uppercase">Emergency</span>

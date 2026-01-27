@@ -129,7 +129,7 @@ const AppointmentBooking = ({ onClose, specialistId, specialistType }) => {
 
                 <footer className="p-6 bg-white border-t border-gray-50 sticky bottom-0">
                     <button
-                        disabled={ (specialistType === "hospital" && !selectedTime) || (specialistType === 'hospital' && !selectedDept) || bookingLoading}
+                        disabled={ (specialistType === "hospital" && !selectedTime) || bookingLoading}
                         onClick={handleConfirm}
                         className="w-full bg-blue-600 disabled:bg-gray-200 text-white py-4 rounded-2xl text-xs font-black uppercase tracking-widest shadow-xl flex items-center justify-center gap-2 active:scale-95 transition-all"
                     >

@@ -106,7 +106,7 @@ const EditProfile = ({ userData }) => {
         {/* PROFILE PIC SECTION */}
         <div className="lg:col-span-4 flex flex-col items-center gap-6">
           <div className="relative group w-48 h-48">
-            <div className="w-full h-full rounded-[3rem] overflow-hidden border-8 border-white shadow-2xl bg-slate-100">
+            <div className="w-full h-full rounded-[3rem] overflow-hidden shadow-sm bg-slate-100">
               {previewUrl ? <img src={previewUrl} className="w-full h-full object-cover" /> : <Camera className="m-auto mt-16 text-slate-300" size={40} />}
             </div>
             <label className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 rounded-[3rem] transition-all cursor-pointer">
