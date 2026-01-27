@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from "../services/firebaseAuth"; // Path to your logic file
 
-const LoginPage = ({pickRole}) => {
+const LoginPage = ({pickRole, create}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -84,7 +84,7 @@ const LoginPage = ({pickRole}) => {
         <p className="mt-8 text-sm text-slate-600">
           Don't have an account?{" "}
           <span 
-            onClick={handleLogin} 
+            onClick={create} 
             className="text-blue-700 font-bold cursor-pointer hover:underline"
           >
             Create an account

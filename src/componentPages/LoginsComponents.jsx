@@ -4,7 +4,7 @@ import LoginPage from "../Authentcation/LoginIn.jsx";
 import { signUpUser } from '../services/firebaseAuth.jsx'
 import { Search } from 'lucide-react';
 
-const PatientLogin = ({ getUser, loggingIn, pickRole }) => {
+const PatientLogin = ({ getUser, loggingIn, pickRole, clickCreate }) => {
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -239,7 +239,7 @@ const PatientLogin = ({ getUser, loggingIn, pickRole }) => {
                             </p>
                         </>
                     ) : (
-                        <LoginPage onclick={goSign} pickRole={pickRole} />
+                        <LoginPage onclick={goSign} pickRole={pickRole} create={clickCreate}/>
                     )}
                 </div>
             </div>

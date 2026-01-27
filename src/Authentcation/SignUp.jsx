@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { PatientLogin } from "../componentPages/LoginsComponents.jsx";
+
 
 // --- COMPONENT 1: GET STARTED (PLAIN) ---
 const GetStarted = ({ onContinue, onLogin }) => {
+
+  
   return (
     <div className="relative h-screen w-full bg-white flex flex-col items-center justify-between py-16 px-8 transition-all">
       <div className="flex flex-col items-center mt-10 text-center">
@@ -110,6 +114,7 @@ const RoleSelection = ({ onRoleSelected, pickRole }) => {
 export default function SignupPage() {
   const [selectedRole, setSelectedRole] = useState(null);
   const [currentStep, setCurrentStep] = useState('getStarted');
+  const location = useLocation();
 
   const handleStart = () => setCurrentStep('selectRole');
   const onLogin = () => setCurrentStep('login');
@@ -117,6 +122,13 @@ export default function SignupPage() {
     setSelectedRole(role);
     setCurrentStep('finalForm');
   };
+
+  useEffect(() => {
+    // Reset to initial step when location changes to /signup or /login
+    if ( location.pathname === '/login') {
+      setCurrentStep('login');
+    }
+  }, [location.pathname]);
 
   return (
     <div className="min-h-screen w-full bg-white">
@@ -133,7 +145,7 @@ export default function SignupPage() {
       )}
 
       {currentStep === 'login' && (
-        <PatientLogin getUser={selectedRole} loggingIn={true} pickRole={() => setCurrentStep('getStarted')} />
+        <PatientLogin getUser={selectedRole} loggingIn={true} pickRole={() => setCurrentStep('getStarted')} clickCreate={() => setCurrentStep('finalForm')} />
       )}
     </div>
   );
