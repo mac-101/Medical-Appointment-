@@ -75,14 +75,14 @@ const Profile = ({ userData }) => { // Data comes from ProtectedRoute now!
 
       {/* MOBILE MODAL */}
       {activeSection && (
-        <div className="fixed lg:hidden inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed lg:hidden inset-0 flex items-end z-60 justify-center ">
           <div className="absolute inset-0 bg-blue-900/40 backdrop-blur-md" onClick={() => setActiveSection(null)} />
-          <div className="relative w-full max-h-[90vh] bg-white rounded-[3rem] overflow-hidden flex flex-col animate-in slide-in-from-bottom-10">
+          <div className="relative w-full scrollUP h-full max-h-[90vh] bg-white rounded-[3rem] overflow-hidden flex flex-col animate-in slide-in-from-bottom-10">
             <div className="flex items-center justify-between p-6 border-b border-blue-50">
               <span className="font-black text-[10px] uppercase tracking-[0.3em] text-blue-600">{activeSection}</span>
               <button onClick={() => setActiveSection(null)} className="p-3 bg-blue-50 text-blue-600 rounded-2xl"><X size={20} /></button>
             </div>
-            <div className="p-8 overflow-y-auto flex-1">{renderSection()}</div>
+            <div className=" overflow-y-auto flex-1">{renderSection()}</div>
           </div>
         </div>
       )}

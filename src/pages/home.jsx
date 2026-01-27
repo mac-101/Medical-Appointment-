@@ -80,7 +80,7 @@ export default function Home() {
                                 type="text"
                                 placeholder="Search doctors, clinics..."
                                 onKeyDown={handleSearch}
-                                className="w-full bg-slate-50 border border-slate-100 py-5 pl-14 pr-6 rounded-[2rem] outline-none focus:ring-4 focus:ring-blue-500/5 focus:bg-white focus:border-blue-200 transition-all shadow-sm"
+                                className="w-full  border border-slate-100 py-4 pl-14 pr-6 rounded-[2rem] outline-none focus:ring-4 focus:ring-blue-500/5 focus:bg-white focus:border-blue-200 transition-all shadow-sm"
                             />
                         </div>
                     </div>

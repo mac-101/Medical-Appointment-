@@ -19,14 +19,14 @@ export default function AppointmentsList({ userRole }) {
     const appointmentsRef = ref(db, 'bookings');
     const isSpecialist = userRole?.toLowerCase() === 'doctor' || userRole?.toLowerCase() === 'hospital';
     const roleKey = isSpecialist ? 'specialistId' : 'patientId';
-    
+
     const q = query(appointmentsRef, orderByChild(roleKey), equalTo(userId));
 
     const unsubscribe = onValue(q, async (snapshot) => {
       const data = snapshot.val();
       if (data) {
         const appointmentEntries = Object.entries(data);
-        
+
         const listWithNames = await Promise.all(
           appointmentEntries.map(async ([id, value]) => {
             let displayTitle = "";
@@ -90,8 +90,12 @@ export default function AppointmentsList({ userRole }) {
   });
 
   if (loading) return (
-    <div className="h-screen flex items-center justify-center">
-      <Loader2 className="animate-spin text-blue-600" size={32} />
+    <div className="min-h-screen flex flex-col items-center justify-center bg-white">
+      <div className="flex -mt-20 space-x-2">
+        <div className="w-4 h-4 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+        <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+        <div className="w-4 h-4 bg-blue-400 rounded-full animate-bounce"></div>
+      </div>
     </div>
   );
 
@@ -144,10 +148,10 @@ export default function AppointmentsList({ userRole }) {
         <div className="hidden lg:block lg:col-span-5">
           <div className="sticky top-28 h-[550px]">
             {selectedAppointment ? (
-              <AppointmentDetail 
-                data={selectedAppointment} 
-                isMobile={false} 
-                onUpdateStatus={updateAppointmentStatus} 
+              <AppointmentDetail
+                data={selectedAppointment}
+                isMobile={false}
+                onUpdateStatus={updateAppointmentStatus}
                 role={userRole}
               />
             ) : (
@@ -164,9 +168,9 @@ export default function AppointmentsList({ userRole }) {
         <div className="lg:hidden fixed inset-0 z-50 flex items-end justify-center">
           <div className="absolute inset-0 bg-[#0f172a]/40 backdrop-blur-sm" onClick={() => setSelectedAppointment(null)} />
           <div className="relative h-[85vh] w-full animate-in slide-in-from-bottom-full duration-500 ease-out">
-            <AppointmentDetail 
-              data={selectedAppointment} 
-              isMobile={true} 
+            <AppointmentDetail
+              data={selectedAppointment}
+              isMobile={true}
               isModal={true}
               onClick={() => setSelectedAppointment(null)}
               onUpdateStatus={updateAppointmentStatus}
