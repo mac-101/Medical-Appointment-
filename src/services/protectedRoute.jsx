@@ -20,11 +20,12 @@ const ProtectedRoute = ({ children, element: Element }) => {
 
   if (isFetching) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center ">
-        <Loader2 className="w-12 h-12 text-blue animate-spin mb-4 opacity-80" />
-        <p className="font-black text-[10px] uppercase tracking-[0.5em] text-black animate-pulse">
-          Syncing_User_Profile
-        </p>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-white">
+         <div className="flex space-x-2">
+            <div className="w-4 h-4 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+            <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+            <div className="w-4 h-4 bg-blue-400 rounded-full animate-bounce"></div>
+         </div>
       </div>
     );
   }

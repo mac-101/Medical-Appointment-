@@ -10,15 +10,16 @@ export default function Home() {
     // 1. ALL hooks at the top - Order matters!
     const navigate = useNavigate();
     const { userData, loading: authLoading } = useAuth();
-    const { topDoctors, hospitals, loading: directoryLoading } = useDirectory();
+    const { topDoctors, hospitals, loading: directoryLoading } = useDirectory(50);
 
     // 2. Loading state (only blocks if directory data is missing)
     if (directoryLoading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-blue-600">
-                <div className="flex flex-col items-center gap-4">
-                    <div className="w-12 h-12 border-4 border-white/20 border-t-white rounded-full animate-spin" />
-                    <p className="text-white font-bold tracking-[0.3em] text-[10px] uppercase">Syncing_Directory</p>
+            <div className="min-h-screen flex flex-col items-center justify-center bg-white">
+                <div className="flex space-x-2">
+                    <div className="w-4 h-4 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+                    <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                    <div className="w-4 h-4 bg-blue-400 rounded-full animate-bounce"></div>
                 </div>
             </div>
         );
@@ -108,7 +109,7 @@ export default function Home() {
                         </div>
                         <div className="flex overflow-x-auto gap-4 px-8 pb-6 no-scrollbar">
                             {topDoctors.map((doc) => (
-                               <DoctorCard doc={doc} navigate={() => navigate(`doctor/${doc.id}`)} />
+                                <DoctorCard doc={doc} navigate={() => navigate(`doctor/${doc.id}`)} />
                             ))}
                         </div>
                     </section>
@@ -123,7 +124,7 @@ export default function Home() {
                         </div>
                         <div className="flex overflow-x-auto gap-6 px-8 pb-6 no-scrollbar">
                             {hospitals.map((hosp) => (
-                                 <HospitalCard hosp={hosp} navigate={() => navigate(`/hospital/${hosp.id}`)} />
+                                <HospitalCard hosp={hosp} navigate={() => navigate(`/hospital/${hosp.id}`)} />
                             ))}
                         </div>
                     </section>

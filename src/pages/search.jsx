@@ -131,10 +131,7 @@ export default function FindDoctors() {
 
       <main className="max-w-7xl mx-auto p-6">
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-20">
-            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
-            <p className="mt-4 text-slate-400 text-sm font-medium">Syncing directory...</p>
-          </div>
+          <></>
         ) : (
           <div className="space-y-8">
             <div className="flex items-center justify-between">
