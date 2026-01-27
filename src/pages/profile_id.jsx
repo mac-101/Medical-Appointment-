@@ -104,7 +104,7 @@ function ProfileId() {
           
           {/* LEFT COLUMN: PROFILE CARD */}
           <div className="lg:col-span-1">
-            <div className="bg-white sticky top-24 border border-slate-200 rounded-[2.5rem] overflow-hidden shadow-sm">
+            <div className="bg-white sticky top-24 border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
               <div className="aspect-square relative overflow-hidden">
                 <img src={displayData.image} alt={displayData.name} className="w-full h-full object-cover" />
                 <div className="absolute top-4 left-4 bg-[#0f172a]/80 backdrop-blur-md px-3 py-1 rounded-full border border-white/20">
@@ -163,8 +163,8 @@ function ProfileId() {
 
           {/* RIGHT COLUMN: REVIEWS & DEPTS */}
           <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white border border-slate-200 rounded-[2.5rem] overflow-hidden shadow-sm min-h-[600px]">
-              <div className="flex bg-slate-50 border-b border-slate-100 p-2">
+            <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm min-h-[600px]">
+              <div className="flex bg-slate-50 border-b border-slate-100 px-2 py-4">
                 <button
                   onClick={() => setActiveTab('reviews')}
                   className={`flex-1 py-4 flex items-center justify-center gap-3 font-black uppercase text-[10px] tracking-widest transition-all rounded-2xl
@@ -183,7 +183,7 @@ function ProfileId() {
                 )}
               </div>
 
-              <div className="p-8">
+              <div className="p-1">
                 {activeTab === 'reviews' ? (
                   <Reviews targetId={id} />
                 ) : (

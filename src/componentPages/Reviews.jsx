@@ -69,7 +69,7 @@ const Reviews = ({ targetId }) => {
     };
 
     return (
-        <div className="mt-5 pt-5 border-t border-slate-100">
+        <div className="mt-2 pt-5 border-t border-slate-100">
             <div className="flex justify-between items-center mb-8 px-4">
                 <div>
                     <p className="text-xs text-slate-400 font-medium uppercase tracking-widest mt-1">
