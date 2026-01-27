@@ -86,7 +86,7 @@ const Reviews = ({ targetId }) => {
 
             {/* Simple Writing Form */}
             {showForm && (
-                <div className="mb-10 mx-4 p-6 bg-blue-50/50 rounded-[2rem] border border-blue-100 animate-in fade-in zoom-in-95">
+                <div className="mb-10 mx2 p-4 bg-blue-50/50 rounded-[2rem] border border-blue-100 animate-in fade-in zoom-in-95">
                     <div className="flex gap-2 mb-4">
                         {[1, 2, 3, 4, 5].map((s) => (
                             <Star 
