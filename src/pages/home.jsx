@@ -106,7 +106,7 @@ export default function Home() {
                                 See All <ChevronRight size={18} />
                             </Link>
                         </div>
-                        <div className="flex overflow-x-auto gap-6 px-8 pb-6 no-scrollbar">
+                        <div className="flex overflow-x-auto gap-4 px-8 pb-6 no-scrollbar">
                             {topDoctors.map((doc) => (
                                <DoctorCard doc={doc} navigate={() => navigate(`doctor/${doc.id}`)} />
                             ))}

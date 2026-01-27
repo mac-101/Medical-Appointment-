@@ -3,39 +3,39 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "fire
 import { ref, set } from "firebase/database";
 
 export const signUpUser = async (userData) => {
-  const { email, password, fullName, role, location, specialty } = userData;
+  // 1. Destructure the core Auth fields, and catch everything else in 'rest'
+  const { email, password, fullName, role, ...rest } = userData;
 
   try {
-    // 1. Create the credentials in Firebase Auth
+    // 2. Create the credentials in Firebase Auth
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    // 2. Create the base profile object
+    // 3. Create the profile object
     let profileData = {
       uid: user.uid,
       name: fullName,
       email: email,
-      role: role, // 'patient', 'doctor', or 'hospital'
+      role: role,
       createdAt: new Date().toISOString(),
-      // Creating the image object with empty strings for Cloudinary later
       image: {
         url: "", 
         public_id: "" 
-      }
+      },
+      // 4. Spread the rest of the fields (searchIndex, specialty, location, etc.)
+      ...rest 
     };
 
-    // 3. Add Role-Specific Data
-    if (role === 'doctor') {
-      profileData.specialty = specialty;
-      profileData.experience = ""; // Optional: add more doctor-specific fields
+    // Role-Specific defaults if they don't exist in 'rest'
+    if (role === 'doctor' && !profileData.experience) {
+      profileData.experience = ""; 
     } 
     
-    if (role === 'hospital') {
-      profileData.location = location;
-      profileData.departments = []; // Optional: for the hospital's tab
+    if (role === 'hospital' && !profileData.departments) {
+      profileData.departments = []; 
     }
 
-    // 4. Save to Realtime Database under the unique UID
+    // 5. Save to Realtime Database
     await set(ref(db, `users/${user.uid}`), profileData);
 
     return { success: true, user };

@@ -1,4 +1,3 @@
-
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
@@ -6,13 +5,14 @@ import { getAuth } from "firebase/auth";
 import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDvSuxyCBEv-l9XSP6gHHCO-lyPS1GzdYs",
-  authDomain: "vite-store.firebaseapp.com",
-  projectId: "vite-store",
-  storageBucket: "vite-store.firebasestorage.app",
-  messagingSenderId: "716813431197",
-  appId: "1:716813431197:web:549399a0044fdb42be3f74",
-  measurementId: "G-W2JLF3HM2Y"
+  apiKey: "AIzaSyBKvtF3hZa1g4sVgYvX9Dt0kqelbFLTFmc",
+  authDomain: "health-core-aa7d6.firebaseapp.com",
+  databaseURL: "https://health-core-aa7d6-default-rtdb.firebaseio.com",
+  projectId: "health-core-aa7d6",
+  storageBucket: "health-core-aa7d6.firebasestorage.app",
+  messagingSenderId: "397342859173",
+  appId: "1:397342859173:web:56211a8d5fa40217c9924c",
+  measurementId: "G-J9TCWJVRHC"
 };
 
 // Initialize Firebase

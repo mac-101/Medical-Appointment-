@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoginPage from "../Authentcation/LoginIn.jsx";
-import {signUpUser} from '../services/firebaseAuth.jsx'
+import { signUpUser } from '../services/firebaseAuth.jsx'
+import { Search } from 'lucide-react';
 
 const PatientLogin = ({ getUser, loggingIn, pickRole }) => {
     const [fullName, setFullName] = useState('');
@@ -10,6 +11,28 @@ const PatientLogin = ({ getUser, loggingIn, pickRole }) => {
     const [location, setLocation] = useState('');
     const [specialty, setSpecialty] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+
+    const ALL_SPECIALTIES = [
+        "Addiction Medicine", "Adolescent Medicine", "Aerospace Medicine", "Allergy and Immunology",
+        "Anesthesiology", "Audiology", "Bariatric Surgery", "Cardiology", "Cardiothoracic Surgery",
+        "Child Psychiatry", "Chiropractic", "Clinical Genetics", "Colon and Rectal Surgery",
+        "Critical Care Medicine", "Cytopathology", "Dentistry", "Dermatology", "Diagnostic Radiology",
+        "Dietetics & Nutrition", "Emergency Medicine", "Endocrinology", "Family Medicine",
+        "Fertility Specialist", "Forensic Pathology", "Gastroenterology", "General Practice",
+        "General Surgery", "Geriatric Medicine", "Gynecologic Oncology", "Hematology",
+        "Hepatology", "Hospice and Palliative Medicine", "Infectious Disease", "Internal Medicine",
+        "Interventional Cardiology", "Medical Genetics", "Neonatology", "Nephrology",
+        "Neurology", "Neuropsychology", "Neurosurgery", "Nuclear Medicine", "Nursing",
+        "Obstetrics and Gynecology (OB-GYN)", "Occupational Medicine", "Oncology",
+        "Ophthalmology", "Optometry", "Oral and Maxillofacial Surgery", "Orthodontics",
+        "Orthopedic Surgery", "Otolaryngology (ENT)", "Pain Management", "Pathology",
+        "Pediatric Surgery", "Pediatrics", "Physical Medicine and Rehabilitation",
+        "Physical Therapy", "Plastic Surgery", "Podiatry", "Preventive Medicine",
+        "Psychiatry", "Psychology", "Pulmonology", "Radiation Oncology", "Radiology",
+        "Reproductive Endocrinology", "Rheumatology", "Sleep Medicine", "Sports Medicine",
+        "Thoracic Surgery", "Urology", "Vascular Surgery"
+    ]; // Already sorted by nature of the list
 
     const navigate = useNavigate();
     const selectedRole = getUser;
@@ -34,15 +57,25 @@ const PatientLogin = ({ getUser, loggingIn, pickRole }) => {
         e.preventDefault();
         setIsLoading(true);
 
-        // Package the data for the external function
+        // 1. Create the searchable string (Multi-factor)
+        // We combine Name, Specialty, and Location into one lowercase string
+        const searchTerms = [
+            fullName,
+            selectedRole === 'doctor' ? specialty : '',
+            selectedRole === 'hospital' ? location : '',
+            // If you have a hospitalName field for doctors, add it here too
+        ].filter(Boolean).join(' ').toLowerCase();
+
+        // 2. Package the data
         const dataToSave = {
             email,
             password,
             fullName,
+            name: fullName, // Use 'name' consistently for the Search UI
             role: selectedRole,
-            // Only include these if they aren't empty
             specialty: selectedRole === 'doctor' ? specialty : null,
-            location: selectedRole === 'hospital' ? location : null
+            location: (selectedRole === 'hospital' || selectedRole === 'doctor') ? location : null,
+            searchIndex: searchTerms
         };
 
         const result = await signUpUser(dataToSave);
@@ -50,7 +83,7 @@ const PatientLogin = ({ getUser, loggingIn, pickRole }) => {
         setIsLoading(false);
 
         if (result.success) {
-            console.log("Profile Created with empty image object!");
+            console.log("Profile Created with Search Index!");
             navigate('/');
         } else {
             alert(result.error);
@@ -140,16 +173,52 @@ const PatientLogin = ({ getUser, loggingIn, pickRole }) => {
                                 )}
 
                                 {selectedRole === 'doctor' && (
-                                    <div className="animate-in fade-in slide-in-from-bottom-2">
-                                        <label className="block text-sm font-semibold text-slate-700 mb-1">Medical Specialty</label>
-                                        <input
-                                            type="text"
-                                            placeholder="e.g. Cardiology"
-                                            className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-slate-900 outline-none transition-all"
-                                            value={specialty}
-                                            onChange={(e) => setSpecialty(e.target.value)}
-                                            required
-                                        />
+                                    <div className="animate-in fade-in slide-in-from-bottom-2 relative">
+                                        <label className="block text-sm font-semibold text-slate-700 mb-1">
+                                            Medical Specialty
+                                        </label>
+
+                                        {/* The Search Input */}
+                                        <div className="relative">
+                                            <input
+                                                type="text"
+                                                placeholder="Search specialty (e.g. Surgery)"
+                                                className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-blue-600 outline-none transition-all"
+                                                value={specialty}
+                                                onChange={(e) => {
+                                                    setSpecialty(e.target.value);
+                                                    setIsOpen(true); // Show results as user types
+                                                }}
+                                                onFocus={() => setIsOpen(true)}
+                                            />
+                                            <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                                        </div>
+
+                                        {/* The Results Dropdown */}
+                                        {isOpen && (
+                                            <div className="absolute z-50 w-full mt-1 bg-white border border-slate-200 rounded-lg shadow-xl max-h-60 overflow-y-auto no-scrollbar">
+                                                {ALL_SPECIALTIES.filter(item =>
+                                                    item.toLowerCase().includes(specialty.toLowerCase())
+                                                ).length > 0 ? (
+                                                    ALL_SPECIALTIES
+                                                        .filter(item => item.toLowerCase().includes(specialty.toLowerCase()))
+                                                        .map((item) => (
+                                                            <div
+                                                                key={item}
+                                                                className="px-4 py-3 hover:bg-blue-50 cursor-pointer text-sm text-slate-700 font-medium transition-colors"
+                                                                onClick={() => {
+                                                                    setSpecialty(item);
+                                                                    setIsOpen(false);
+                                                                }}
+                                                            >
+                                                                {item}
+                                                            </div>
+                                                        ))
+                                                ) : (
+                                                    <div className="px-4 py-3 text-sm text-slate-400">No specialty found...</div>
+                                                )}
+                                            </div>
+                                        )}
                                     </div>
                                 )}
 
@@ -157,8 +226,8 @@ const PatientLogin = ({ getUser, loggingIn, pickRole }) => {
                                     type="submit"
                                     disabled={isLoading}
                                     className={`w-full py-4 mt-4 rounded-lg font-bold text-lg transition-all flex justify-center items-center ${isLoading
-                                            ? "bg-slate-200 text-slate-400"
-                                            : "bg-[#0f172a] text-white hover:bg-[#1e293b] active:scale-[0.99]"
+                                        ? "bg-slate-200 text-slate-400"
+                                        : "bg-[#0f172a] text-white hover:bg-[#1e293b] active:scale-[0.99]"
                                         }`}
                                 >
                                     {isLoading ? "Processing..." : "Create Account"}

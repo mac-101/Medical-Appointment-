@@ -1,57 +1,81 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { MapPin, Award, Star, ShieldCheck, Share2, Check, LayoutDashboard, MessageSquare } from 'lucide-react';
+import { db } from '../../firebase.config'; // Ensure path is correct
+import {ref, get } from 'firebase/database';
 
-// IMPORT YOUR DATA
-import { useDirectory } from '../Data/MockData'; // Adjust path as needed
+// Components
 import Reviews from '../componentPages/Reviews';
 import AppointmentBooking from '../components/AppointmentBooking';
 import Departments from '../Data/Department';
 
 function ProfileId() {
-  const { topDoctors, hospitals, loading } = useDirectory();
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
 
-  
-  // 1. DETERMINE TYPE based on the URL path (e.g., /doctor/1 vs /hospital/1)
-  const isHospital = location.pathname.includes('hospital');
-  const specialistType = isHospital ? 'hospital' : 'doctor';
-
+  const [profileData, setProfileData] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('reviews');
   const [booking, setBooking] = useState(false);
 
-  // 2. FIND THE CORRECT DATA
-  // We search the specific array based on the type
-  const profileData = isHospital 
-    ? hospitals.find(h => h.id.toString() === id)
-    : topDoctors.find(d => d.id.toString() === id);
+  const isHospital = location.pathname.includes('hospital');
+  const specialistType = isHospital ? 'hospital' : 'doctor';
 
-  // Fallback if data hasn't loaded or ID is wrong
+  // 1. FETCH REAL DATA FROM FIREBASE
+  useEffect(() => {
+    const fetchProfile = async () => {
+      setLoading(true);
+      try {
+        const userRef = ref(db, `users/${id}`);
+        const snapshot = await get(userRef);
+        if (snapshot.exists()) {
+          setProfileData(snapshot.val());
+        }
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  if (loading) return <p>Loading directory...</p>;
+    fetchProfile();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-white">
+         <div className="flex space-x-2">
+            <div className="w-4 h-4 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+            <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+            <div className="w-4 h-4 bg-blue-400 rounded-full animate-bounce"></div>
+         </div>
+         <p className="mt-4 text-blue-600 font-bold text-xs uppercase tracking-widest">Loading Profile...</p>
+      </div>
+    );
+  }
+
   if (!profileData) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="text-center">
           <h2 className="text-[#0f172a] font-black text-2xl uppercase tracking-tighter">Provider Not Found</h2>
-          <button onClick={() => navigate(-1)} className="mt-4 text-blue-500 font-bold uppercase text-xs tracking-widest">Go Back</button>
+          <button onClick={() => navigate(-1)} className="mt-4 text-blue-500 font-bold uppercase text-xs tracking-widest underline">Go Back</button>
         </div>
       </div>
     );
   }
 
-  // Map the mock data keys to a consistent format for the UI
+  // Consistent data formatting
   const displayData = {
     name: profileData.name,
     specialty: isHospital ? "Multi-Specialty Care" : profileData.specialty,
-    rating: profileData.rating,
-    experience: isHospital ? `Located in ${profileData.location}` : "12+ Years Experience",
-    image: profileData.image.url,
-    bio: isHospital 
-      ? `State-of-the-art medical facility located in ${profileData.location}, dedicated to providing top-tier patient care.`
-      : `Dr. ${profileData.name} is a leading ${profileData.specialty} with a focus on patient-centered recovery and advanced clinical techniques.`
+    rating: profileData.rating || "5.0",
+    experience: isHospital ? profileData.location : (profileData.experience || "12+ Years Experience"),
+    image: profileData.image?.url || "https://via.placeholder.com/400x300",
+    bio: profileData.bio || (isHospital 
+      ? `State-of-the-art medical facility located in ${profileData.location}.`
+      : `Dr. ${profileData.name} is a leading specialist focused on patient-centered recovery.`)
   };
 
   return (
@@ -69,18 +93,15 @@ function ProfileId() {
               </h2>
               <div className="flex items-center gap-1.5 mt-1">
                 <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Verified Provider</span>
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">TrustCore Verified</span>
               </div>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            <button className="hidden sm:flex p-2.5 bg-gray-50 text-gray-400 hover:text-[#0f172a] rounded-xl transition-all">
-              <Share2 size={18} />
-            </button>
             <div className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 rounded-xl border border-blue-100">
               <ShieldCheck size={18} className="text-blue-600" />
-              <span className="hidden md:inline text-[10px] font-black text-blue-700 uppercase tracking-tighter">TrustCore Verified</span>
+              <span className="hidden md:inline text-[10px] font-black text-blue-700 uppercase tracking-tighter">Verified</span>
             </div>
           </div>
         </div>
@@ -112,7 +133,7 @@ function ProfileId() {
                 
                 <div className="flex items-center gap-2 mt-4 text-slate-500">
                   {isHospital ? <MapPin size={16} className="text-blue-500"/> : <Award size={16} className="text-blue-500"/>}
-                  <span className="text-xs font-bold uppercase tracking-wide">{displayData.experience}</span>
+                  <span className="text-xs font-bold uppercase tracking-wide truncate">{displayData.experience}</span>
                 </div>
 
                 <p className="mt-6 text-slate-600 text-sm leading-relaxed">
@@ -121,7 +142,7 @@ function ProfileId() {
 
                 <button
                   onClick={() => setBooking(true)}
-                  className="w-full mt-8 bg-[#0f172a] text-white py-4 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-blue-600 transition-all flex items-center justify-center gap-2 shadow-xl shadow-blue-500/10"
+                  className="w-full mt-8 bg-blue-600 text-white py-4 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-[#0f172a] transition-all flex items-center justify-center gap-2 shadow-xl shadow-blue-500/10"
                 >
                   Book Appointment <Check size={16} />
                 </button>
@@ -152,7 +173,11 @@ function ProfileId() {
               </div>
 
               <div className="p-6 md:p-8">
-                {activeTab === 'reviews' ? <Reviews /> : <Departments />}
+                {activeTab === 'reviews' ? (
+                  <Reviews targetId={id} />
+                ) : (
+                  <Departments />
+                )}
               </div>
             </div>
           </div>

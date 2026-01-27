@@ -1,91 +1,137 @@
-import React from 'react';
-import { Star, User, ThumbsUp } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Star, User, ThumbsUp, Send } from 'lucide-react';
+import { db } from '../../firebase.config.js';
+import { ref, push, get, onValue } from 'firebase/database';
+import { useAuth } from '../services/useAuthContext';
 
-const Reviews = () => {
-    const reviews = [
-        {
-            id: 1,
-            user: "Marcus Aurelius",
-            rating: 5,
-            date: "JAN 10, 2026",
-            comment: "Excellent care and attention to detail. The doctor took the time to explain everything clearly.",
+const Reviews = ({ targetId }) => {
+    const { user } = useAuth();
+    const [reviews, setReviews] = useState([]);
+    const [loading, setLoading] = useState(true);
+    
+    // Form States
+    const [showForm, setShowForm] = useState(false);
+    const [newRating, setNewRating] = useState(5);
+    const [newComment, setNewComment] = useState("");
+
+    // 1. Fetch Reviews from the Doctor's own node
+    useEffect(() => {
+        // Path is now deep inside the target user (Doctor)
+        const reviewsRef = ref(db, `users/${targetId}/reviews`);
+        
+        const unsubscribe = onValue(reviewsRef, async (snapshot) => {
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                
+                // Get sender names by looking up their IDs
+                const reviewList = await Promise.all(
+                    Object.entries(data).map(async ([key, value]) => {
+                        const userSnap = await get(ref(db, `users/${value.senderId}`));
+                        return {
+                            id: key,
+                            ...value,
+                            userName: userSnap.exists() ? userSnap.val().name : "User",
+                            userImg: userSnap.exists() ? userSnap.val().image?.url : null
+                        };
+                    })
+                );
+                setReviews(reviewList.reverse());
+            } else {
+                setReviews([]);
+            }
+            setLoading(false);
+        });
+
+        return () => unsubscribe();
+    }, [targetId]);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!user) return alert("Log in to review");
+        if (!newComment.trim()) return;
+
+        const reviewData = {
+            senderId: user.uid,
+            rating: newRating,
+            comment: newComment,
+            date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }),
             verified: true
-        },
-        {
-            id: 2,
-            user: "Sarah Jenkins",
-            rating: 4,
-            date: "JAN 05, 2026",
-            comment: "Very professional environment. The wait time was a bit long, but the consultation was top-notch.",
-            verified: true
-        },
-        {
-            id: 3,
-            user: "David Chen",
-            rating: 5,
-            date: "DEC 28, 2025",
-            comment: "Highly recommend for anyone dealing with chronic back pain. Life-changing experience.",
-            verified: true
+        };
+
+        try {
+            // Push directly into the Doctor's reviews array
+            await push(ref(db, `users/${targetId}/reviews`), reviewData);
+            setNewComment("");
+            setShowForm(false);
+        } catch (err) {
+            console.error("Post Review Error:", err);
         }
-    ];
+    };
 
     return (
-        <div className="space-y-8">
-            <h1 className="text-2xl px-4 font-medium">Reviews</h1>
-
-            {/* 1. Review Summary Header */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-gray-50 p-6 border-l-4 border-blue-600">
+        <div className="mt-5 pt-5 border-t border-slate-100">
+            <div className="flex justify-between items-center mb-8 px-4">
                 <div>
-                    <h2 className="text-3xl font-black text-gray-900 leading-none">4.8</h2>
-                    <div className="flex items-center gap-1 text-yellow-500 my-2">
-                        {[...Array(5)].map((_, i) => (
-                            <Star key={i} size={18} fill={i < 4 ? "currentColor" : "none"} />
-                        ))}
-                    </div>
-                    <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Based on 124 Reviews</p>
+                    <p className="text-xs text-slate-400 font-medium uppercase tracking-widest mt-1">
+                        {reviews.length} total reviews
+                    </p>
                 </div>
-
-                <button className="bg-gray-900 text-white px-6 py-3 text-xs font-black uppercase tracking-tighter hover:bg-blue-600 transition-colors">
-                    Write a Review +
+                <button 
+                    onClick={() => setShowForm(!showForm)}
+                    className="bg-slate-900 text-white px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-blue-600 transition-all shadow-xl shadow-slate-200"
+                >
+                    {showForm ? "Close" : "Rate Doctor"}
                 </button>
             </div>
 
-            {/* 2. Reviews List */}
-            <div className="flex flex-col gap-6">
+            {/* Simple Writing Form */}
+            {showForm && (
+                <div className="mb-10 mx-4 p-6 bg-blue-50/50 rounded-[2rem] border border-blue-100 animate-in fade-in zoom-in-95">
+                    <div className="flex gap-2 mb-4">
+                        {[1, 2, 3, 4, 5].map((s) => (
+                            <Star 
+                                key={s} 
+                                size={20} 
+                                onClick={() => setNewRating(s)}
+                                className={`cursor-pointer ${s <= newRating ? "text-yellow-400 fill-yellow-400" : "text-slate-300"}`} 
+                            />
+                        ))}
+                    </div>
+                    <textarea 
+                        className="w-full p-4 rounded-2xl border-none focus:ring-2 focus:ring-blue-400 bg-white text-sm"
+                        placeholder="Write your honest experience..."
+                        value={newComment}
+                        onChange={(e) => setNewComment(e.target.value)}
+                    />
+                    <button 
+                        onClick={handleSubmit}
+                        className="mt-3 w-full bg-blue-600 text-white py-3 rounded-xl font-bold text-xs uppercase"
+                    >
+                        Submit Review
+                    </button>
+                </div>
+            )}
+
+            {/* Review Cards */}
+            <div className="space-y-4 px-2">
                 {reviews.map((rev) => (
-                    <div key={rev.id} className="border-b border-gray-100 pb-6 last:border-0">
-                        <div className="flex justify-between items-start mb-3">
+                    <div key={rev.id} className="bg-white border border-slate-50 rounded-2xl">
+                        <div className="flex justify-between items-start mb-2">
                             <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-gray-100 flex items-center justify-center">
-                                    <User size={20} className="text-gray-400" />
-                                </div>
+                                <img 
+                                    src={rev.userImg || "https://via.placeholder.com/40"} 
+                                    className="w-8 h-8 rounded-lg object-cover bg-slate-100" 
+                                />
                                 <div>
-                                    <h4 className="font-bold text-gray-900 text-sm uppercase">{rev.user}</h4>
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-[10px] text-gray-400 font-bold">{rev.date}</span>
-                                        {rev.verified && (
-                                            <span className="text-[9px] bg-green-100 text-green-700 px-2 py-0.5 font-bold uppercase tracking-tighter">Verified</span>
-                                        )}
-                                    </div>
+                                    <h4 className="text-xs font-bold text-slate-900">{rev.userName}</h4>
+                                    <span className="text-[9px] text-slate-400 font-bold uppercase">{rev.date}</span>
                                 </div>
                             </div>
-
                             <div className="flex items-center gap-0.5 text-yellow-500">
-                                {[...Array(5)].map((_, i) => (
-                                    <Star key={i} size={12} fill={i < rev.rating ? "currentColor" : "none"} />
-                                ))}
+                                {[...Array(rev.rating)].map((_, i) => <Star key={i} size={10} fill="currentColor" />)}
                             </div>
                         </div>
-
-                        <p className="text-sm text-gray-600 leading-relaxed italic">
-                            "{rev.comment}"
-                        </p>
-
-                        <div className="mt-4 flex items-center gap-4">
-                            <button className="flex items-center gap-1 text-[10px] font-bold text-gray-400 hover:text-blue-600">
-                                <ThumbsUp size={12} /> Helpful
-                            </button>
-                        </div>
+                        <p className="text-xs text-slate-600 leading-relaxed italic mt-2">"{rev.comment}"</p>
                     </div>
                 ))}
             </div>
