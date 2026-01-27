@@ -38,7 +38,7 @@ const Profile = ({ userData }) => { // Data comes from ProtectedRoute now!
   return (
     <div className="min-h-screen bg-[#f8fafc] font-sans text-[#0f172a]">
 
-      <div className="max-w-7xl mx-auto relative z-10 px-4">
+      <div className="max-w-7xl mx-auto relative z-10">
         <ProfileHeader userData={userData} />
 
         <div className="relative bg-white rounded-t-[3.5rem] -mt-16 min-h-screen shadow-2xl">
