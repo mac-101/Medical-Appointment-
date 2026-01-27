@@ -1,133 +1,205 @@
 import React, { useState } from 'react';
 import { updateUserInfo } from '../services/userServices';
-import { Camera, Check, Loader2 } from 'lucide-react';
+import { Camera, Check, Loader2, Clock, Calendar, Building2 } from 'lucide-react';
 
 const EditProfile = ({ userData }) => {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState(null);
 
-  // 1. IMAGE CAPTURE LOGIC
-  const [selectedImage, setSelectedImage] = useState(null); // The actual File object
+  const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  const DEPT_OPTIONS = ["Emergency", "Pediatrics", "Radiology", "Surgery", "Pharmacy", "Cardiology", "Maternity", "Neurology"];
+
+  const [selectedImage, setSelectedImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(userData?.image?.url || null);
 
   const [formData, setFormData] = useState({
     name: userData?.name || "",
-    image: selectedImage || userData?.image || {},
+    bio: userData?.bio || "",
     specialty: userData?.specialty || "",
-    location: userData?.location || ""
+    location: userData?.location || "",
+    departments: userData?.departments || [],
+    availabilityTime: userData?.availabilityTime || { start: "09:00", end: "17:00" },
+    availableDays: userData?.availableDays || []
   });
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setSelectedImage(file); // This is the constant holding the file
-      setPreviewUrl(URL.createObjectURL(file)); // Preview logic
+      setSelectedImage(file);
+      setPreviewUrl(URL.createObjectURL(file));
     }
+  };
+
+  const toggleDay = (day) => {
+    setFormData(prev => ({
+      ...prev,
+      availableDays: prev.availableDays.includes(day)
+        ? prev.availableDays.filter(d => d !== day)
+        : [...prev.availableDays, day]
+    }));
   };
 
   const handleSave = async () => {
     setLoading(true);
-    let imageUrl = formData.image; // Keep existing image by default
+    let imageUrl = userData.image;
 
-    // 1. Only run upload logic if a NEW image was selected
     if (selectedImage) {
       try {
         const data = new FormData();
         data.append("file", selectedImage);
-        // Ensure "health core profiles" is exactly as written in Cloudinary (usually lowercase/no spaces)
         data.append("upload_preset", "health core profiles");
-
         const response = await fetch('https://api.cloudinary.com/v1_1/dwn42jqmq/image/upload', {
           method: 'POST',
-          body: data // Now 'data' is defined in the same scope!
+          body: data
         });
-
         const imgData = await response.json();
-
-        if (imgData.error) {
-          throw new Error(imgData.error.message);
-        }
-
-        // Update the imageUrl variable with the new Cloudinary data
-        imageUrl = {
-          url: imgData.secure_url,
-          public_id: imgData.public_id
-        };
+        imageUrl = { url: imgData.secure_url, public_id: imgData.public_id };
       } catch (error) {
-        console.error("Image Upload Error:", error);
-        alert("Failed to upload image: " + error.message);
+        console.error("Upload Error:", error);
         setLoading(false);
-        return; // Stop execution if upload fails
+        return;
       }
     }
 
-    // 2. Final Step: Save to Firebase
     try {
-      const updateData = {
-        ...formData,
-        image: imageUrl,
-      };
+      // Include role-specific logic before saving
+      const finalData = { ...formData, image: imageUrl };
+      
+      // Update the Search Index so new bio/depts are searchable
+      finalData.searchIndex = [
+        finalData.name,
+        finalData.specialty,
+        finalData.location,
+        ...finalData.departments
+      ].filter(Boolean).join(' ').toLowerCase();
 
-      await updateUserInfo(userData.uid, updateData);
+      await updateUserInfo(userData.uid, finalData);
       setStatus('success');
       setTimeout(() => setStatus(null), 2000);
-    } catch (firebaseError) {
-      console.error("Firebase Update Error:", firebaseError);
-      alert("Profile updated on Cloudinary, but failed to save to database.");
+    } catch (err) {
+      alert("Error saving profile");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="space-y-10">
-      {/* HEADER SECTION */}
-      <div className="flex items-center justify-between border-b border-blue-50 pb-6">
+    <div className="max-w-5xl mx-auto p-6 space-y-10 pb-20">
+      {/* HEADER */}
+      <div className="flex items-center justify-between border-b border-slate-100 pb-8">
         <div>
-          <h2 className="text-2xl font-black text-blue-900 uppercase tracking-tighter">Edit_Profile</h2>
-          <p className="text-[10px] font-bold text-blue-400 uppercase tracking-[0.2em]">{userData?.role}_Access</p>
+          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Settings</h1>
+          <p className="text-slate-500 font-medium text-sm">Manage your {userData?.role} profile information</p>
         </div>
-
         <button
           onClick={handleSave}
           disabled={loading}
-          className={`flex items-center gap-2 text-[10px] font-black uppercase tracking-widest px-8 py-4 rounded-xl transition-all active:scale-95 ${status === 'success' ? 'bg-green-500 text-white' : 'bg-blue-600 text-white shadow-lg shadow-blue-100'
-            }`}
+          className={`px-8 py-3 rounded-2xl font-bold text-sm transition-all flex items-center gap-2 ${
+            status === 'success' ? 'bg-green-500 text-white' : 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-200'
+          }`}
         >
-          {loading ? <Loader2 size={14} className="animate-spin" /> : status === 'success' ? <Check size={14} /> : null}
-          {loading ? 'Syncing...' : status === 'success' ? 'Saved' : 'Save Changes'}
+          {loading ? <Loader2 className="animate-spin" size={18} /> : status === 'success' ? <Check size={18} /> : 'Save Profile'}
         </button>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-12">
-        {/* IMAGE PREVIEW COMPONENT */}
-        <div className="flex flex-col items-center gap-4">
-          <div className="relative group cursor-pointer">
-            <div className="w-32 h-32 rounded-[2rem] overflow-hidden border-4 border-blue-50 bg-blue-50 flex items-center justify-center">
-              {previewUrl ? (
-                <img src={previewUrl} className="w-full h-full object-cover" alt="Preview" />
-              ) : (
-                <Camera className="text-blue-200" size={32} />
-              )}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        {/* PROFILE PIC SECTION */}
+        <div className="lg:col-span-4 flex flex-col items-center gap-6">
+          <div className="relative group w-48 h-48">
+            <div className="w-full h-full rounded-[3rem] overflow-hidden border-8 border-white shadow-2xl bg-slate-100">
+              {previewUrl ? <img src={previewUrl} className="w-full h-full object-cover" /> : <Camera className="m-auto mt-16 text-slate-300" size={40} />}
             </div>
-            <label className="absolute inset-0 flex items-center justify-center bg-blue-600/80 opacity-0 group-hover:opacity-100 rounded-[2rem] transition-opacity cursor-pointer">
-              <Camera className="text-white" size={24} />
+            <label className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 rounded-[3rem] transition-all cursor-pointer">
+              <Camera className="text-white" size={32} />
               <input type="file" className="hidden" onChange={handleImageChange} accept="image/*" />
             </label>
           </div>
-          <p className="text-[9px] font-black text-blue-300 uppercase tracking-widest">Update Photo</p>
+          <div className="text-center">
+             <h3 className="font-bold text-slate-900">{formData.name || "Set Name"}</h3>
+             <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mt-1">{userData?.role}</p>
+          </div>
         </div>
 
-        {/* INPUT FIELDS */}
-        <div className="flex-1 space-y-8">
-          <InputGroup label="Display Name" value={formData.name} onChange={(val) => setFormData({ ...formData, name: val })} />
+        {/* DATA FORM SECTION */}
+        <div className="lg:col-span-8 space-y-8">
+          
+          {/* COMMON FIELDS: NAME & BIO */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <InputGroup label="Full Name / Facility Name" value={formData.name} onChange={(val) => setFormData({...formData, name: val})} />
+            {userData?.role === 'doctor' && (
+              <InputGroup label="Medical Specialty" value={formData.specialty} onChange={(val) => setFormData({...formData, specialty: val})} />
+            )}
+            {userData?.role === 'hospital' && (
+              <InputGroup label="Location Address" value={formData.location} onChange={(val) => setFormData({...formData, location: val})} />
+            )}
+          </div>
 
-          {(userData?.role === 'doctor' || userData?.role === 'hospital') && (
-            <InputGroup label="Specialization" value={formData.specialty} onChange={(val) => setFormData({ ...formData, specialty: val })} />
+          <div className="space-y-2">
+            <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest">About / Bio</label>
+            <textarea 
+              value={formData.bio}
+              onChange={(e) => setFormData({...formData, bio: e.target.value})}
+              className="w-full p-4 bg-slate-50 rounded-2xl border-2 border-transparent focus:border-blue-100 focus:bg-white transition-all outline-none font-medium text-slate-700 min-h-[120px]"
+              placeholder={`Write a brief description for your ${userData?.role} profile...`}
+            />
+          </div>
+
+          {/* HOSPITAL SPECIFIC: DEPARTMENTS */}
+          {userData?.role === 'hospital' && (
+            <div className="space-y-4">
+               <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                <Building2 size={14}/> Hospital Departments
+               </label>
+               <select 
+                className="w-full p-4 bg-slate-50 rounded-2xl border-none outline-none font-bold text-slate-700"
+                onChange={(e) => {
+                  if(e.target.value && !formData.departments.includes(e.target.value)) {
+                    setFormData({...formData, departments: [...formData.departments, e.target.value]})
+                  }
+                }}
+               >
+                 <option value="">Select and add a department...</option>
+                 {DEPT_OPTIONS.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+               </select>
+               <div className="flex flex-wrap gap-2">
+                 {formData.departments.map(dept => (
+                   <span key={dept} className="bg-blue-50 text-blue-600 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2">
+                     {dept} <button onClick={() => setFormData({...formData, departments: formData.departments.filter(d => d !== dept)})} className="hover:text-red-500">×</button>
+                   </span>
+                 ))}
+               </div>
+            </div>
           )}
 
-          {userData?.role === 'hospital' && (
-            <InputGroup label="Facility Location" value={formData.location} onChange={(val) => setFormData({ ...formData, location: val })} />
+          {/* AVAILABILITY SECTION: DOCTORS & HOSPITALS */}
+          {(userData?.role === 'doctor' || userData?.role === 'hospital') && (
+            <div className="p-6 bg-slate-50 rounded-[2.5rem] space-y-6">
+               <div className="flex items-center justify-between">
+                  <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                    <Calendar size={14}/> Availability Schedule
+                  </label>
+                  <div className="flex items-center gap-2 text-xs font-bold text-slate-900">
+                    <Clock size={14} className="text-blue-500"/>
+                    <input type="time" value={formData.availabilityTime.start} onChange={(e) => setFormData({...formData, availabilityTime: {...formData.availabilityTime, start: e.target.value}})} className="bg-transparent"/>
+                    <span>-</span>
+                    <input type="time" value={formData.availabilityTime.end} onChange={(e) => setFormData({...formData, availabilityTime: {...formData.availabilityTime, end: e.target.value}})} className="bg-transparent"/>
+                  </div>
+               </div>
+               
+               <div className="flex justify-between gap-2">
+                  {DAYS.map(day => (
+                    <button
+                      key={day}
+                      onClick={() => toggleDay(day)}
+                      className={`flex-1 py-3 rounded-xl text-[10px] font-black uppercase transition-all ${
+                        formData.availableDays.includes(day) ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'bg-white text-slate-400 border border-slate-100'
+                      }`}
+                    >
+                      {day}
+                    </button>
+                  ))}
+               </div>
+            </div>
           )}
         </div>
       </div>
@@ -135,15 +207,14 @@ const EditProfile = ({ userData }) => {
   );
 };
 
-// Simplified Input Group
 const InputGroup = ({ label, value, onChange }) => (
-  <div className="group">
-    <label className="text-[10px] font-black text-blue-400 uppercase tracking-widest block mb-2">{label}</label>
+  <div className="space-y-2">
+    <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest">{label}</label>
     <input
       type="text"
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full pb-2 bg-transparent border-b-2 border-blue-50 outline-none font-black text-blue-900 focus:border-blue-600 transition-all"
+      className="w-full p-4 bg-slate-50 rounded-2xl border-2 border-transparent focus:border-blue-100 focus:bg-white transition-all outline-none font-bold text-slate-700"
     />
   </div>
 );

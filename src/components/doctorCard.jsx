@@ -1,9 +1,12 @@
 import {ChevronRight, Star, MapPin} from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-export const DoctorCard = ({ doc, navigate }) => (
+export const DoctorCard = ({ doc }) => {
+    const navigate = useNavigate();
 
-    <div
+    return (
+        <div
         key={doc.id}
         className="min-w-40 md:min-w-50 bg-white border border-slate-100 rounded-2xl p-3 hover:border-blue-500/20 transition-all group"
     >
@@ -28,14 +31,14 @@ export const DoctorCard = ({ doc, navigate }) => (
 
         {/* The One Important Button */}
         <button
-            // onClick={() => navigate(`/book-doctor/${doc.id}`)}
-            onClick={navigate}
+            onClick={() => navigate(`/doctor/${doc.id}`)}
+            
             className="w-full bg-blue-600 text-white py-2 rounded-lg text-[11px] font-bold hover:bg-blue-700 transition-colors"
         >
             Book Now
         </button>
     </div>
-);
+)};
 
 export const HospitalCard = ({ hosp, navigate }) => (
 
