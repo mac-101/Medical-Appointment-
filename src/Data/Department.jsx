@@ -51,20 +51,14 @@ export default function Departments() {
   return (
     <div className="w-full">
       {/* Header Section */}
-      <div className="flex justify-between items-center mb-8">
-        <div className="flex items-center gap-3">
-          <div className="p-3 bg-blue-600 rounded-2xl text-white shadow-lg shadow-blue-200">
-            <LayoutGrid size={24} />
-          </div>
+      <div className="flex items-center p-4">
+        
           <div>
             <h2 className="text-xl font-black text-slate-900 tracking-tight uppercase">My Departments</h2>
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Manage your hospital wings</p>
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Go to setting to add departments</p>
           </div>
-        </div>
         
-        <button className="flex items-center gap-2 px-5 py-2.5 bg-slate-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-blue-600 transition-colors">
-          <Plus size={16} /> Add New
-        </button>
+        
       </div>
 
       {/* Departments Grid */}

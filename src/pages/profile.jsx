@@ -7,17 +7,18 @@ import ProfileSidebar from '../components/profileSidebar';
 // PAGE SECTIONS
 import EditProfile from '../componentPages/EditProfile';
 import AppointmentsList from '../Data/AppointmentList';
-import PatientRecords from '../componentPages/PatientsRecords';
+// import PatientRecords from '../componentPages/PatientsRecords';
 import Departments from '../Data/Department';
-import MedicalRecords from '../Data/MedicalRecord';
+// import MedicalRecords from '../Data/MedicalRecord';
 import Reviews from '../componentPages/Reviews';
+// import { set } from 'firebase/database';
 
 const Profile = ({ userData }) => { // Data comes from ProtectedRoute now!
   const [activeSection, setActiveSection] = useState(null);
 
   useEffect(() => {
     if (userData && !activeSection && window.innerWidth >= 1024) {
-      const defaults = { patient: 'records', doctor: 'reviews', hospital: 'department' };
+      const defaults = { patient: 'appointment', doctor: 'reviews', hospital: 'department' };
       setActiveSection(defaults[userData.role] || 'edit');
     }
   }, [userData, activeSection]);
@@ -27,8 +28,8 @@ const Profile = ({ userData }) => { // Data comes from ProtectedRoute now!
     const sections = {
       edit: <EditProfile userData={userData} />,
       appointment: <AppointmentsList userRole={userData?.role || 'patient'} />,
-      patient: <PatientRecords userRole={userData?.role} />,
-      records: <MedicalRecords />,
+      // patient: <PatientRecords userRole={userData?.role} />,
+      // records: <MedicalRecords />,
       department: <Departments />,
       reviews: <Reviews />,
     };
