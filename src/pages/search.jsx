@@ -68,7 +68,7 @@ export default function FindDoctors() {
   return (
     <div className='w-full min-h-screen'>
       {/* Navigation */}
-      <nav className='sticky top-0 z-30 bg-white px-2 md:px-15 py-4'>
+      <nav className='sticky top-0 z-30 bg-white px-2 md:px-10 py-4'>
         <div className='max-w-7xl mx-auto space-y-4'>
           <div className='flex items-center gap-4'>
             <button onClick={() => navigate(-1)} className='p-2 hover:bg-slate-100 rounded-full text-slate-900'>
@@ -114,8 +114,8 @@ export default function FindDoctors() {
             </div>
         ) : (
           <div className="space-y-8">
-            <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-black text-slate-900 capitalize">
+            <div className="flex px-2 items-center justify-between">
+              <h2 className="text-xl lg:text-2xl font-black text-slate-900 capitalize">
                 {searchTerm ? `Searching ${searchMode}s` : `Recommended ${searchMode}s`}
               </h2>
               <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest bg-slate-100 px-3 py-1 rounded-full">

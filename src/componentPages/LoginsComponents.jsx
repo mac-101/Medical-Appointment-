@@ -57,33 +57,33 @@ const PatientLogin = ({ getUser, loggingIn, pickRole, clickCreate }) => {
         e.preventDefault();
         setIsLoading(true);
 
-        // 1. Create the searchable string (Multi-factor)
-        // We combine Name, Specialty, and Location into one lowercase string
+        // 1. Safety Check: Ensure there is always a role!
+        // If selectedRole is null/undefined, default to 'patient'
+        const finalRole = selectedRole || 'patient';
+
         const searchTerms = [
             fullName,
-            selectedRole === 'doctor' ? specialty : '',
-            selectedRole === 'hospital' ? location : '',
-            // If you have a hospitalName field for doctors, add it here too
+            finalRole === 'doctor' ? specialty : '',
+            finalRole === 'hospital' ? location : '',
         ].filter(Boolean).join(' ').toLowerCase();
 
-        // 2. Package the data
+        // 2. Package the data using finalRole
         const dataToSave = {
             email,
             password,
             fullName,
-            name: fullName, // Use 'name' consistently for the Search UI
-            role: selectedRole,
-            specialty: selectedRole === 'doctor' ? specialty : null,
-            location: (selectedRole === 'hospital' || selectedRole === 'doctor') ? location : null,
-            searchIndex: searchTerms
+            name: fullName,
+            role: finalRole, // Use the safety-checked role here
+            specialty: finalRole === 'doctor' ? specialty : null,
+            location: (finalRole === 'hospital' || finalRole === 'doctor') ? location : null,
+            searchIndex: searchTerms,
+            createdAt: new Date().toISOString(), // Good for records
         };
 
         const result = await signUpUser(dataToSave);
-
         setIsLoading(false);
 
         if (result.success) {
-            console.log("Profile Created with Search Index!");
             navigate('/');
         } else {
             alert(result.error);
@@ -239,7 +239,7 @@ const PatientLogin = ({ getUser, loggingIn, pickRole, clickCreate }) => {
                             </p>
                         </>
                     ) : (
-                        <LoginPage onclick={goSign} pickRole={pickRole} create={clickCreate}/>
+                        <LoginPage onclick={goSign} pickRole={pickRole} create={clickCreate} />
                     )}
                 </div>
             </div>

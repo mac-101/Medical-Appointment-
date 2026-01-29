@@ -63,7 +63,7 @@ export default function Departments() {
 
       {/* Departments Grid */}
       {departments.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 p-2 gap-4">
           {departments.map((dept, index) => (
             <div key={dept.id || index} className="group relative bg-white border border-slate-100 p-6 rounded-[2rem] hover:border-blue-500 transition-all">
               <div className="flex justify-between items-start mb-4">

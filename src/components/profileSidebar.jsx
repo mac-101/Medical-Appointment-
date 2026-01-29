@@ -9,7 +9,7 @@ const ProfileSidebar = ({ userRole, activeSection, setActiveSection }) => {
     // { id: 'records', icon: <Receipt size={20} />, label: "Records", roles: ['patient', 'doctor', 'hospital'] },
     { id: 'department', icon: <LayoutDashboard size={20} />, label: "Departments", roles: ['hospital'] },
     { id: 'reviews', icon: <Star size={20} />, label: "Feedback", roles: ['doctor', 'hospital'] },
-  ].filter(item => item.roles.includes(userRole));
+  ].filter(item => item.roles.includes(userRole?.toLowerCase()));
 
   return (
     <nav className="flex flex-col gap-3">

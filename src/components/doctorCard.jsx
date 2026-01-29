@@ -8,7 +8,7 @@ export const DoctorCard = ({ doc }) => {
     return (
         <div
         key={doc.id}
-        className="min-w-40 md:min-w-50 bg-white border border-slate-100 rounded-2xl p-3 hover:border-blue-500/20 transition-all group"
+        className=" bg-white border border-slate-100 rounded-2xl p-3 hover:border-blue-500/20 transition-all group"
     >
         {/* Simple Image */}
         <div className="relative mb-3">
@@ -44,7 +44,7 @@ export const HospitalCard = ({ hosp, navigate }) => (
 
 <div
     key={hosp.id}
-    className="min-w-75 md:min-w-95 group bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 flex flex-col"
+    className=" group bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 flex flex-col"
 >
     {/* Image Area */}
     <div className="relative h-48 overflow-hidden">

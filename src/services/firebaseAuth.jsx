@@ -16,7 +16,7 @@ export const signUpUser = async (userData) => {
       uid: user.uid,
       name: fullName,
       email: email,
-      role: role,
+      role: role || 'patient',
       createdAt: new Date().toISOString(),
       image: {
         url: "", 

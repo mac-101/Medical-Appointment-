@@ -36,7 +36,7 @@ export default function Home() {
     return (
         <div className="min-h-screen w-full bg-[#f8fafc]">
             {/* 1. Header (Always Visible) */}
-            <header className="px-6 md:px-15 pt-12 pb-24 flex justify-between items-center max-w-7xl mx-auto bg-gradient-to-br from-blue-700 via-blue-600 to-blue-500">
+            <header className="px-6 md:px-15 pt-12 pb-24 flex justify-between items-center max-w-7xl mx-auto bg-linear-to-br from-blue-700 via-blue-600 to-blue-500">
                 <div className='md:flex items-end gap-5 animate-in fade-in slide-in-from-left-5 duration-700'>
                     <div className="relative">
                         <img
@@ -75,7 +75,7 @@ export default function Home() {
                                 type="text"
                                 placeholder="Search doctors, clinics..."
                                 onKeyDown={handleSearch}
-                                className="w-full border border-slate-100 py-4 pl-14 pr-6 rounded-[2rem] outline-none focus:ring-4 focus:ring-blue-500/5 focus:bg-white focus:border-blue-200 transition-all shadow-sm"
+                                className="w-full border border-slate-100 py-4 pl-14 pr-6 rounded-4xl outline-none focus:ring-4 focus:ring-blue-500/5 focus:bg-white focus:border-blue-200 transition-all shadow-sm"
                             />
                         </div>
                     </div>
@@ -93,39 +93,56 @@ export default function Home() {
                     </div>
 
                     {/* Top Doctors Section (Conditional Inner Loading) */}
+                    {/* Top Rated Doctors Section */}
                     <section className="mb-12">
                         <div className="px-8 flex justify-between items-center mb-6">
-                            <h3 className="font-black text-slate-900 text-xl tracking-tight">Top Rated Doctors</h3>
-                            <Link to="/search" className="text-blue-600 text-sm font-bold flex items-center gap-1 hover:gap-2 transition-all">
-                                See All <ChevronRight size={18} />
+                            <h3 className="font-black text-slate-900 text-xl tracking-tight uppercase">Top Rated Doctors</h3>
+                            <Link to="/search" className="text-blue-600 text-[11px] font-black flex items-center gap-1 hover:gap-2 transition-all uppercase tracking-widest">
+                                See All <ChevronRight size={16} />
                             </Link>
                         </div>
-                        <div className="flex overflow-x-auto gap-4 px-8 pb-6 no-scrollbar min-h-[150px]">
+
+                        <div className="px-2 md:px-4 lg:px-8">
                             {directoryLoading ? (
                                 <InlineLoading />
                             ) : (
-                                topDoctors.map((doc) => (
-                                    <DoctorCard key={doc.id} doc={doc} navigate={() => navigate(`doctor/${doc.id}`)} />
-                                ))
+                                /* auto-fit logic: will wrap to new lines once items get smaller than 280px */
+                                <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-3">
+                                    {topDoctors.map((doc) => (
+                                        <DoctorCard
+                                            key={doc.id}
+                                            doc={doc}
+                                            navigate={() => navigate(`doctor/${doc.id}`)}
+                                        />
+                                    ))}
+                                </div>
                             )}
                         </div>
                     </section>
 
-                    {/* Hospital Section (Conditional Inner Loading) */}
+                    {/* Hospital Section */}
                     <section className="mb-12">
                         <div className="px-8 flex justify-between items-center mb-6">
-                            <h3 className="font-black text-slate-900 text-xl tracking-tight">Hospitals Near You</h3>
-                            <Link to="/search" className="text-blue-600 text-sm font-bold flex items-center gap-1">
-                                See All <ChevronRight size={18} />
+                            <h3 className="font-black text-slate-900 text-xl tracking-tight uppercase">Hospitals Near You</h3>
+                            <Link to="/search" className="text-blue-600 text-[11px] font-black flex items-center gap-1 hover:gap-2 transition-all uppercase tracking-widest">
+                                See All <ChevronRight size={16} />
                             </Link>
                         </div>
-                        <div className="flex overflow-x-auto gap-6 px-8 pb-6 no-scrollbar min-h-[150px]">
+
+                        <div className="px-2 md:px-4 lg:px-8">
                             {directoryLoading ? (
                                 <InlineLoading />
                             ) : (
-                                hospitals.map((hosp) => (
-                                    <HospitalCard key={hosp.id} hosp={hosp} navigate={() => navigate(`/hospital/${hosp.id}`)} />
-                                ))
+                                /* Hospitals are usually wider, so we set a larger min-width (e.g., 350px) */
+                                <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6">
+                                    {hospitals.map((hosp) => (
+                                        <HospitalCard
+                                            key={hosp.id}
+                                            hosp={hosp}
+                                            navigate={() => navigate(`/hospital/${hosp.id}`)}
+                                        />
+                                    ))}
+                                </div>
                             )}
                         </div>
                     </section>

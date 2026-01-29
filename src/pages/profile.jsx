@@ -17,11 +17,18 @@ const Profile = ({ userData }) => { // Data comes from ProtectedRoute now!
   const [activeSection, setActiveSection] = useState(null);
 
   useEffect(() => {
-    if (userData && !activeSection && window.innerWidth >= 1024) {
-      const defaults = { patient: 'appointment', doctor: 'reviews', hospital: 'department' };
-      setActiveSection(defaults[userData.role] || 'edit');
-    }
-  }, [userData, activeSection]);
+  if (userData?.role && activeSection && window.innerWidth >= 1024) {
+    const role = userData.role.toLowerCase(); // Standardize to lowercase
+    const defaults = { 
+      patient: 'appointment', 
+      doctor: 'reviews', 
+      hospital: 'department' 
+    };
+    
+    // Set the default or fallback to 'edit'
+    setActiveSection(defaults[role] || 'edit');
+  }
+}, [userData, activeSection]);
 
 
   const renderSection = () => {
@@ -45,14 +52,21 @@ const Profile = ({ userData }) => { // Data comes from ProtectedRoute now!
         <div className="relative bg-white rounded-t-[3.5rem] -mt-16 min-h-screen shadow-2xl">
           <div className="p-8 lg:p-12">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-              
+
               <aside className="lg:col-span-4">
                 <div className="lg:sticky lg:top-24">
-                  <ProfileSidebar 
-                    userRole={userData?.role} 
-                    activeSection={activeSection} 
-                    setActiveSection={setActiveSection} 
-                  />
+                  {/* Add a check for userData.role here */}
+                  {userData?.role ? (
+                    <ProfileSidebar
+                      userRole={userData.role}
+                      activeSection={activeSection}
+                      setActiveSection={setActiveSection}
+                    />
+                  ) : (
+                    <div className="p-10 flex justify-center">
+                      <Loader2 className="animate-spin text-blue-600" />
+                    </div>
+                  )}
                 </div>
               </aside>
 
@@ -78,12 +92,12 @@ const Profile = ({ userData }) => { // Data comes from ProtectedRoute now!
       {activeSection && (
         <div className="fixed lg:hidden inset-0 flex items-end z-60 justify-center ">
           <div className="absolute inset-0 bg-blue-900/40 backdrop-blur-md" onClick={() => setActiveSection(null)} />
-          <div className="relative w-full scrollUP h-full max-h-[90vh] bg-white rounded-[3rem] overflow-hidden flex flex-col animate-in slide-in-from-bottom-10">
+          <div className="relative w-full scrollUP h-full max-h-[90vh] bg-white rounded-t-[3rem] overflow-hidden flex flex-col animate-in slide-in-from-bottom-10">
             <div className="flex items-center justify-between p-6 border-b border-blue-50">
               <span className="font-black text-[10px] uppercase tracking-[0.3em] text-blue-600">{activeSection}</span>
               <button onClick={() => setActiveSection(null)} className="p-3 bg-blue-50 text-blue-600 rounded-2xl"><X size={20} /></button>
             </div>
-            <div className=" overflow-y-auto flex-1">{renderSection()}</div>
+            <div className=" overflow-y-auto flex-1 no-scrollbar">{renderSection()}</div>
           </div>
         </div>
       )}
