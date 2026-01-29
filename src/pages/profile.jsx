@@ -17,18 +17,18 @@ const Profile = ({ userData }) => { // Data comes from ProtectedRoute now!
   const [activeSection, setActiveSection] = useState(null);
 
   useEffect(() => {
-  if (userData?.role && activeSection && window.innerWidth >= 1024) {
-    const role = userData.role.toLowerCase(); // Standardize to lowercase
-    const defaults = { 
-      patient: 'appointment', 
-      doctor: 'reviews', 
-      hospital: 'department' 
-    };
-    
-    // Set the default or fallback to 'edit'
-    setActiveSection(defaults[role] || 'edit');
-  }
-}, [userData, activeSection]);
+    // We only want to set a default if activeSection is currently EMPTY (null)
+    if (userData?.role && !activeSection && window.innerWidth >= 1024) {
+      const role = userData.role.toLowerCase();
+      const defaults = {
+        patient: 'appointment',
+        doctor: 'reviews',
+        hospital: 'department'
+      };
+
+      setActiveSection(defaults[role] || 'edit');
+    }
+  }, [userData, activeSection]);
 
 
   const renderSection = () => {
