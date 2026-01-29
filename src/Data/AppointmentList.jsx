@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, ArrowLeft, Calendar, Clock, Loader2 } from "lucide-react";
+import { Search, ArrowLeft, Calendar, Clock } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import { db, auth } from '../../firebase.config';
 import { ref, onValue, update, query, orderByChild, equalTo, get } from 'firebase/database';
@@ -89,13 +89,21 @@ export default function AppointmentsList({ userRole }) {
     );
   });
 
-  if (loading) return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-white">
-      <div className="flex -mt-20 space-x-2">
-        <div className="w-4 h-4 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-        <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-        <div className="w-4 h-4 bg-blue-400 rounded-full animate-bounce"></div>
-      </div>
+  // if (loading) return (
+  //   <div className="min-h-screen flex flex-col items-center justify-center bg-white">
+  //     <div className="flex -mt-20 space-x-2">
+  //       <div className="w-4 h-4 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+  //       <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+  //       <div className="w-4 h-4 bg-blue-400 rounded-full animate-bounce"></div>
+  //     </div>
+  //   </div>
+  // );
+
+  const InlineLoading = () => (
+    <div className="flex space-x-2 py-10 justify-center w-full">
+      <div className="w-3 h-3 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+      <div className="w-3 h-3 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+      <div className="w-3 h-3 bg-blue-400 rounded-full animate-bounce"></div>
     </div>
   );
 
@@ -122,27 +130,35 @@ export default function AppointmentsList({ userRole }) {
 
       <main className="max-w-7xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
         <div className="lg:col-span-7 space-y-4">
-          {filteredAppointments.map((appointment) => (
-            <div
-              key={appointment.id}
-              onClick={() => setSelectedAppointment(appointment)}
-              className={`p-5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between group ${selectedAppointment?.id === appointment.id ? 'border-blue-500 bg-blue-50/30' : 'border-slate-100 bg-white hover:border-blue-200'}`}
-            >
-              <div className="flex items-center gap-4">
-                <div>
-                  <h3 className="font-bold text-[#0f172a]">{appointment.displayTitle}</h3>
-                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                    {appointment.specialty || appointment.department || "Consultation"}
-                  </p>
-                  <div className="flex gap-3 mt-2 text-[10px] font-bold text-blue-500">
-                    <span className="flex items-center gap-1"><Calendar size={12} /> {appointment.date}</span>
-                    <span className="flex items-center gap-1"><Clock size={12} /> {appointment.time}</span>
+          {loading ?
+            (
+              <InlineLoading />
+            )
+            :
+            (
+              filteredAppointments.map((appointment) => (
+                <div
+                  key={appointment.id}
+                  onClick={() => setSelectedAppointment(appointment)}
+                  className={`p-5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between group ${selectedAppointment?.id === appointment.id ? 'border-blue-500 bg-blue-50/30' : 'border-slate-100 bg-white hover:border-blue-200'}`}
+                >
+                  <div className="flex items-center gap-4">
+                    <div>
+                      <h3 className="font-bold text-[#0f172a]">{appointment.displayTitle}</h3>
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                        {appointment.specialty || appointment.department || "Consultation"}
+                      </p>
+                      <div className="flex gap-3 mt-2 text-[10px] font-bold text-blue-500">
+                        <span className="flex items-center gap-1"><Calendar size={12} /> {appointment.date}</span>
+                        <span className="flex items-center gap-1"><Clock size={12} /> {appointment.time}</span>
+                      </div>
+                    </div>
                   </div>
+                  <div className={getStatusStyles(appointment.status)}>{appointment.status}</div>
                 </div>
-              </div>
-              <div className={getStatusStyles(appointment.status)}>{appointment.status}</div>
-            </div>
-          ))}
+              ))
+            )
+          }
         </div>
 
         <div className="hidden lg:block lg:col-span-5">

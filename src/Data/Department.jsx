@@ -1,102 +1,108 @@
-import React from 'react';
-import { Activity, Heart, Baby, Scan, Brain, Stethoscope } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { db, auth } from '../../firebase.config';
+import { ref, onValue } from 'firebase/database';
+import { LayoutGrid, Plus, Settings2, Loader2 } from 'lucide-react';
 
-const Departments = () => {
-  // Elaborated data structure for Firebase integration
-  const departmentData = [
-    {
-      id: "dept_1",
-      name: "Emergency",
-      description: "24/7 Critical care and trauma response unit.",
-      icon: <Activity className="text-red-500" size={24} />,
-      status: "Open 24/7",
-      color: "border-l-red-500"
-    },
-    {
-      id: "dept_2",
-      name: "Cardiology",
-      description: "Advanced heart health and cardiovascular surgery.",
-      icon: <Heart className="text-rose-500" size={24} />,
-      status: "By Appt",
-      color: "border-l-rose-500"
-    },
-    {
-      id: "dept_3",
-      name: "Pediatrics",
-      description: "Specialized medical care for infants and children.",
-      icon: <Baby className="text-blue-500" size={24} />,
-      status: "Open",
-      color: "border-l-blue-500"
-    },
-    {
-      id: "dept_4",
-      name: "Radiology",
-      description: "Diagnostic imaging, MRI, and X-ray services.",
-      icon: <Scan className="text-purple-500" size={24} />,
-      status: "Open",
-      color: "border-l-purple-500"
-    },
-    {
-      id: "dept_5",
-      name: "Neurology",
-      description: "Brain and nervous system disorder treatments.",
-      icon: <Brain className="text-amber-500" size={24} />,
-      status: "Limited",
-      color: "border-l-amber-500"
-    },
-    {
-      id: "dept_6",
-      name: "General",
-      description: "Routine checkups and internal medicine.",
-      icon: <Stethoscope className="text-emerald-500" size={24} />,
-      status: "Open",
-      color: "border-l-emerald-500"
-    }
-  ];
+export default function Departments() {
+  const [departments, setDepartments] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-end border-b border-gray-100 pb-4">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900">Hospital Departments</h2>
-          <p className="text-xs text-gray-500 font-medium uppercase tracking-widest mt-1">Specialized Medical Wings</p>
-        </div>
-        <span className="text-[10px] font-black bg-gray-100 px-2 py-1 uppercase">{departmentData.length} Total</span>
-      </div>
+  useEffect(() => {
+    // 1. Get current logged-in user ID
+    const userId = auth.currentUser?.uid;
+    if (!userId) return;
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {departmentData.map((dept) => (
-          <div 
-            key={dept.id} 
-            className={`group p-5 bg-white border border-gray-200 border-l-4 ${dept.color} hover:shadow-md transition-all cursor-pointer`}
-          >
-            <div className="flex justify-between items-start mb-3">
-              <div className="p-2 bg-gray-50 group-hover:bg-white transition-colors">
-                {dept.icon}
-              </div>
-              <span className={`text-[9px] font-bold px-2 py-0.5 uppercase tracking-tighter ${
-                dept.status === 'Open 24/7' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'
-              }`}>
-                {dept.status}
-              </span>
-            </div>
+    // 2. Point to the nested departments path
+    const profileDeptsRef = ref(db, `users/${userId}/departments`);
 
-            <h3 className="font-bold text-gray-900 uppercase tracking-tight mb-1">
-              {dept.name}
-            </h3>
-            
-            <p className="text-sm text-gray-500 leading-snug">
-              {dept.description}
-            </p>
+    const unsubscribe = onValue(profileDeptsRef, (snapshot) => {
+      try {
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          
+          // 3. Normalize data (Firebase sometimes returns objects even for arrays)
+          const normalizedData = Array.isArray(data) 
+            ? data 
+            : Object.entries(data).map(([id, dept]) => ({ 
+                id, 
+                ...dept 
+              }));
 
-            <div className="mt-4 pt-4 border-t border-gray-50 flex justify-between items-center">
-              <span className="text-[10px] font-black text-blue-600 uppercase group-hover:underline">View Specialists →</span>
-            </div>
-          </div>
-        ))}
-      </div>
+          setDepartments(normalizedData);
+        } else {
+          setDepartments([]);
+        }
+      } catch (error) {
+        console.error("Error syncing profile departments:", error);
+      } finally {
+        setLoading(false);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  if (loading) return (
+    <div className="flex justify-center py-20">
+      <Loader2 className="animate-spin text-blue-600" />
     </div>
   );
-};
 
-export default Departments;
+  return (
+    <div className="w-full">
+      {/* Header Section */}
+      <div className="flex justify-between items-center mb-8">
+        <div className="flex items-center gap-3">
+          <div className="p-3 bg-blue-600 rounded-2xl text-white shadow-lg shadow-blue-200">
+            <LayoutGrid size={24} />
+          </div>
+          <div>
+            <h2 className="text-xl font-black text-slate-900 tracking-tight uppercase">My Departments</h2>
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Manage your hospital wings</p>
+          </div>
+        </div>
+        
+        <button className="flex items-center gap-2 px-5 py-2.5 bg-slate-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-blue-600 transition-colors">
+          <Plus size={16} /> Add New
+        </button>
+      </div>
+
+      {/* Departments Grid */}
+      {departments.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {departments.map((dept, index) => (
+            <div key={dept.id || index} className="group relative bg-white border border-slate-100 p-6 rounded-[2rem] hover:border-blue-500 transition-all">
+              <div className="flex justify-between items-start mb-4">
+                <span className="text-[10px] font-black px-3 py-1 bg-slate-50 text-slate-500 rounded-full uppercase tracking-tighter">
+                  {dept.status || 'Active'}
+                </span>
+                <button className="text-slate-300 hover:text-blue-600 transition-colors">
+                  <Settings2 size={18} />
+                </button>
+              </div>
+
+              <h3 className="text-lg font-bold text-slate-900 mb-1">{dept.name}</h3>
+              <p className="text-xs text-slate-500 leading-relaxed line-clamp-2 mb-4">
+                {dept.description || "No description provided for this department."}
+              </p>
+
+              <div className="flex items-center gap-4 pt-4 border-t border-slate-50">
+                <div className="flex -space-x-2">
+                   {/* Placeholder for Specialist Avatars */}
+                  <div className="w-6 h-6 rounded-full bg-blue-100 border-2 border-white" />
+                  <div className="w-6 h-6 rounded-full bg-slate-100 border-2 border-white" />
+                </div>
+                <span className="text-[9px] font-bold text-slate-400 uppercase">Registered Specialists</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="py-20 text-center bg-slate-50 rounded-[3rem] border-2 border-dashed border-slate-200">
+          <p className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">No departments found in your profile</p>
+          <button className="mt-4 text-blue-600 text-sm font-black hover:underline">Click here to get started</button>
+        </div>
+      )}
+    </div>
+  );
+}

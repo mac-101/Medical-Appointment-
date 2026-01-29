@@ -64,7 +64,7 @@ const EditProfile = ({ userData }) => {
     try {
       // Include role-specific logic before saving
       const finalData = { ...formData, image: imageUrl };
-      
+
       // Update the Search Index so new bio/depts are searchable
       finalData.searchIndex = [
         finalData.name,
@@ -94,9 +94,8 @@ const EditProfile = ({ userData }) => {
         <button
           onClick={handleSave}
           disabled={loading}
-          className={`px-8 py-3 rounded-2xl font-bold text-sm transition-all flex items-center gap-2 ${
-            status === 'success' ? 'bg-green-500 text-white' : 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-200'
-          }`}
+          className={`px-8 py-3 rounded-2xl font-bold text-sm transition-all flex items-center gap-2 ${status === 'success' ? 'bg-green-500 text-white' : 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-200'
+            }`}
         >
           {loading ? <Loader2 className="animate-spin" size={18} /> : status === 'success' ? <Check size={18} /> : 'Save Profile'}
         </button>
@@ -115,90 +114,116 @@ const EditProfile = ({ userData }) => {
             </label>
           </div>
           <div className="text-center">
-             <h3 className="font-bold text-slate-900">{formData.name || "Set Name"}</h3>
-             <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mt-1">{userData?.role}</p>
+            <h3 className="font-bold text-slate-900">{formData.name || "Set Name"}</h3>
+            <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mt-1">{userData?.role}</p>
           </div>
         </div>
 
         {/* DATA FORM SECTION */}
         <div className="lg:col-span-8 space-y-8">
-          
+
           {/* COMMON FIELDS: NAME & BIO */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <InputGroup label="Full Name / Facility Name" value={formData.name} onChange={(val) => setFormData({...formData, name: val})} />
+            <InputGroup label="Full Name / Facility Name" value={formData.name} onChange={(val) => setFormData({ ...formData, name: val })} />
             {userData?.role === 'doctor' && (
-              <InputGroup label="Medical Specialty" value={formData.specialty} onChange={(val) => setFormData({...formData, specialty: val})} />
+              <InputGroup label="Medical Specialty" value={formData.specialty} onChange={(val) => setFormData({ ...formData, specialty: val })} />
             )}
             {userData?.role === 'hospital' && (
-              <InputGroup label="Location Address" value={formData.location} onChange={(val) => setFormData({...formData, location: val})} />
+              <InputGroup label="Location Address" value={formData.location} onChange={(val) => setFormData({ ...formData, location: val })} />
             )}
           </div>
 
           <div className="space-y-2">
             <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest">About / Bio</label>
-            <textarea 
+            <textarea
               value={formData.bio}
-              onChange={(e) => setFormData({...formData, bio: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
               className="w-full p-4 bg-slate-50 rounded-2xl border-2 border-transparent focus:border-blue-100 focus:bg-white transition-all outline-none font-medium text-slate-700 min-h-[120px]"
               placeholder={`Write a brief description for your ${userData?.role} profile...`}
             />
           </div>
 
           {/* HOSPITAL SPECIFIC: DEPARTMENTS */}
+          {/* HOSPITAL SPECIFIC: DEPARTMENTS */}
           {userData?.role === 'hospital' && (
             <div className="space-y-4">
-               <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                <Building2 size={14}/> Hospital Departments
-               </label>
-               <select 
-                className="w-full p-4 bg-slate-50 rounded-2xl border-none outline-none font-bold text-slate-700"
+              <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                <Building2 size={14} /> Hospital Departments
+              </label>
+
+              <select
+                className="w-full p-4 bg-slate-50 rounded-2xl border-none outline-none font-bold text-slate-700 appearance-none cursor-pointer"
                 onChange={(e) => {
-                  if(e.target.value && !formData.departments.includes(e.target.value)) {
-                    setFormData({...formData, departments: [...formData.departments, e.target.value]})
+                  const deptName = e.target.value;
+                  // Check if already added by looking at the name property
+                  const exists = formData.departments.find(d => d.name === deptName);
+
+                  if (deptName && !exists) {
+                    // Create a rich object instead of a string
+                    const newDept = {
+                      id: Date.now().toString(), // unique ID for React keys
+                      name: deptName,
+                      status: "Open 24/7", // Default status
+                      description: `Specialized ${deptName} services and care.`, // Default placeholder
+                      color: "border-l-blue-500", // Default accent
+                    };
+                    setFormData({ ...formData, departments: [...formData.departments, newDept] });
                   }
                 }}
-               >
-                 <option value="">Select and add a department...</option>
-                 {DEPT_OPTIONS.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-               </select>
-               <div className="flex flex-wrap gap-2">
-                 {formData.departments.map(dept => (
-                   <span key={dept} className="bg-blue-50 text-blue-600 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2">
-                     {dept} <button onClick={() => setFormData({...formData, departments: formData.departments.filter(d => d !== dept)})} className="hover:text-red-500">×</button>
-                   </span>
-                 ))}
-               </div>
+              >
+                <option value="">Select and add a department...</option>
+                {DEPT_OPTIONS.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+              </select>
+
+              {/* Displaying the added department "Tags" */}
+              <div className="flex flex-wrap gap-2">
+                {formData.departments.map((dept, index) => (
+                  <span key={index} className="bg-blue-50 text-blue-600 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 animate-in fade-in zoom-in duration-300">
+                    {/* Handle both string (old data) and object (new data) for safety */}
+                    {typeof dept === 'string' ? dept : dept.name}
+
+                    <button
+                      onClick={() => setFormData({
+                        ...formData,
+                        departments: formData.departments.filter(d => (typeof d === 'string' ? d !== dept : d.name !== dept.name))
+                      })}
+                      className="hover:text-red-500 font-black text-lg ml-1"
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
+              </div>
             </div>
           )}
 
           {/* AVAILABILITY SECTION: DOCTORS & HOSPITALS */}
           {(userData?.role === 'doctor' || userData?.role === 'hospital') && (
             <div className="p-6 bg-slate-50 rounded-[2.5rem] space-y-6">
-               <div className="flex items-center justify-between">
-                  <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                    <Calendar size={14}/> Availability Schedule
-                  </label>
-                  <div className="flex items-center gap-2 text-xs font-bold text-slate-900">
-                    <Clock size={14} className="text-blue-500"/>
-                    <input type="time" value={formData.availabilityTime.start} onChange={(e) => setFormData({...formData, availabilityTime: {...formData.availabilityTime, start: e.target.value}})} className="bg-transparent"/>
-                    <span>-</span>
-                    <input type="time" value={formData.availabilityTime.end} onChange={(e) => setFormData({...formData, availabilityTime: {...formData.availabilityTime, end: e.target.value}})} className="bg-transparent"/>
-                  </div>
-               </div>
-               
-               <div className="flex justify-between gap-2">
-                  {DAYS.map(day => (
-                    <button
-                      key={day}
-                      onClick={() => toggleDay(day)}
-                      className={`flex-1 py-3 rounded-xl text-[10px] font-black uppercase transition-all ${
-                        formData.availableDays.includes(day) ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'bg-white text-slate-400 border border-slate-100'
+              <div className="flex items-center justify-between">
+                <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                  <Calendar size={14} /> Availability Schedule
+                </label>
+                <div className="flex items-center gap-2 text-xs font-bold text-slate-900">
+                  <Clock size={14} className="text-blue-500" />
+                  <input type="time" value={formData.availabilityTime.start} onChange={(e) => setFormData({ ...formData, availabilityTime: { ...formData.availabilityTime, start: e.target.value } })} className="bg-transparent" />
+                  <span>-</span>
+                  <input type="time" value={formData.availabilityTime.end} onChange={(e) => setFormData({ ...formData, availabilityTime: { ...formData.availabilityTime, end: e.target.value } })} className="bg-transparent" />
+                </div>
+              </div>
+
+              <div className="flex justify-between gap-2">
+                {DAYS.map(day => (
+                  <button
+                    key={day}
+                    onClick={() => toggleDay(day)}
+                    className={`flex-1 py-3 rounded-xl text-[10px] font-black uppercase transition-all ${formData.availableDays.includes(day) ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'bg-white text-slate-400 border border-slate-100'
                       }`}
-                    >
-                      {day}
-                    </button>
-                  ))}
-               </div>
+                  >
+                    {day}
+                  </button>
+                ))}
+              </div>
             </div>
           )}
         </div>

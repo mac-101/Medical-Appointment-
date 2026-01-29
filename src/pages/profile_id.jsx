@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { MapPin, Award, Star, ShieldCheck, Check, LayoutDashboard, MessageSquare, Clock, Calendar } from 'lucide-react';
-import { db } from '../../firebase.config'; 
+import { db } from '../../firebase.config';
 import { ref, get } from 'firebase/database';
 
 // Components
@@ -44,25 +44,24 @@ function ProfileId() {
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-white">
-         <div className="flex space-x-2">
-            <div className="w-4 h-4 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-            <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-            <div className="w-4 h-4 bg-blue-400 rounded-full animate-bounce"></div>
-         </div>
-         <p className="mt-4 text-blue-600 font-bold text-xs uppercase tracking-widest">Verifying Credentials...</p>
+        <div className="flex space-x-2">
+          <div className="w-4 h-4 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+          <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+          <div className="w-4 h-4 bg-blue-400 rounded-full animate-bounce"></div>
+        </div>
+        <p className="mt-4 text-blue-600 font-bold text-xs uppercase tracking-widest">Verifying Credentials...</p>
       </div>
     );
   }
 
   if (!profileData) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
+      < div className="min-h-screen flex items-center justify-center bg-white" >
         <div className="text-center">
           <h2 className="text-[#0f172a] font-black text-2xl uppercase tracking-tighter">Provider Not Found</h2>
           <button onClick={() => navigate(-1)} className="mt-4 text-blue-500 font-bold uppercase text-xs tracking-widest underline">Go Back</button>
         </div>
-      </div>
-    );
+      </div >);
   }
 
   // Consistent data formatting
@@ -72,7 +71,7 @@ function ProfileId() {
     rating: profileData.rating || "5.0",
     experience: isHospital ? profileData.location : (profileData.experience || "Medical Specialist"),
     image: profileData.image?.url || "https://via.placeholder.com/400x300",
-    bio: profileData.bio || (isHospital 
+    bio: profileData.bio || (isHospital
       ? `High-quality care center located in ${profileData.location}.`
       : `Dr. ${profileData.name} is a certified health professional.`),
     availableDays: profileData.availableDays || ["Mon", "Tue", "Wed", "Thu", "Fri"],
@@ -101,7 +100,7 @@ function ProfileId() {
 
       <div className="max-w-7xl mx-auto p-4 md:p-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
+
           {/* LEFT COLUMN: PROFILE CARD */}
           <div className="lg:col-span-1">
             <div className="bg-white sticky top-24 border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
@@ -122,9 +121,9 @@ function ProfileId() {
                 <h1 className="text-3xl font-black text-[#0f172a] uppercase tracking-tighter mt-3 leading-tight">
                   {displayData.name}
                 </h1>
-                
+
                 <div className="flex items-center gap-2 mt-4 text-slate-500">
-                  <MapPin size={16} className="text-blue-500"/>
+                  <MapPin size={16} className="text-blue-500" />
                   <span className="text-xs font-bold uppercase tracking-wide truncate">{displayData.experience}</span>
                 </div>
 
@@ -163,7 +162,7 @@ function ProfileId() {
 
           {/* RIGHT COLUMN: REVIEWS & DEPTS */}
           <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm min-h-[600px]">
+            <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm min-h-i50">
               <div className="flex bg-slate-50 border-b border-slate-100 px-2 py-4">
                 <button
                   onClick={() => setActiveTab('reviews')}
@@ -198,10 +197,10 @@ function ProfileId() {
 
       {/* MODAL - Passing dynamic ID and Type */}
       {booking && (
-        <AppointmentBooking 
-          onClose={() => setBooking(false)} 
-          specialistType={specialistType} 
-          specialistId={id} 
+        <AppointmentBooking
+          onClose={() => setBooking(false)}
+          specialistType={specialistType}
+          specialistId={id}
         />
       )}
     </div>
@@ -209,7 +208,7 @@ function ProfileId() {
 }
 
 const ArrowLeftIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
 );
 
 export default ProfileId;

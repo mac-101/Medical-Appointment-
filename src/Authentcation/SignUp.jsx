@@ -6,14 +6,14 @@ import { PatientLogin } from "../componentPages/LoginsComponents.jsx";
 // --- COMPONENT 1: GET STARTED (PLAIN) ---
 const GetStarted = ({ onContinue, onLogin }) => {
 
-  
+
   return (
     <div className="relative h-screen w-full bg-white flex flex-col items-center justify-between py-16 px-8 transition-all">
       <div className="flex flex-col items-center mt-10 text-center">
         {/* Minimal Logo Space */}
         <div className="w-16 h-16 mb-6 flex items-center justify-center bg-slate-900 rounded-2xl text-white">
           <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
+            <path d="M19 3H5c-1.1 0-2.9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
           </svg>
         </div>
         <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Healthcore OS</h1>
@@ -125,7 +125,7 @@ export default function SignupPage() {
 
   useEffect(() => {
     // Reset to initial step when location changes to /signup or /login
-    if ( location.pathname === '/login') {
+    if (location.pathname === '/login') {
       setCurrentStep('login');
     }
   }, [location.pathname]);

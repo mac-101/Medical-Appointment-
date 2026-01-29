@@ -32,7 +32,6 @@ const AppointmentBooking = ({ onClose, specialistId, specialistType }) => {
     const [bookingLoading, setBookingLoading] = useState(false);
     const [availableSlots, setAvailableSlots] = useState([]);
 
-    // 2. Fetch Specialist Data
     useEffect(() => {
         const fetchDetails = async () => {
             try {
@@ -41,7 +40,6 @@ const AppointmentBooking = ({ onClose, specialistId, specialistType }) => {
                 if (snapshot.exists()) {
                     const data = snapshot.val();
                     setSpecialistData(data);
-                    // 3. Use both specialist data and the generator
                     if (data.availabilityTime) {
                         const slots = generateTimeSlots(data.availabilityTime.start, data.availabilityTime.end);
                         setAvailableSlots(slots);
@@ -59,6 +57,9 @@ const AppointmentBooking = ({ onClose, specialistId, specialistType }) => {
     // 4. Handle Confirm Booking
     const handleConfirm = async () => {
         if (!auth.currentUser) return alert("Please login to book");
+        if (!selectedTime) return alert("Please select a time slot");
+        if (specialistType === 'hospital' && !selectedDept) return alert("Please select a department");
+
         setBookingLoading(true);
 
         const bookingData = {
@@ -67,7 +68,8 @@ const AppointmentBooking = ({ onClose, specialistId, specialistType }) => {
             specialistName: specialistData.name,
             date: date.toISOString().split('T')[0],
             time: selectedTime,
-            department: selectedDept || 'N/A',
+            // CHANGE: Store the name string, not the whole object
+            department: specialistType === 'hospital' ? (selectedDept.name || selectedDept) : 'N/A',
             status: 'pending',
             createdAt: new Date().toISOString()
         };
@@ -108,9 +110,25 @@ const AppointmentBooking = ({ onClose, specialistId, specialistType }) => {
                                 <section>
                                     <h3 className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-4">Department</h3>
                                     <div className="grid grid-cols-2 gap-3">
-                                        {specialistData?.departments?.map((dept, i) => (
-                                            <button key={i} onClick={() => setSelectedDept(dept)} className={`p-4 border-2 rounded-2xl text-[10px] font-bold uppercase ${selectedDept === dept ? 'border-blue-600 bg-blue-50 text-blue-600' : 'border-gray-50 bg-gray-50 text-gray-500'}`}>{dept}</button>
-                                        ))}
+                                        {specialistData?.departments?.map((dept, i) => {
+                                            // Handle both old string data and new object data
+                                            const deptName = typeof dept === 'string' ? dept : dept.name;
+                                            const isSelected = selectedDept?.name === deptName || selectedDept === dept;
+
+                                            return (
+                                                <button 
+                                                    key={i} 
+                                                    onClick={() => setSelectedDept(dept)} 
+                                                    className={`p-4 border-2 rounded-2xl text-[10px] font-bold uppercase transition-all ${
+                                                        isSelected 
+                                                        ? 'border-blue-600 bg-blue-50 text-blue-600' 
+                                                        : 'border-gray-50 bg-gray-50 text-gray-500 hover:border-blue-200'
+                                                    }`}
+                                                >
+                                                    {deptName}
+                                                </button>
+                                            )
+                                        })}
                                     </div>
                                 </section>
                             )}
@@ -119,7 +137,17 @@ const AppointmentBooking = ({ onClose, specialistId, specialistType }) => {
                                 <h3 className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-4">Available Slots</h3>
                                 <div className="grid grid-cols-3 gap-2">
                                     {availableSlots.length > 0 ? availableSlots.map((time) => (
-                                        <button key={time} onClick={() => setSelectedTime(time)} className={`py-3 rounded-xl border-2 text-[11px] font-bold ${selectedTime === time ? 'border-blue-600 bg-blue-600 text-white' : 'border-gray-50 text-gray-400 hover:border-blue-200'}`}>{time}</button>
+                                        <button 
+                                            key={time} 
+                                            onClick={() => setSelectedTime(time)} 
+                                            className={`py-3 rounded-xl border-2 text-[11px] font-bold transition-all ${
+                                                selectedTime === time 
+                                                ? 'border-blue-600 bg-blue-600 text-white' 
+                                                : 'border-gray-50 text-gray-400 hover:border-blue-200'
+                                            }`}
+                                        >
+                                            {time}
+                                        </button>
                                     )) : <p className="col-span-3 text-center text-xs text-gray-400 font-bold">No slots set by provider</p>}
                                 </div>
                             </section>
@@ -129,7 +157,8 @@ const AppointmentBooking = ({ onClose, specialistId, specialistType }) => {
 
                 <footer className="p-6 bg-white border-t border-gray-50 sticky bottom-0">
                     <button
-                        disabled={ (specialistType === "hospital" && !selectedTime) || bookingLoading}
+                        // UPDATED DISABLE LOGIC: Must have time AND (if hospital) must have dept
+                        disabled={!selectedTime || (specialistType === "hospital" && !selectedDept) || bookingLoading}
                         onClick={handleConfirm}
                         className="w-full bg-blue-600 disabled:bg-gray-200 text-white py-4 rounded-2xl text-xs font-black uppercase tracking-widest shadow-xl flex items-center justify-center gap-2 active:scale-95 transition-all"
                     >

@@ -1,29 +1,16 @@
-import React from 'react'; // Fixed: Removed { React } as it's a default import
+import React from 'react';
 import Article from '../componentPages/Article';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDirectory } from '../Data/MockData';
 import { DoctorCard, HospitalCard } from '../components/doctorCard';
-import { useAuth } from '../services/useAuthContext'; // Ensure this path is correct
-import { Search, AlertCircle, Star, MapPin, ChevronRight, Stethoscope, Truck, ClipboardList } from 'lucide-react';
+import { useAuth } from '../services/useAuthContext';
+import { Search, AlertCircle, ChevronRight, Stethoscope, Truck, ClipboardList, Loader2 } from 'lucide-react';
 
 export default function Home() {
-    // 1. ALL hooks at the top - Order matters!
     const navigate = useNavigate();
-    const { userData, loading: authLoading } = useAuth();
+    const { userData } = useAuth();
+    // Fetch data - loading state is handled inline now
     const { topDoctors, hospitals, loading: directoryLoading } = useDirectory(50);
-
-    // 2. Loading state (only blocks if directory data is missing)
-    if (directoryLoading) {
-        return (
-            <div className="min-h-screen flex flex-col items-center justify-center bg-white">
-                <div className="flex space-x-2">
-                    <div className="w-4 h-4 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-                    <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-                    <div className="w-4 h-4 bg-blue-400 rounded-full animate-bounce"></div>
-                </div>
-            </div>
-        );
-    }
 
     const categories = [
         { id: 1, name: "Top Doctors", icon: <Stethoscope size={28} />, color: "bg-blue-600", link: "/search" },
@@ -37,18 +24,26 @@ export default function Home() {
         }
     };
 
+    // Reusable Loading Dots Component
+    const InlineLoading = () => (
+        <div className="flex space-x-2 py-10 justify-center w-full">
+            <div className="w-3 h-3 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+            <div className="w-3 h-3 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+            <div className="w-3 h-3 bg-blue-400 rounded-full animate-bounce"></div>
+        </div>
+    );
+
     return (
         <div className="min-h-screen w-full bg-[#f8fafc]">
-            {/* 1. Header */}
-            <header className="px-6 md:px-15 pt-12 pb-24 flex justify-between items-center max-w-7xl mx-auto bg-linear-to-br from-blue-700 via-blue-600 to-blue-500">
+            {/* 1. Header (Always Visible) */}
+            <header className="px-6 md:px-15 pt-12 pb-24 flex justify-between items-center max-w-7xl mx-auto bg-gradient-to-br from-blue-700 via-blue-600 to-blue-500">
                 <div className='md:flex items-end gap-5 animate-in fade-in slide-in-from-left-5 duration-700'>
                     <div className="relative">
                         <img
-                            src={userData?.image?.url || "https://ui-avatars.com/api/?name=User&background=0D8ABC&color=fff"}
+                            src={userData?.image?.url || `https://ui-avatars.com/api/?name=${userData?.name || 'User'}&background=0D8ABC&color=fff`}
                             alt="Profile"
-                            className="w-20 h-20 md:w-32 md:h-32 rounded-full border-1 border-white/30 shadow-xl object-cover bg-blue-400"
+                            className="w-20 h-20 md:w-32 md:h-32 rounded-full border border-white/30 shadow-xl object-cover bg-blue-400"
                         />
-                        
                     </div>
                     <div className="mt-4 md:mt-0">
                         <h1 className="text-xl md:text-2xl font-medium text-blue-100">Welcome,</h1>
@@ -72,7 +67,7 @@ export default function Home() {
             <main className="relative -mt-16">
                 <div className="max-w-7xl bg-white rounded-t-[3.5rem] pt-12 mx-auto min-h-screen pb-10 shadow-[0_-20px_50px_-20px_rgba(0,0,0,0.1)]">
 
-                    {/* Search Bar */}
+                    {/* Search Bar (Always Visible) */}
                     <div className="px-6 mb-8">
                         <div className="relative group">
                             <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={20} />
@@ -80,12 +75,12 @@ export default function Home() {
                                 type="text"
                                 placeholder="Search doctors, clinics..."
                                 onKeyDown={handleSearch}
-                                className="w-full  border border-slate-100 py-4 pl-14 pr-6 rounded-[2rem] outline-none focus:ring-4 focus:ring-blue-500/5 focus:bg-white focus:border-blue-200 transition-all shadow-sm"
+                                className="w-full border border-slate-100 py-4 pl-14 pr-6 rounded-[2rem] outline-none focus:ring-4 focus:ring-blue-500/5 focus:bg-white focus:border-blue-200 transition-all shadow-sm"
                             />
                         </div>
                     </div>
 
-                    {/* Category Circles */}
+                    {/* Categories (Always Visible) */}
                     <div className="px-6 mb-12 flex justify-around items-start">
                         {categories.map((cat) => (
                             <Link key={cat.id} to={cat.link} className="flex flex-col items-center gap-4 group">
@@ -97,7 +92,7 @@ export default function Home() {
                         ))}
                     </div>
 
-                    {/* Top Doctors Section */}
+                    {/* Top Doctors Section (Conditional Inner Loading) */}
                     <section className="mb-12">
                         <div className="px-8 flex justify-between items-center mb-6">
                             <h3 className="font-black text-slate-900 text-xl tracking-tight">Top Rated Doctors</h3>
@@ -105,14 +100,18 @@ export default function Home() {
                                 See All <ChevronRight size={18} />
                             </Link>
                         </div>
-                        <div className="flex overflow-x-auto gap-4 px-8 pb-6 no-scrollbar">
-                            {topDoctors.map((doc) => (
-                                <DoctorCard doc={doc} navigate={() => navigate(`doctor/${doc.id}`)} />
-                            ))}
+                        <div className="flex overflow-x-auto gap-4 px-8 pb-6 no-scrollbar min-h-[150px]">
+                            {directoryLoading ? (
+                                <InlineLoading />
+                            ) : (
+                                topDoctors.map((doc) => (
+                                    <DoctorCard key={doc.id} doc={doc} navigate={() => navigate(`doctor/${doc.id}`)} />
+                                ))
+                            )}
                         </div>
                     </section>
 
-                    {/* Hospital Section */}
+                    {/* Hospital Section (Conditional Inner Loading) */}
                     <section className="mb-12">
                         <div className="px-8 flex justify-between items-center mb-6">
                             <h3 className="font-black text-slate-900 text-xl tracking-tight">Hospitals Near You</h3>
@@ -120,10 +119,14 @@ export default function Home() {
                                 See All <ChevronRight size={18} />
                             </Link>
                         </div>
-                        <div className="flex overflow-x-auto gap-6 px-8 pb-6 no-scrollbar">
-                            {hospitals.map((hosp) => (
-                                <HospitalCard hosp={hosp} navigate={() => navigate(`/hospital/${hosp.id}`)} />
-                            ))}
+                        <div className="flex overflow-x-auto gap-6 px-8 pb-6 no-scrollbar min-h-[150px]">
+                            {directoryLoading ? (
+                                <InlineLoading />
+                            ) : (
+                                hospitals.map((hosp) => (
+                                    <HospitalCard key={hosp.id} hosp={hosp} navigate={() => navigate(`/hospital/${hosp.id}`)} />
+                                ))
+                            )}
                         </div>
                     </section>
 

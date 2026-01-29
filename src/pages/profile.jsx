@@ -26,8 +26,8 @@ const Profile = ({ userData }) => { // Data comes from ProtectedRoute now!
   const renderSection = () => {
     const sections = {
       edit: <EditProfile userData={userData} />,
-      appointment: <AppointmentsList />,
-      patient: <PatientRecords />,
+      appointment: <AppointmentsList userRole={userData?.role || 'patient'} />,
+      patient: <PatientRecords userRole={userData?.role} />,
       records: <MedicalRecords />,
       department: <Departments />,
       reviews: <Reviews />,

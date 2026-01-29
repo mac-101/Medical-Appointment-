@@ -66,9 +66,9 @@ export default function FindDoctors() {
   }, [searchTerm, searchMode]);
 
   return (
-    <div className='w-full min-h-screen bg-slate-50/50'>
+    <div className='w-full min-h-screen'>
       {/* Navigation */}
-      <nav className='sticky top-0 z-30 bg-white border-b border-slate-100 px-6 py-4 shadow-sm'>
+      <nav className='sticky top-0 z-30 bg-white px-2 md:px-15 py-4'>
         <div className='max-w-7xl mx-auto space-y-4'>
           <div className='flex items-center gap-4'>
             <button onClick={() => navigate(-1)} className='p-2 hover:bg-slate-100 rounded-full text-slate-900'>
@@ -103,9 +103,9 @@ export default function FindDoctors() {
         </div>
       </nav>
 
-      <main className="max-w-7xl mx-auto p-6">
+      <main className="max-w-7xl mx-auto">
         {loading ? (
-          <div className="min-h-screen flex flex-col items-center justify-center bg-white">
+          <div className="min-h-[60dvh] flex flex-col items-center justify-center bg-white">
                 <div className="flex space-x-2">
                     <div className="w-4 h-4 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
                     <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
