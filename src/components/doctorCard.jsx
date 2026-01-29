@@ -15,7 +15,7 @@ export const DoctorCard = ({ doc }) => {
             <img
                 src={doc.image?.url || "https://via.placeholder.com/150"}
                 alt={doc.name}
-                className="w-full h-32 md:h-40 object-cover rounded-xl"
+                className="w-full h-40 md:h-40 object-cover rounded-xl"
             />
             <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-1.5 py-0.5 rounded-lg flex items-center gap-1">
                 <Star size={10} className="text-orange-400" fill="currentColor" />
