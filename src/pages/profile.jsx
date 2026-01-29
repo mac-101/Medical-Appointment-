@@ -70,7 +70,7 @@ const Profile = ({ userData }) => { // Data comes from ProtectedRoute now!
                 </div>
               </aside>
 
-              <main className="hidden lg:flex lg:col-span-8 flex-col min-h-[600px]">
+              <main className="hidden lg:flex lg:col-span-8 flex-col min-h-150">
                 {activeSection ? (
                   <div key={activeSection} className="animate-in fade-in slide-in-from-bottom-6 duration-700 flex-1">
                     {renderSection()}

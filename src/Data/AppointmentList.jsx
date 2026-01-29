@@ -89,15 +89,7 @@ export default function AppointmentsList({ userRole }) {
     );
   });
 
-  // if (loading) return (
-  //   <div className="min-h-screen flex flex-col items-center justify-center bg-white">
-  //     <div className="flex -mt-20 space-x-2">
-  //       <div className="w-4 h-4 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-  //       <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-  //       <div className="w-4 h-4 bg-blue-400 rounded-full animate-bounce"></div>
-  //     </div>
-  //   </div>
-  // );
+  
 
   const InlineLoading = () => (
     <div className="flex space-x-2 py-10 justify-center w-full">
@@ -130,6 +122,7 @@ export default function AppointmentsList({ userRole }) {
 
       <main className="max-w-7xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
         <div className="lg:col-span-7 space-y-4">
+          
           {loading ?
             (
               <InlineLoading />

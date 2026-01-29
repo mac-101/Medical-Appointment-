@@ -83,12 +83,12 @@ function ProfileId() {
     <div className="min-h-screen bg-slate-50/50 pb-20 font-sans">
       {/* HEADER SECTION */}
       <div className="sticky top-0 z-40 w-full bg-white/80 backdrop-blur-md border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+        <div className="max-w-7xl mx-auto px-3 md:px-6 h-20 flex justify-between items-center">
           <div className="flex items-center gap-4">
             <button onClick={() => navigate(-1)} className="p-2 hover:bg-slate-100 rounded-full text-slate-600 transition-colors">
               <ArrowLeft size={24} strokeWidth={2.5} />
             </button>
-            <h2 className="font-black uppercase tracking-tighter text-xl text-[#0f172a]">
+            <h2 className="font-black uppercase tracking-tighter text-lg md:text-xl text-[#0f172a]">
               {isHospital ? "Facility Profile" : "Physician Profile"}
             </h2>
           </div>
@@ -99,12 +99,12 @@ function ProfileId() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto p-4 md:p-8">
+      <div className="max-w-7xl mx-auto py-4 px-2 md:p-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
           {/* LEFT COLUMN: PROFILE CARD */}
           <div className="lg:col-span-1">
-            <div className="bg-white sticky top-28 rounded-3xl overflow-hidden shadow-sm border border-slate-100">
+            <div className="bg-white sticky top-28 rounded-xl overflow-hidden shadow-sm border border-slate-100">
               <div className="aspect-[4/5] relative overflow-hidden">
                 <img src={displayData.image} alt={displayData.name} className="w-full h-full object-cover" />
                 <div className="absolute top-4 left-4 bg-[#0f172a]/80 backdrop-blur-md px-3 py-1 rounded-full border border-white/20">
@@ -162,7 +162,7 @@ function ProfileId() {
 
           {/* RIGHT COLUMN: REVIEWS & DEPTS */}
           <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 min-h-[500px]">
+            <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-slate-100 min-h-[500px]">
               <div className="flex bg-slate-50 border-b border-slate-100 px-2 py-2">
                 <button
                   onClick={() => setActiveTab('reviews')}
@@ -182,7 +182,7 @@ function ProfileId() {
                 )}
               </div>
 
-              <div className="p-6">
+              <div className="p-2">
                 {activeTab === 'reviews' ? (
                   <Reviews targetId={id} />
                 ) : (

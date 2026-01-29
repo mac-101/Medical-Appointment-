@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Search, ArrowLeft, ChevronRight, Users, Hospital, Loader2 } from 'lucide-react';
 import { db } from '../../firebase.config';
+import { useLocation } from 'react-router-dom'; // Add useLocation to your imports
 import { ref, get } from 'firebase/database';
 import { useNavigate } from 'react-router-dom';
 import { DoctorCard, HospitalCard } from '../components/doctorCard';
 
 export default function FindDoctors() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Data States
   const [allData, setAllData] = useState({ doctors: [], hospitals: [] });
@@ -16,6 +18,15 @@ export default function FindDoctors() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchMode, setSearchMode] = useState("doctor"); // 'doctor' or 'hospital'
   const [visibleCount, setVisibleCount] = useState(10);
+
+  useEffect(() => {
+    if (location.state?.incomingSearch) {
+      setSearchTerm(location.state.incomingSearch);
+      
+      // Optional: Clear the state so it doesn't re-apply if they refresh
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   // 1. Initial Load: Fetch everything once
   useEffect(() => {
