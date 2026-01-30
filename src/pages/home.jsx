@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import Article from '../componentPages/Article';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDirectory } from '../Data/MockData';
@@ -10,7 +10,8 @@ export default function Home() {
     const navigate = useNavigate();
     const { userData } = useAuth();
     // Fetch data - loading state is handled inline now
-    const { topDoctors, hospitals, loading: directoryLoading } = useDirectory(50);
+    const { topDoctors, hospitals, loading: directoryLoading } = useDirectory(10);
+    const [homeTab, setHomeTab] = useState('doctors');
 
     const categories = [
         { id: 1, name: "Top Doctors", icon: <Stethoscope size={28} />, color: "bg-blue-600", link: "/search" },
@@ -23,6 +24,15 @@ export default function Home() {
             navigate('/search', { state: { incomingSearch: e.target.value } });
         }
     };
+
+    const SignInBtn = () => (
+        <button
+            onClick={() => navigate('/login')}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition-colors"
+        >
+            Sign In
+        </button>
+    );
 
     // Reusable Loading Dots Component
     const InlineLoading = () => (
@@ -48,7 +58,7 @@ export default function Home() {
                     <div className="mt-4 md:mt-0">
                         <h1 className="text-xl md:text-2xl font-medium text-blue-100">Welcome,</h1>
                         <h1 className="text-2xl md:text-3xl font-black text-white leading-tight">
-                            {userData?.name || "Health Core User"}
+                            {userData?.name || <SignInBtn />}
                         </h1>
                         <p className="text-blue-50/80 font-medium">How's your health today?</p>
                     </div>
@@ -92,60 +102,90 @@ export default function Home() {
                         ))}
                     </div>
 
-                    {/* Top Doctors Section (Conditional Inner Loading) */}
-                    {/* Top Rated Doctors Section */}
-                    <section className="mb-12">
-                        <div className="px-8 flex justify-between items-center mb-6">
-                            <h3 className="font-black text-slate-900 text-xl tracking-tight uppercase">Top Rated Doctors</h3>
-                            <Link to="/search" className="text-blue-600 text-[11px] font-black flex items-center gap-1 hover:gap-2 transition-all uppercase tracking-widest">
-                                See All <ChevronRight size={16} />
-                            </Link>
-                        </div>
 
-                        <div className="px-2 md:px-4 lg:px-8">
-                            {directoryLoading ? (
-                                <InlineLoading />
-                            ) : (
-                                /* auto-fit logic: will wrap to new lines once items get smaller than 280px */
-                                <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-3">
-                                    {topDoctors.map((doc) => (
-                                        <DoctorCard
-                                            key={doc.id}
-                                            doc={doc}
-                                            navigate={() => navigate(`doctor/${doc.id}`)}
-                                        />
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                    </section>
 
-                    {/* Hospital Section */}
-                    <section className="mb-12">
-                        <div className="px-8 flex justify-between items-center mb-6">
-                            <h3 className="font-black text-slate-900 text-xl tracking-tight uppercase">Hospitals Near You</h3>
-                            <Link to="/search" className="text-blue-600 text-[11px] font-black flex items-center gap-1 hover:gap-2 transition-all uppercase tracking-widest">
-                                See All <ChevronRight size={16} />
-                            </Link>
-                        </div>
+                    {/* MOBILE TOGGLE - Only visible on small screens */}
+                    <div className="flex lg:hidden px-8 mb-6">
+                        {/* The Wrapper: No background, just a clean layout */}
+                        <div className="flex items-center gap-4 border-b border-slate-100 w-full">
+                            <button
+                                onClick={() => setHomeTab('doctors')}
+                                className={`pb-2 text-[11px] font-black uppercase tracking-[0.12em] transition-all relative ${homeTab === 'doctors' ? 'text-blue-600' : 'text-slate-400'
+                                    }`}
+                            >
+                                Doctors
+                                {/* The Active Indicator: A simple line instead of a box */}
+                                {homeTab === 'doctors' && (
+                                    <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 rounded-full" />
+                                )}
+                            </button>
 
-                        <div className="px-2 md:px-4 lg:px-8">
-                            {directoryLoading ? (
-                                <InlineLoading />
-                            ) : (
-                                /* Hospitals are usually wider, so we set a larger min-width (e.g., 350px) */
-                                <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6">
-                                    {hospitals.map((hosp) => (
-                                        <HospitalCard
-                                            key={hosp.id}
-                                            hosp={hosp}
-                                            navigate={() => navigate(`/hospital/${hosp.id}`)}
-                                        />
-                                    ))}
-                                </div>
-                            )}
+                            <button
+                                onClick={() => setHomeTab('hospitals')}
+                                className={`pb-2 text-[11px] font-black uppercase tracking-[0.12em] transition-all relative ${homeTab === 'hospitals' ? 'text-blue-600' : 'text-slate-400'
+                                    }`}
+                            >
+                                Hospitals
+                                {homeTab === 'hospitals' && (
+                                    <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 rounded-full" />
+                                )}
+                            </button>
                         </div>
-                    </section>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-4">
+                        {/* DOCTOR SECTION */}
+                        <section className={`mb-12 ${homeTab === 'doctors' ? 'block' : 'hidden'} lg:block`}>
+                            <div className="px-8 flex justify-between items-center mb-6">
+                                <h3 className="font-black text-slate-900 text-xl tracking-tight uppercase">Top Rated Doctors</h3>
+                                <Link to="/search" className="text-blue-600 text-[11px] font-black flex items-center gap-1 hover:gap-2 transition-all uppercase tracking-widest">
+                                    See All <ChevronRight size={16} />
+                                </Link>
+                            </div>
+
+                            <div className="px-2 md:px-4 lg:px-8">
+                                {directoryLoading ? (
+                                    <InlineLoading />
+                                ) : (
+                                    <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-3">
+                                        {topDoctors.map((doc) => (
+                                            <DoctorCard
+                                                key={doc.id}
+                                                doc={doc}
+                                                navigate={() => navigate(`doctor/${doc.id}`)}
+                                            />
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </section>
+
+                        {/* HOSPITAL SECTION */}
+                        <section className={`mb-12 ${homeTab === 'hospitals' ? 'block' : 'hidden'} lg:block`}>
+                            <div className="px-8 flex justify-between items-center mb-6">
+                                <h3 className="font-black text-slate-900 text-xl tracking-tight uppercase">Hospitals Near You</h3>
+                                <Link to="/search" className="text-blue-600 text-[11px] font-black flex items-center gap-1 hover:gap-2 transition-all uppercase tracking-widest">
+                                    See All <ChevronRight size={16} />
+                                </Link>
+                            </div>
+
+                            <div className="px-2 md:px-4 lg:px-8">
+                                {directoryLoading ? (
+                                    <InlineLoading />
+                                ) : (
+                                    <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
+                                        {hospitals.map((hosp) => (
+                                            <HospitalCard
+                                                key={hosp.id}
+                                                hosp={hosp}
+                                                navigate={() => navigate(`/hospital/${hosp.id}`)}
+                                            />
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </section>
+                    </div>
 
                     <Article />
                 </div>
