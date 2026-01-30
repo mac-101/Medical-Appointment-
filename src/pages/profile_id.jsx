@@ -41,18 +41,8 @@ function ProfileId() {
     fetchProfile();
   }, [id]);
 
-  // FIX: Added return statement to InlineLoading
-  const InlineLoading = () => (
-    <div className="flex justify-center items-center py-20 space-x-2">
-      <div className="w-4 h-4 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-      <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-      <div className="w-4 h-4 bg-blue-400 rounded-full animate-bounce"></div>
-    </div>
-  );
 
-  if (loading) return <InlineLoading />;
-
-  if (!profileData) {
+  if (!loading && !profileData) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="text-center">
@@ -65,8 +55,8 @@ function ProfileId() {
     );
   }
 
-  // Consistent data formatting
-  const displayData = {
+  // 3. Fallback data while loading to prevent crashes
+  const displayData = profileData ? {
     name: profileData.name || profileData.fullName,
     specialty: isHospital ? "Multi-Specialty Care" : (profileData.specialty || "General Practitioner"),
     rating: profileData.rating || "5.0",
@@ -77,11 +67,11 @@ function ProfileId() {
       : `Dr. ${profileData.name || 'Provider'} is a certified health professional dedicated to patient care.`),
     availableDays: profileData.availableDays || ["Mon", "Tue", "Wed", "Thu", "Fri"],
     availabilityTime: profileData.availabilityTime || { start: "08:00", end: "17:00" }
-  };
+  } : null;
 
   return (
     <div className="min-h-screen bg-slate-50/50 pb-20 font-sans">
-      {/* HEADER SECTION */}
+      {/* HEADER SECTION - Now always visible */}
       <div className="sticky top-0 z-40 w-full bg-white/80 backdrop-blur-md border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-3 md:px-6 h-20 flex justify-between items-center">
           <div className="flex items-center gap-4">
@@ -100,99 +90,109 @@ function ProfileId() {
       </div>
 
       <div className="max-w-7xl mx-auto py-4 px-2 md:p-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
-          {/* LEFT COLUMN: PROFILE CARD */}
-          <div className="lg:col-span-1">
-            <div className="bg-white sticky top-28 rounded-xl overflow-hidden shadow-sm border border-slate-100">
-              <div className="aspect-[4/5] relative overflow-hidden">
-                <img src={displayData.image} alt={displayData.name} className="w-full h-full object-cover" />
-                <div className="absolute top-4 left-4 bg-[#0f172a]/80 backdrop-blur-md px-3 py-1 rounded-full border border-white/20">
-                  <div className="flex items-center gap-1.5 text-yellow-400">
-                    <Star size={12} fill="currentColor" />
-                    <span className="text-xs font-black text-white">{displayData.rating}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-8">
-                <span className="text-[10px] font-black text-blue-600 uppercase tracking-[0.2em] bg-blue-50 px-2 py-1 rounded">
-                  {displayData.specialty}
-                </span>
-                <h1 className="text-3xl font-black text-[#0f172a] uppercase tracking-tighter mt-3 leading-tight">
-                  {displayData.name}
-                </h1>
-
-                <div className="flex items-center gap-2 mt-4 text-slate-500">
-                  <MapPin size={16} className="text-blue-500" />
-                  <span className="text-xs font-bold uppercase tracking-wide truncate">{displayData.experience}</span>
-                </div>
-
-                <p className="mt-6 text-slate-500 text-sm leading-relaxed font-medium">
-                  {displayData.bio}
-                </p>
-
-                <div className="mt-8 pt-8 border-t border-slate-50 space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-slate-400 font-bold text-[10px] uppercase tracking-widest">
-                      <Clock size={14} /> Available Hours
+        {loading ? (
+          /* SHOW THIS WHILE LOADING */
+          <div className="flex flex-col items-center h-[60dvh] justify-center py-32">
+            <div className="flex space-x-2">
+              <div className="w-3 h-3 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+              <div className="w-3 h-3 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+              <div className="w-3 h-3 bg-blue-400 rounded-full animate-bounce"></div>
+            </div>
+          </div>
+        ) : (
+          /* SHOW THIS ONCE DATA IS READY */
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 scrollUP duration-500">
+            {/* LEFT COLUMN: PROFILE CARD */}
+            <div className="lg:col-span-1">
+              <div className="bg-white sticky top-28 rounded-xl overflow-hidden shadow-sm border border-slate-100">
+                <div className="aspect-[4/5] relative overflow-hidden">
+                  <img src={displayData.image} alt={displayData.name} className="w-full h-full object-cover" />
+                  <div className="absolute top-4 left-4 bg-[#0f172a]/80 backdrop-blur-md px-3 py-1 rounded-full border border-white/20">
+                    <div className="flex items-center gap-1.5 text-yellow-400">
+                      <Star size={12} fill="currentColor" />
+                      <span className="text-xs font-black text-white">{displayData.rating}</span>
                     </div>
-                    <span className="text-xs font-black text-blue-600 bg-blue-50 px-2 py-1 rounded-lg">
-                      {displayData.availabilityTime.start} - {displayData.availabilityTime.end}
-                    </span>
-                  </div>
-                  <div className="flex flex-wrap gap-1">
-                    {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(day => (
-                      <span key={day} className={`text-[9px] font-black uppercase px-2 py-1 rounded-md transition-colors ${displayData.availableDays.includes(day) ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-300'}`}>
-                        {day}
-                      </span>
-                    ))}
                   </div>
                 </div>
 
-                <button
-                  onClick={() => setBooking(true)}
-                  className="w-full mt-8 bg-blue-600 text-white py-5 rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-[#0f172a] transition-all flex items-center justify-center gap-2 shadow-xl shadow-blue-500/10 active:scale-95"
-                >
-                  Request Appointment <Check size={16} />
-                </button>
-              </div>
-            </div>
-          </div>
+                <div className="p-8">
+                  <span className="text-[10px] font-black text-blue-600 uppercase tracking-[0.2em] bg-blue-50 px-2 py-1 rounded">
+                    {displayData.specialty}
+                  </span>
+                  <h1 className="text-3xl font-black text-[#0f172a] uppercase tracking-tighter mt-3 leading-tight">
+                    {displayData.name}
+                  </h1>
 
-          {/* RIGHT COLUMN: REVIEWS & DEPTS */}
-          <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-slate-100 min-h-[500px]">
-              <div className="flex bg-slate-50 border-b border-slate-100 px-2 py-2">
-                <button
-                  onClick={() => setActiveTab('reviews')}
-                  className={`flex-1 py-4 flex items-center justify-center gap-3 font-black uppercase text-[10px] tracking-widest transition-all rounded-2xl
-                  ${activeTab === 'reviews' ? 'bg-white text-[#0f172a] shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
-                >
-                  <MessageSquare size={16} /> Patient Reviews
-                </button>
-                {isHospital && (
+                  <div className="flex items-center gap-2 mt-4 text-slate-500">
+                    <MapPin size={16} className="text-blue-500" />
+                    <span className="text-xs font-bold uppercase tracking-wide truncate">{displayData.experience}</span>
+                  </div>
+
+                  <p className="mt-6 text-slate-500 text-sm leading-relaxed font-medium">
+                    {displayData.bio}
+                  </p>
+
+                  <div className="mt-8 pt-8 border-t border-slate-50 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-slate-400 font-bold text-[10px] uppercase tracking-widest">
+                        <Clock size={14} /> Available Hours
+                      </div>
+                      <span className="text-xs font-black text-blue-600 bg-blue-50 px-2 py-1 rounded-lg">
+                        {displayData.availabilityTime.start} - {displayData.availabilityTime.end}
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-1">
+                      {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(day => (
+                        <span key={day} className={`text-[9px] font-black uppercase px-2 py-1 rounded-md transition-colors ${displayData.availableDays.includes(day) ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-300'}`}>
+                          {day}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
                   <button
-                    onClick={() => setActiveTab('department')}
-                    className={`flex-1 py-4 flex items-center justify-center gap-3 font-black uppercase text-[10px] tracking-widest transition-all rounded-2xl
-                    ${activeTab === 'department' ? 'bg-white text-[#0f172a] shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                    onClick={() => setBooking(true)}
+                    className="w-full mt-8 bg-blue-600 text-white py-5 rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-[#0f172a] transition-all flex items-center justify-center gap-2 shadow-xl shadow-blue-500/10 active:scale-95"
                   >
-                    <LayoutDashboard size={16} /> Facilities
+                    Request Appointment <Check size={16} />
                   </button>
-                )}
+                </div>
               </div>
+            </div>
 
-              <div className="p-2">
-                {activeTab === 'reviews' ? (
-                  <Reviews targetId={id} />
-                ) : (
-                  <Departments selectedDepts={profileData.departments || []} />
-                )}
+            {/* RIGHT COLUMN: REVIEWS & DEPTS */}
+            <div className="lg:col-span-2 space-y-6">
+              <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-slate-100 min-h-[500px]">
+                <div className="flex bg-slate-50 border-b border-slate-100 px-2 py-2">
+                  <button
+                    onClick={() => setActiveTab('reviews')}
+                    className={`flex-1 py-4 flex items-center justify-center gap-3 font-black uppercase text-[10px] tracking-widest transition-all rounded-2xl
+                    ${activeTab === 'reviews' ? 'bg-white text-[#0f172a] shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                  >
+                    <MessageSquare size={16} /> Patient Reviews
+                  </button>
+                  {isHospital && (
+                    <button
+                      onClick={() => setActiveTab('department')}
+                      className={`flex-1 py-4 flex items-center justify-center gap-3 font-black uppercase text-[10px] tracking-widest transition-all rounded-2xl
+                      ${activeTab === 'department' ? 'bg-white text-[#0f172a] shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                    >
+                      <LayoutDashboard size={16} /> Facilities
+                    </button>
+                  )}
+                </div>
+
+                <div className="p-2">
+                  {activeTab === 'reviews' ? (
+                    <Reviews targetId={id} />
+                  ) : (
+                    <Departments selectedDepts={profileData.departments || []} />
+                  )}
+                </div>
               </div>
             </div>
           </div>
-
-        </div>
+        )}
       </div>
 
       {/* MODAL */}
@@ -201,7 +201,7 @@ function ProfileId() {
           onClose={() => setBooking(false)}
           specialistType={specialistType}
           specialistId={id}
-          specialistData={displayData} // Pass displayData for a better booking UI
+          specialistData={displayData}
         />
       )}
     </div>

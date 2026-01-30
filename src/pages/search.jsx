@@ -22,7 +22,7 @@ export default function FindDoctors() {
   useEffect(() => {
     if (location.state?.incomingSearch) {
       setSearchTerm(location.state.incomingSearch);
-      
+
       // Optional: Clear the state so it doesn't re-apply if they refresh
       window.history.replaceState({}, document.title);
     }
@@ -117,12 +117,12 @@ export default function FindDoctors() {
       <main className="max-w-7xl mx-auto">
         {loading ? (
           <div className="min-h-[60dvh] flex flex-col items-center justify-center bg-white">
-                <div className="flex space-x-2">
-                    <div className="w-4 h-4 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-                    <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-                    <div className="w-4 h-4 bg-blue-400 rounded-full animate-bounce"></div>
-                </div>
+            <div className="flex space-x-2">
+              <div className="w-4 h-4 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+              <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+              <div className="w-4 h-4 bg-blue-400 rounded-full animate-bounce"></div>
             </div>
+          </div>
         ) : (
           <div className="space-y-8">
             <div className="flex px-2 items-center justify-between">
@@ -135,11 +135,21 @@ export default function FindDoctors() {
             </div>
 
             {/* Results Grid */}
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+            <div
+              className={`grid gap-4 
+                 ${searchMode === 'doctor'
+                  ? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'
+                  : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+                }`}
+            >
               {filteredResults.slice(0, visibleCount).map((item) => (
                 searchMode === 'doctor'
                   ? <DoctorCard key={item.id} doc={item} />
-                  : <HospitalCard key={item.id} hosp={item} navigate={() => navigate(`/hospital/${item.id}`)} />
+                  : <HospitalCard
+                    key={item.id}
+                    hosp={item}
+                    navigate={() => navigate(`/hospital/${item.id}`)}
+                  />
               ))}
             </div>
 
@@ -151,8 +161,8 @@ export default function FindDoctors() {
                 </div>
                 <p className="text-slate-500 font-bold text-lg">No results found</p>
                 <p className="text-slate-400 text-sm mb-6">Try adjusting your search or category.</p>
-                <button 
-                  onClick={() => setSearchTerm("")} 
+                <button
+                  onClick={() => setSearchTerm("")}
                   className="px-6 py-2 bg-blue-600 text-white rounded-xl font-bold text-sm hover:bg-blue-700 transition-all"
                 >
                   Clear Search

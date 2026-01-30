@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Check, X, Loader2, Clock } from 'lucide-react';
-import Calendar from 'react-calendar';
+import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css';
 import { db } from '../../firebase.config';
 import { ref, get, push, set } from 'firebase/database';
 import { getAuth } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
 
 // 1. Helper function to turn "09:00" and "17:00" into ["09:00 AM", ...]
 const generateTimeSlots = (startTime, endTime) => {
@@ -31,6 +32,7 @@ const AppointmentBooking = ({ onClose, specialistId, specialistType }) => {
     const [loading, setLoading] = useState(true);
     const [bookingLoading, setBookingLoading] = useState(false);
     const [availableSlots, setAvailableSlots] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchDetails = async () => {
@@ -79,6 +81,7 @@ const AppointmentBooking = ({ onClose, specialistId, specialistType }) => {
             const newBookingRef = push(bookingsRef);
             await set(newBookingRef, bookingData);
             alert("Appointment Requested Successfully!");
+            navigate('/signUp');
             onClose();
         } catch (error) {
             alert("Booking failed");
@@ -90,7 +93,7 @@ const AppointmentBooking = ({ onClose, specialistId, specialistType }) => {
     return (
         <div onClick={onClose} className="fixed inset-0 z-50 lg:backdrop-blur-md bg-gray-900/40 flex items-end md:items-center justify-center ">
             <div onClick={(e) => e.stopPropagation()} className="relative scrollUP w-full max-w-xl bg-white shadow-2xl h-[90lvh] md:h-auto md:max-h-[90vh] rounded-t-[2.5rem] md:rounded-3xl overflow-hidden flex flex-col">
-                
+
                 <header className="p-8 border-b border-gray-50 flex justify-between items-center bg-white sticky top-0 z-10">
                     <div>
                         <h1 className="text-lg font-black text-gray-900 uppercase tracking-tighter">Confirm Schedule</h1>
@@ -116,14 +119,13 @@ const AppointmentBooking = ({ onClose, specialistId, specialistType }) => {
                                             const isSelected = selectedDept?.name === deptName || selectedDept === dept;
 
                                             return (
-                                                <button 
-                                                    key={i} 
-                                                    onClick={() => setSelectedDept(dept)} 
-                                                    className={`p-4 border-2 rounded-2xl text-[10px] font-bold uppercase transition-all ${
-                                                        isSelected 
-                                                        ? 'border-blue-600 bg-blue-50 text-blue-600' 
-                                                        : 'border-gray-50 bg-gray-50 text-gray-500 hover:border-blue-200'
-                                                    }`}
+                                                <button
+                                                    key={i}
+                                                    onClick={() => setSelectedDept(dept)}
+                                                    className={`p-4 border-2 rounded-2xl text-[10px] font-bold uppercase transition-all ${isSelected
+                                                            ? 'border-blue-600 bg-blue-50 text-blue-600'
+                                                            : 'border-gray-50 bg-gray-50 text-gray-500 hover:border-blue-200'
+                                                        }`}
                                                 >
                                                     {deptName}
                                                 </button>
@@ -137,14 +139,13 @@ const AppointmentBooking = ({ onClose, specialistId, specialistType }) => {
                                 <h3 className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-4">Available Slots</h3>
                                 <div className="grid grid-cols-3 gap-2">
                                     {availableSlots.length > 0 ? availableSlots.map((time) => (
-                                        <button 
-                                            key={time} 
-                                            onClick={() => setSelectedTime(time)} 
-                                            className={`py-3 rounded-xl border-2 text-[11px] font-bold transition-all ${
-                                                selectedTime === time 
-                                                ? 'border-blue-600 bg-blue-600 text-white' 
-                                                : 'border-gray-50 text-gray-400 hover:border-blue-200'
-                                            }`}
+                                        <button
+                                            key={time}
+                                            onClick={() => setSelectedTime(time)}
+                                            className={`py-3 rounded-xl border-2 text-[11px] font-bold transition-all ${selectedTime === time
+                                                    ? 'border-blue-600 bg-blue-600 text-white'
+                                                    : 'border-gray-50 text-gray-400 hover:border-blue-200'
+                                                }`}
                                         >
                                             {time}
                                         </button>

@@ -92,10 +92,12 @@ export default function AppointmentsList({ userRole }) {
   
 
   const InlineLoading = () => (
-    <div className="flex space-x-2 py-10 justify-center w-full">
-      <div className="w-3 h-3 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-      <div className="w-3 h-3 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-      <div className="w-3 h-3 bg-blue-400 rounded-full animate-bounce"></div>
+    <div className="w-full h-[70dvh] flex justify-center items-center">
+      <div className="flex space-x-2 py-10 justify-center w-full">
+        <div className="w-3 h-3 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+        <div className="w-3 h-3 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+        <div className="w-3 h-3 bg-blue-400 rounded-full animate-bounce"></div>
+      </div>
     </div>
   );
 
