@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDirectory } from '../Data/MockData';
 import { DoctorCard, HospitalCard } from '../components/doctorCard';
 import { useAuth } from '../services/useAuthContext';
-import { Search, AlertCircle, ChevronRight, Stethoscope, Truck, ClipboardList, Loader2 } from 'lucide-react';
+import { Search, AlertCircle, User, ChevronRight, Stethoscope, Truck, ClipboardList, Loader2 } from 'lucide-react';
 
 export default function Home() {
     const navigate = useNavigate();
@@ -49,11 +49,17 @@ export default function Home() {
             <header className="px-6 md:px-15 pt-12 pb-24 flex justify-between items-center max-w-7xl mx-auto bg-linear-to-br from-blue-700 via-blue-600 to-blue-500">
                 <div className='md:flex items-end gap-5 animate-in fade-in slide-in-from-left-5 duration-700'>
                     <div className="relative">
-                        <img
-                            src={userData?.image?.url || `https://ui-avatars.com/api/?name=${userData?.name || 'User'}&background=0D8ABC&color=fff`}
-                            alt="Profile"
-                            className="w-20 h-20 md:w-32 md:h-32 rounded-full border border-white/30 shadow-xl object-cover bg-blue-400"
-                        />
+                        {userData?.image?.url ? (
+                            <img
+                                src={userData.image.url}
+                                className="w-full h-full object-cover"
+                                alt="User"
+                            />
+                        ) : (
+                            <div className="w-full h-full bg-slate-100 flex items-center justify-center">
+                                <User size={24} className="text-slate-300" />
+                            </div>
+                        )}
                     </div>
                     <div className="mt-4 md:mt-0">
                         <h1 className="text-xl md:text-2xl font-medium text-blue-100">Welcome,</h1>
