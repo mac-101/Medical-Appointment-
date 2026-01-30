@@ -101,7 +101,7 @@ function ProfileId() {
           </div>
         ) : (
           /* SHOW THIS ONCE DATA IS READY */
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 scrollUP duration-500">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-in fade-in duration-500">
             {/* LEFT COLUMN: PROFILE CARD */}
             <div className="lg:col-span-1">
               <div className="bg-white sticky top-28 rounded-xl overflow-hidden shadow-sm border border-slate-100">
