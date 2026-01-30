@@ -12,6 +12,7 @@ import ScrollToTop from './components/ScrollTop.jsx'
 import FirstPage from "./componentPages/OnBoarding.jsx";
 import ProtectedRoute from "./services/protectedRoute.jsx";
 import { AuthProvider } from "./services/useAuthContext.jsx";
+import { Toaster } from "react-hot-toast";
 
 // IMPORT LAYOUT COMPONENTS 
 import Navbar from './components/Navbar.jsx'
@@ -32,6 +33,7 @@ function AppContent() {
 
   return (
     <div className="App min-h-screen flex flex-col">
+      <Toaster/>
       {!shouldHideNavbar && <Navbar />}
       <main className="grow">
         <Routes>

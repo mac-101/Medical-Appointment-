@@ -1,4 +1,5 @@
 import { Calendar, Clock, MapPin, X, CheckCircle2 } from "lucide-react";
+import toast from 'react-hot-toast';
 
 const getStatusStyle = (status) => {
     const s = status?.toLowerCase();
@@ -16,7 +17,7 @@ const AppointmentDetail = ({ data, isModal, onClick, onUpdateStatus, role }) => 
     const isNotCancelled = data?.status?.toLowerCase() !== 'cancelled';
 
     return (
-        <div className={`bg-white rounded-2xl h-full md:max-w-lg shadow-xl md:shadow-none overflow-hidden`}>
+        <div className={`bg-white rounded-4xl h-full md:max-w-lg shadow-xl md:shadow-none overflow-hidden`}>
             <div className="h-2 bg-blue-600"></div>
             <div className="p-6 md:p-8">
                 <div className="flex justify-between items-start">

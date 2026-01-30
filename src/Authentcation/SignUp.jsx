@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { PatientLogin } from "../componentPages/LoginsComponents.jsx";
+import toast from "react-hot-toast";
 
 
 // --- COMPONENT 1: GET STARTED (PLAIN) ---
@@ -50,7 +51,7 @@ const RoleSelection = ({ onRoleSelected, pickRole }) => {
   ];
 
   const handleRoleSubmit = () => {
-    if (!selectedRole) return alert("Please select a role first!");
+    if (!selectedRole) return toast.error("Please select a role first!");
     setIsProcessing(true);
     setTimeout(() => {
       onRoleSelected(selectedRole);

@@ -6,6 +6,8 @@ import { db } from '../../firebase.config';
 import { ref, get, push, set } from 'firebase/database';
 import { getAuth } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
+
 
 // 1. Helper function to turn "09:00" and "17:00" into ["09:00 AM", ...]
 const generateTimeSlots = (startTime, endTime) => {
@@ -58,9 +60,9 @@ const AppointmentBooking = ({ onClose, specialistId, specialistType }) => {
 
     // 4. Handle Confirm Booking
     const handleConfirm = async () => {
-        if (!auth.currentUser) return alert("Please login to book");
-        if (!selectedTime) return alert("Please select a time slot");
-        if (specialistType === 'hospital' && !selectedDept) return alert("Please select a department");
+        if (!auth.currentUser) return (toast("Please login to book"));
+        if (!selectedTime) return toast("Please select a time slot");
+        if (specialistType === 'hospital' && !selectedDept) return toast("Please select a department");
 
         setBookingLoading(true);
 
@@ -80,11 +82,12 @@ const AppointmentBooking = ({ onClose, specialistId, specialistType }) => {
             const bookingsRef = ref(db, 'bookings');
             const newBookingRef = push(bookingsRef);
             await set(newBookingRef, bookingData);
-            alert("Appointment Requested Successfully!");
-            navigate('/signUp');
-            onClose();
+            toast.success("Appointment Requested Successfully!");
+            setTimeout(() => {
+                onClose();
+            }, 1500);
         } catch (error) {
-            alert("Booking failed");
+            toast.error("Booking failed. Please try again.")
         } finally {
             setBookingLoading(false);
         }
@@ -123,8 +126,8 @@ const AppointmentBooking = ({ onClose, specialistId, specialistType }) => {
                                                     key={i}
                                                     onClick={() => setSelectedDept(dept)}
                                                     className={`p-4 border-2 rounded-2xl text-[10px] font-bold uppercase transition-all ${isSelected
-                                                            ? 'border-blue-600 bg-blue-50 text-blue-600'
-                                                            : 'border-gray-50 bg-gray-50 text-gray-500 hover:border-blue-200'
+                                                        ? 'border-blue-600 bg-blue-50 text-blue-600'
+                                                        : 'border-gray-50 bg-gray-50 text-gray-500 hover:border-blue-200'
                                                         }`}
                                                 >
                                                     {deptName}
@@ -143,8 +146,8 @@ const AppointmentBooking = ({ onClose, specialistId, specialistType }) => {
                                             key={time}
                                             onClick={() => setSelectedTime(time)}
                                             className={`py-3 rounded-xl border-2 text-[11px] font-bold transition-all ${selectedTime === time
-                                                    ? 'border-blue-600 bg-blue-600 text-white'
-                                                    : 'border-gray-50 text-gray-400 hover:border-blue-200'
+                                                ? 'border-blue-600 bg-blue-600 text-white'
+                                                : 'border-gray-50 text-gray-400 hover:border-blue-200'
                                                 }`}
                                         >
                                             {time}

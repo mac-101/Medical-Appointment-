@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { updateUserInfo } from '../services/userServices';
+import toast from 'react-hot-toast';
 import { Camera, Check, Loader2, Clock, Calendar, Building2, Search, X } from 'lucide-react';
 
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -104,9 +105,10 @@ const EditProfile = ({ userData }) => {
 
       await updateUserInfo(userData.uid, finalData);
       setStatus('success');
+      toast.success('Profile Updated')
       setTimeout(() => setStatus(null), 2000);
     } catch (err) {
-      alert("Error saving profile");
+      toast.error("Error saving profile");
     } finally {
       setLoading(false);
     }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from "../services/firebaseAuth"; // Path to your logic file
+import toast from 'react-hot-toast';
 
 const LoginPage = ({pickRole, create}) => {
   const [email, setEmail] = useState('');
@@ -17,11 +18,11 @@ const LoginPage = ({pickRole, create}) => {
     setIsLoading(false);
 
     if (result.success) {
-      console.log("Welcome back:", result.user.email);
+      toast.success("Welcome back:");
       navigate('/'); // Send them to the dashboard
     } else {
       // You can get more specific with error handling here
-      alert(`Login Failed: ${result.error}`);
+      toast.error(`Login Failed: ${result.error}`);
     }
   };
 

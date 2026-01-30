@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { db, auth } from '../../firebase.config';
 import { ref, onValue, update, query, orderByChild, equalTo, get } from 'firebase/database';
 import AppointmentDetail from "../components/AppointmentDetailContent";
+import toast from 'react-hot-toast';
 
 export default function AppointmentsList({ userRole }) {
   const navigate = useNavigate();
@@ -63,6 +64,7 @@ export default function AppointmentsList({ userRole }) {
     try {
       const appointmentRef = ref(db, `bookings/${appointmentId}`);
       await update(appointmentRef, { status: newStatus });
+      toast(newStatus && "Appointment " + newStatus);
       if (selectedAppointment?.id === appointmentId) {
         setSelectedAppointment(prev => ({ ...prev, status: newStatus }));
       }
@@ -178,7 +180,7 @@ export default function AppointmentsList({ userRole }) {
       {selectedAppointment && (
         <div className="lg:hidden fixed inset-0 z-50 flex items-end justify-center">
           <div className="absolute inset-0 bg-[#0f172a]/40 backdrop-blur-sm" onClick={() => setSelectedAppointment(null)} />
-          <div className="relative h-[85vh] w-full animate-in slide-in-from-bottom-full duration-500 ease-out">
+          <div className="relative h-[85vh]  w-full scrollUP duration-500 ease-out">
             <AppointmentDetail
               data={selectedAppointment}
               isMobile={true}

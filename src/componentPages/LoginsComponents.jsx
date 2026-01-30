@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import LoginPage from "../Authentcation/LoginIn.jsx";
 import { signUpUser } from '../services/firebaseAuth.jsx'
 import { Search } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const PatientLogin = ({ getUser, loggingIn, pickRole, clickCreate }) => {
     const [fullName, setFullName] = useState('');
@@ -84,9 +85,12 @@ const PatientLogin = ({ getUser, loggingIn, pickRole, clickCreate }) => {
         setIsLoading(false);
 
         if (result.success) {
-            navigate('/');
+            toast.success("Signed In Succesfuly")
+            setTimeout(() => {
+                navigate('/');
+            }, 2500);
         } else {
-            alert(result.error);
+            toast.error(result.error);
         }
     };
 

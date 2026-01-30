@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Phone, MapPin, AlertTriangle, Navigation, XCircle, Loader2 } from 'lucide-react';
-
+import toast from 'react-hot-toast';
 function Emergency() {
   const [address, setAddress] = useState('');
   const [coords, setCoords] = useState(null);
@@ -38,7 +38,7 @@ function Emergency() {
       }
     }, () => {
       setLoading(false);
-      alert("Please allow location access");
+      toast("Please allow location access");
     }, { enableHighAccuracy: true });
   };
 

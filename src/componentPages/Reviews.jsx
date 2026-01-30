@@ -3,6 +3,7 @@ import { Star, User, ThumbsUp, Send } from 'lucide-react';
 import { db } from '../../firebase.config.js';
 import { ref, push, get, onValue } from 'firebase/database';
 import { useAuth } from '../services/useAuthContext';
+import toast from 'react-hot-toast';
 
 const Reviews = ({ targetId }) => {
     const { user } = useAuth();
@@ -47,7 +48,7 @@ const Reviews = ({ targetId }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!user) return alert("Log in to review");
+        if (!user) return toast("Log in to review");
         if (!newComment.trim()) return;
 
         const reviewData = {

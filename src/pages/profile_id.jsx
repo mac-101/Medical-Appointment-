@@ -105,7 +105,7 @@ function ProfileId() {
             {/* LEFT COLUMN: PROFILE CARD */}
             <div className="lg:col-span-1">
               <div className="bg-white sticky top-28 rounded-xl overflow-hidden shadow-sm border border-slate-100">
-                <div className="aspect-[4/5] relative overflow-hidden">
+                <div className="aspect-4/5 relative overflow-hidden">
                   <img src={displayData.image} alt={displayData.name} className="w-full h-full object-cover" />
                   <div className="absolute top-4 left-4 bg-[#0f172a]/80 backdrop-blur-md px-3 py-1 rounded-full border border-white/20">
                     <div className="flex items-center gap-1.5 text-yellow-400">
