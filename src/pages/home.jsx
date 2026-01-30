@@ -46,33 +46,48 @@ export default function Home() {
     return (
         <div className="min-h-screen w-full bg-[#f8fafc]">
             {/* 1. Header (Always Visible) */}
-            <header className="px-6 md:px-15 pt-12 pb-24 flex justify-between items-center max-w-7xl mx-auto bg-linear-to-br from-blue-700 via-blue-600 to-blue-500">
-                <div className='md:flex items-end gap-5 animate-in fade-in slide-in-from-left-5 duration-700'>
+            <header
+                className="relative px-6 md:px-15 pt-12 pb-24 flex justify-between items-center max-w-7xl mx-auto overflow-hidden rounded-b-[3rem]"
+                style={{
+                    backgroundImage: `url("https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1200&auto=format&fit=crop")`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                }}
+            >
+                {/* Dark Overlay - Crucial for making text pop against an image */}
+                <div className="absolute inset-0 bg-blue-900/10 backdrop-blur-[2px]" />
+
+                <div className='relative md:flex items-end gap-5 animate-in fade-in slide-in-from-left-5 duration-700 z-10'>
                     <div className="relative">
                         {userData?.image?.url ? (
                             <img
                                 src={userData.image.url}
-                                className="w-full h-full object-cover"
+                                className="w-20 h-20 md:w-32 md:h-32 rounded-full border-4 border-white/20 shadow-2xl object-cover"
                                 alt="User"
                             />
                         ) : (
-                            <div className="w-full h-full bg-slate-100 flex items-center justify-center">
-                                <User size={24} className="text-slate-300" />
+                            <div className="w-20 h-20 md:w-32 md:h-32 rounded-full bg-blue-500/50 backdrop-blur-md border-4 border-white/20 flex items-center justify-center">
+                                <User size={40} className="text-white/50" />
                             </div>
                         )}
                     </div>
+
                     <div className="mt-4 md:mt-0">
-                        <h1 className="text-xl md:text-2xl font-medium text-blue-100">Welcome,</h1>
-                        <h1 className="text-2xl md:text-3xl font-black text-white leading-tight">
-                            {userData?.name || <SignInBtn />}
+                        <h1 className="text-xl md:text-2xl font-medium text-shadow-2xs text-blue-100/90">
+                            {userData?.role !== "hospital" ? "Hi!" : "Welcome Hospital Admin"}
                         </h1>
-                        <p className="text-blue-50/80 font-medium">How's your health today?</p>
+                        <h1 className="text-2xl md:text-3xl text-shadow-stone-950 font-black text-shadow-2xs text-white leading-tight drop-shadow-md">
+                            {userData?.role === "doctor" && "Dr."} {userData?.name || <SignInBtn />}
+                        </h1>
+                        <p className="text-white/80 text-shadow-stone-950 text-shadow-2xs font-medium italic">
+                            {userData?.role === "patient" ? "How's your health today?" : "Do you have an appointment?"}
+                        </p>
                     </div>
                 </div>
 
                 <Link
                     to="/emergency"
-                    className="relative flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 hover:bg-red-500 transition-all duration-300 group"
+                    className="relative z-10 flex items-center gap-2 px-6 py-3 bg-red-600/20 backdrop-blur-xl rounded-2xl border border-white/20 hover:bg-red-600 transition-all duration-300 group shadow-lg"
                 >
                     <AlertCircle size={20} className="text-white group-hover:animate-bounce" />
                     <span className="text-white font-bold text-xs tracking-widest uppercase">Emergency</span>
