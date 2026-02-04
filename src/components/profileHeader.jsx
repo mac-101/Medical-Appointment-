@@ -1,27 +1,50 @@
 import React from 'react';
+import { ShieldCheck, MapPin } from 'lucide-react';
 
 const ProfileHeader = ({ userData }) => {
   if (!userData) return null;
 
+  const isDoctor = userData.role?.toLowerCase() === 'doctor';
+
   return (
-    <div className="px-6 zoomIN md:px-15 pt-12 pb-24 flex flex-col md:flex-row gap-2 md:items-center max-w-7xl mx-auto bg-linear-to-br from-blue-700 via-blue-600 to-blue-500">
+    <div className="relative px-8 md:px-12 pt-16 pb-28 flex flex-col md:flex-row gap-8 items-center md:items-end max-w-7xl mx-auto  rounded-b-[3rem] shadow-2xl overflow-hidden">
+      
+      {/* Background Accent */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 rounded-full blur-[100px] -mr-32 -mt-32"></div>
 
-
-      <div className="relative">
+      {/* Profile Image with Verification Badge */}
+      <div className="relative shrink-0">
         <img
-          src={userData.image?.url || "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150&h=150"}
+          src={userData.image?.url || "https://images.unsplash.com/photo-1559839734-2b71f1536780?q=80&w=200&h=200&auto=format&fit=crop"}
           alt="Profile"
-          className="w-15 h-15 md:w-32 md:h-32 rounded-full border-4 border-white/30 shadow-lg object-cover"
+          className="w-32 h-32 md:w-40 md:h-40 rounded-[2.5rem]  shadow-2xl object-cover bg-slate-800"
         />
+        <div className="absolute -bottom-2 -right-2 bg-blue-600 text-white p-2 rounded-xl ">
+          <ShieldCheck size={20} />
+        </div>
       </div>
-      <div>
-        <h1 className="text-xl md:text-2xl font-medium text-blue-100">Hi,</h1>
-        <h1 className="text-2xl md:text-3xl font-bold text-white">          {userData.role === "doctor" && "Dr. "} {userData.name} {userData.role === "hospital" && "Hospital"}
+
+      {/* User Info */}
+      <div className="flex-1 text-center md:text-left pb-4">
+        <div className="flex flex-col md:flex-row md:items-center gap-2 mb-2">
+          <span className="inline-block px-3 py-1 bg-blue-500/10 text-blue-400 text-[12px] roboto-font rounded-lg border border-blue-500/20 w-fit mx-auto md:mx-0">
+            {userData.role} Account
+          </span>
+          {userData.location && (
+            <div className="flex items-center gap-1 justify-center md:justify-start text-slate-500 text-[10px] font-bold uppercase tracking-widest">
+              <MapPin size={12} /> {userData.location}
+            </div>
+          )}
+        </div>
+
+        <h1 className="text-3xl md:text-5xl text-slate-900 tracking-tighter font">
+          {isDoctor && "Dr. "}{userData.name || userData.fullName}
         </h1>
-        <p className="text-blue-50/80 font-medium">How's your health today?</p>
+        
+        <p className="mt-4 text-slate-400 font-medium text-lg italic">
+          {isDoctor ? `Specialized in ${userData.specialty}` : "Welcome back to your health portal."}
+        </p>
       </div>
-
-
     </div>
   );
 };

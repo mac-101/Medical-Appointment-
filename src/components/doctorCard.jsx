@@ -1,5 +1,4 @@
-import { ChevronRight, Star, MapPin } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Hospital, Star, MapPin } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export const DoctorCard = ({ doc }) => {
@@ -32,15 +31,20 @@ export const DoctorCard = ({ doc }) => {
                     {doc.specialty}
                 </span>
 
-                <div className="flex justify-between items-start gap-2">
+                <div className="items-start gap-2">
                     <h4 className="font-black text-slate-900 text-sm leading-tight group-hover:text-blue-600 transition-colors duration-300">
                         Dr. {doc.name}
                     </h4>
+                    <h4 className="flex py-1 items-center text-slate-900 text-sm leading-tight group-hover:text-blue-600 transition-colors duration-300">
+                        <Hospital className="text-slate-400 group-focus-within:text-blue-500 transition-colors" size={15} />
+                        {doc.hospital || "No Hospital Assigned"}
+                    </h4>
+                    <h4 className="flex py-1 items-center text-slate-900 text-sm leading-tight group-hover:text-blue-600 transition-colors duration-300">
+                        <MapPin className="text-slate-400 group-focus-within:text-blue-500 transition-colors" size={15} />
+                        {doc.location || "Unknown Location"}
+                    </h4>
+                    
 
-                    {/* Visual "Go" Indicator */}
-                    <div className="mt-0.5 p-1.5 rounded-full bg-slate-50 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                        <ChevronRight size={12} />
-                    </div>
                 </div>
             </div>
 
@@ -50,58 +54,3 @@ export const DoctorCard = ({ doc }) => {
     );
 };
 
-export const HospitalCard = ({ hosp, navigate }) => (
-
-    <div
-        key={hosp.id}
-        className=" group bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 flex flex-col"
-    >
-        {/* Image Area */}
-        <div className="relative h-48 overflow-hidden">
-            <img
-                src={hosp.image?.url || "https://via.placeholder.com/400x250"}
-                alt={hosp.name}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            />
-            <div className="absolute top-4 left-4">
-                <span className="bg-white/90 backdrop-blur-sm text-green-600 px-3 py-1 rounded-lg text-[10px] font-bold shadow-sm border border-slate-100 uppercase tracking-wider">
-                    Available Now
-                </span>
-            </div>
-        </div>
-
-        {/* Content Area */}
-        <div className="p-5 flex flex-col grow">
-            <div className="flex justify-between items-start mb-3">
-                <div>
-                    <h4 className="font-bold text-slate-900 text-lg leading-tight group-hover:text-blue-600 transition-colors">
-                        {hosp.name}
-                    </h4>
-                    <div className="flex items-center gap-1.5 mt-1 text-slate-500">
-                        <MapPin size={14} className="text-slate-400" />
-                        <span className="text-xs font-medium truncate max-w-45">{hosp.location}</span>
-                    </div>
-                </div>
-
-            </div>
-
-            {/* Action Buttons */}
-            <div className="mt-auto pt-4 flex items-center gap-3">
-                <Link
-                    to={`/hospital/${hosp.id}`}
-                    className="flex-1 text-center py-2.5 rounded-xl border border-slate-200 text-slate-600 text-sm font-bold hover:bg-slate-50 transition-colors"
-                >
-                    View Details
-                </Link>
-
-                <button
-                    onClick={navigate}
-                    className="flex-[1.5] bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-blue-200 transition-all active:scale-95 flex items-center justify-center gap-2"
-                >
-                    Book Appointment
-                    <ChevronRight size={16} />
-                </button>
-            </div>
-        </div>
-    </div>
-);

@@ -5,10 +5,6 @@ const ProfileSidebar = ({ userRole, activeSection, setActiveSection }) => {
   const menuItems = [
     { id: 'edit', icon: <Edit3 size={20} />, label: "Settings", roles: ['patient', 'doctor', 'hospital'] },
     { id: 'appointment', icon: <Calendar size={20} />, label: "Schedule", roles: ['patient', 'doctor', 'hospital'] },
-    // { id: 'patient', icon: <Users size={20} />, label: "Patients", roles: ['doctor', 'hospital'] },
-    // { id: 'records', icon: <Receipt size={20} />, label: "Records", roles: ['patient', 'doctor', 'hospital'] },
-    { id: 'department', icon: <LayoutDashboard size={20} />, label: "Departments", roles: ['hospital'] },
-    { id: 'reviews', icon: <Star size={20} />, label: "Feedback", roles: ['doctor', 'hospital'] },
   ].filter(item => item.roles.includes(userRole?.toLowerCase()));
 
   return (

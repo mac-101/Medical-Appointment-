@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Search, ArrowLeft, Calendar, Clock } from "lucide-react";
-import { useNavigate } from 'react-router-dom';
+import { Search, Calendar, Clock, Inbox, Loader2 } from "lucide-react";
 import { db, auth } from '../../firebase.config';
 import { ref, onValue, update, query, orderByChild, equalTo, get } from 'firebase/database';
 import AppointmentDetail from "../components/AppointmentDetailContent";
 import toast from 'react-hot-toast';
 
 export default function AppointmentsList({ userRole }) {
-  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [appointments, setAppointments] = useState([]);
@@ -17,178 +15,118 @@ export default function AppointmentsList({ userRole }) {
     const userId = auth.currentUser?.uid;
     if (!userId) return;
 
-    const appointmentsRef = ref(db, 'bookings');
-    const isSpecialist = userRole?.toLowerCase() === 'doctor' || userRole?.toLowerCase() === 'hospital';
-    const roleKey = isSpecialist ? 'specialistId' : 'patientId';
+    const isDoctor = userRole?.toLowerCase() === 'doctor';
+    const q = query(ref(db, 'bookings'), orderByChild(isDoctor ? 'specialistId' : 'patientId'), equalTo(userId));
 
-    const q = query(appointmentsRef, orderByChild(roleKey), equalTo(userId));
-
-    const unsubscribe = onValue(q, async (snapshot) => {
+    return onValue(q, async (snapshot) => {
       const data = snapshot.val();
-      if (data) {
-        const appointmentEntries = Object.entries(data);
+      if (!data) { setAppointments([]); setLoading(false); return; }
 
-        const listWithNames = await Promise.all(
-          appointmentEntries.map(async ([id, value]) => {
-            let displayTitle = "";
+      const list = await Promise.all(Object.entries(data).map(async ([id, value]) => {
+        let displayTitle = value.specialistName || "Provider";
+        if (isDoctor) {
+          try {
+            const userSnap = await get(ref(db, `users/${value.patientId}`));
+            displayTitle = userSnap.exists() ? userSnap.val().name : "Patient";
+          } catch { displayTitle = "Patient Request"; }
+        }
+        return { id, ...value, displayTitle };
+      }));
 
-            // Use the ID check logic for 100% accuracy
-            if (value.patientId === userId) {
-              // I am the patient, show the doctor's name
-              displayTitle = value.specialistName || "Medical Provider";
-            } else {
-              // I am the doctor, fetch the patient's name
-              try {
-                const userSnap = await get(ref(db, `users/${value.patientId}`));
-                displayTitle = userSnap.exists() ? userSnap.val().name : "Unknown Patient";
-              } catch (err) {
-                displayTitle = "New Patient Request";
-              }
-            }
-
-            return { id, ...value, displayTitle };
-          })
-        );
-
-        setAppointments(listWithNames.reverse());
-      } else {
-        setAppointments([]);
-      }
+      setAppointments(list.reverse());
       setLoading(false);
     });
-
-    return () => unsubscribe();
   }, [userRole]);
 
-  const updateAppointmentStatus = async (appointmentId, newStatus) => {
+  const updateStatus = async (id, status) => {
     try {
-      const appointmentRef = ref(db, `bookings/${appointmentId}`);
-      await update(appointmentRef, { status: newStatus });
-      toast(newStatus && "Appointment " + newStatus);
-      if (selectedAppointment?.id === appointmentId) {
-        setSelectedAppointment(prev => ({ ...prev, status: newStatus }));
-      }
-    } catch (error) {
-      console.error("Failed to update status:", error);
-    }
+      await update(ref(db, `bookings/${id}`), { status });
+      toast.success(`Marked as ${status}`);
+      if (selectedAppointment?.id === id) setSelectedAppointment(prev => ({ ...prev, status }));
+    } catch (e) { toast.error("Update failed"); }
   };
 
-  const getStatusStyles = (status) => {
-    const s = status?.toLowerCase();
-    const base = "px-3 py-1 rounded-full text-[10px] font-black uppercase border ";
-    if (s === "confirmed") return base + "bg-green-50 text-green-600 border-green-100";
-    if (s === "pending") return base + "bg-amber-50 text-amber-600 border-amber-100";
-    if (s === "cancelled") return base + "bg-red-50 text-red-600 border-red-100";
-    return base + "bg-gray-50 text-gray-500 border-gray-100";
-  };
-
-  const filteredAppointments = appointments.filter((item) => {
-    const search = searchTerm.toLowerCase();
-    return (
-      item.displayTitle?.toLowerCase().includes(search) ||
-      item.specialty?.toLowerCase().includes(search) ||
-      item.department?.toLowerCase().includes(search)
-    );
-  });
-
-  
-
-  const InlineLoading = () => (
-    <div className="w-full h-[70dvh] flex justify-center items-center">
-      <div className="flex space-x-2 py-10 justify-center w-full">
-        <div className="w-3 h-3 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-        <div className="w-3 h-3 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-        <div className="w-3 h-3 bg-blue-400 rounded-full animate-bounce"></div>
-      </div>
-    </div>
+  const filtered = appointments.filter(a => 
+    a.displayTitle?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    a.specialty?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  if (loading) return <div className="h-64 flex items-center justify-center"><Loader2 className="animate-spin text-blue-600" /></div>;
+
   return (
-    <div className="w-full min-h-screen bg-white">
-      <header className="px-6 py-6 flex flex-col md:flex-row justify-between items-center gap-4 border-b border-slate-50 sticky top-0 bg-white/90 backdrop-blur-md z-10">
-        <div className="flex items-center gap-4 w-full md:w-auto">
-          <button onClick={() => navigate(-1)} className="p-2 hover:bg-slate-50 rounded-full text-[#0f172a]">
-            <ArrowLeft size={24} />
-          </button>
-          <h1 className="text-2xl font-black text-[#0f172a] tracking-tight uppercase">Appointments</h1>
-        </div>
-        <div className="relative w-full md:w-80">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-          <input
-            type="text"
-            placeholder="Search details..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full bg-slate-50 border border-slate-100 py-3 pl-12 pr-4 rounded-2xl outline-none focus:border-blue-500 transition-all text-sm font-medium"
-          />
-        </div>
-      </header>
+    <div className="w-full space-y-6">
+      {/* SEARCH BAR - SYSTEM STYLE */}
+      <div className="relative">
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+        <input
+          type="text"
+          placeholder="Filter by name or specialty..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full bg-slate-50 border border-slate-100 py-4 pl-12 pr-4 rounded-2xl outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all text-xs font-bold uppercase tracking-wider"
+        />
+      </div>
 
-      <main className="max-w-7xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <div className="lg:col-span-7 space-y-4">
-          
-          {loading ?
-            (
-              <InlineLoading />
-            )
-            :
-            (
-              filteredAppointments.map((appointment) => (
-                <div
-                  key={appointment.id}
-                  onClick={() => setSelectedAppointment(appointment)}
-                  className={`p-5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between group ${selectedAppointment?.id === appointment.id ? 'border-blue-500 bg-blue-50/30' : 'border-slate-100 bg-white hover:border-blue-200'}`}
-                >
-                  <div className="flex items-center gap-4">
-                    <div>
-                      <h3 className="font-bold text-[#0f172a]">{appointment.displayTitle}</h3>
-                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                        {appointment.specialty || appointment.department || "Consultation"}
-                      </p>
-                      <div className="flex gap-3 mt-2 text-[10px] font-bold text-blue-500">
-                        <span className="flex items-center gap-1"><Calendar size={12} /> {appointment.date}</span>
-                        <span className="flex items-center gap-1"><Clock size={12} /> {appointment.time}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className={getStatusStyles(appointment.status)}>{appointment.status}</div>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        {/* LIST VIEW */}
+        <div className="lg:col-span-7 space-y-3">
+          {filtered.length > 0 ? filtered.map((apt) => (
+            <button
+              key={apt.id}
+              onClick={() => setSelectedAppointment(apt)}
+              className={`w-full p-5 rounded-[2rem] border border-slate-50 hover:border-blue-100 hover:shadow-[0_20px_50px_rgba(8,112,184,0.08)] transition-all duration-500 flex items-center justify-between text-left`}
+            >
+              <div className="flex gap-4 items-center">
+                <div className={`p-3 rounded-2xl ${selectedAppointment?.id === apt.id ? 'bg-blue-500 text-white' : 'bg-slate-100 text-slate-500'}`}>
+                   <Calendar size={20} />
                 </div>
-              ))
-            )
-          }
+                <div>
+                  <h3 className="font-black text-slate-900 font text-lg">{apt.displayTitle}</h3>
+                  <div className="flex gap-3 mt-1 text-[9px] font-black text-blue-600 uppercase tracking-widest">
+                    <span className="flex items-center gap-1"><Clock size={10} /> {apt.time}</span>
+                    <span>•</span>
+                    <span>{apt.date}</span>
+                  </div>
+                </div>
+              </div>
+              <span className={`px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest border ${
+                apt.status === 'confirmed' ? 'bg-green-50 border-green-100 text-green-600' : 
+                apt.status === 'pending' ? 'bg-amber-50 border-amber-100 text-amber-600' : 'bg-slate-50 border-slate-100 text-slate-400'
+              }`}>
+                {apt.status}
+              </span>
+            </button>
+          )) : (
+            <div className="py-20 text-center border-2 border-dashed border-slate-100 rounded-[3rem]">
+              <Inbox className="mx-auto text-slate-200 mb-4" size={40} />
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">No Appointments Found</p>
+            </div>
+          )}
         </div>
 
+        {/* DETAIL VIEW (Desktop) */}
         <div className="hidden lg:block lg:col-span-5">
-          <div className="sticky top-28 h-[550px]">
+          <div className="sticky top-10">
             {selectedAppointment ? (
-              <AppointmentDetail
-                data={selectedAppointment}
-                isMobile={false}
-                onUpdateStatus={updateAppointmentStatus}
-                role={userRole}
-              />
+              <AppointmentDetail data={selectedAppointment} onUpdateStatus={updateStatus} role={userRole} />
             ) : (
-              <div className="h-full border-2 border-dashed border-slate-100 rounded-2xl flex items-center justify-center text-slate-300 flex-col p-10 text-center">
-                <Calendar size={48} className="mb-4 opacity-20" />
-                <p className="text-sm font-bold uppercase tracking-widest">Select an appointment</p>
+              <div className="h-64 border-2 border-dashed border-slate-100 rounded-[3rem] flex flex-col items-center justify-center text-slate-300">
+                <p className="text-[9px] font-black uppercase tracking-[0.3em]">Select Entry</p>
               </div>
             )}
           </div>
         </div>
-      </main>
+      </div>
 
+      {/* MOBILE MODAL */}
       {selectedAppointment && (
-        <div className="lg:hidden fixed inset-0 z-50 flex items-end justify-center">
-          <div className="absolute inset-0 bg-[#0f172a]/40 backdrop-blur-sm" onClick={() => setSelectedAppointment(null)} />
-          <div className="relative h-[85vh]  w-full scrollUP duration-500 ease-out">
-            <AppointmentDetail
-              data={selectedAppointment}
-              isMobile={true}
-              isModal={true}
-              onClick={() => setSelectedAppointment(null)}
-              onUpdateStatus={updateAppointmentStatus}
-              role={userRole}
-            />
+        <div className="lg:hidden fixed inset-0 z-[60] flex items-end">
+          <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setSelectedAppointment(null)} />
+          <div className="relative w-full bg-white rounded-t-[3rem] h-[85vh] overflow-hidden flex flex-col animate-in slide-in-from-bottom-full">
+            <div className="p-6 overflow-y-auto no-scrollbar">
+               <AppointmentDetail data={selectedAppointment} onUpdateStatus={updateStatus} role={userRole} isMobile={true} />
+            </div>
+            <button onClick={() => setSelectedAppointment(null)} className="m-6 p-4 bg-slate-100 rounded-2xl font-black text-[10px] uppercase tracking-widest">Close</button>
           </div>
         </div>
       )}

@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { PatientLogin } from "../componentPages/LoginsComponents.jsx";
 import toast from "react-hot-toast";
+import { Stethoscope, User2Icon } from "lucide-react";
 
 
 // --- COMPONENT 1: GET STARTED (PLAIN) ---
 const GetStarted = ({ onContinue, onLogin }) => {
-
 
   return (
     <div className="relative h-screen w-full bg-white flex flex-col items-center justify-between py-16 px-8 transition-all">
@@ -40,14 +40,13 @@ const GetStarted = ({ onContinue, onLogin }) => {
 };
 
 // --- COMPONENT 2: ROLE SELECTION (PLAIN) ---
-const RoleSelection = ({ onRoleSelected, pickRole }) => {
+const RoleSelection = ({ onRoleSelected, pickRole, goSign }) => {
   const [selectedRole, setSelectedRole] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
   const roles = [
-    { id: 'patient', title: 'Patient', desc: 'I want to book an appointment' },
-    { id: 'doctor', title: 'Doctor', desc: 'I want to manage my patients' },
-    { id: 'hospital', title: 'Hospital', desc: 'Management & Administration' },
+    { id: 'patient', title: 'Patient', desc: 'I want to book an appointment', icon: User2Icon },
+    { id: 'doctor', title: 'Doctor', desc: 'I want to manage my patients', icon: Stethoscope },
   ];
 
   const handleRoleSubmit = () => {
@@ -61,7 +60,7 @@ const RoleSelection = ({ onRoleSelected, pickRole }) => {
 
   return (
     <div className="min-h-screen w-full bg-white flex flex-col items-center py-16 px-8">
-      <div className='relative max-w-md mx-auto min-h-[70vh] w-full flex flex-col'>
+      <div className='relative max-w-2xl mx-auto min-h-[70vh] w-full flex flex-col'>
 
         <button onClick={pickRole} className="text-slate-400 mb-8 hover:text-slate-900 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -74,20 +73,23 @@ const RoleSelection = ({ onRoleSelected, pickRole }) => {
           <p className="text-slate-500 mt-2">Choose how you will use the platform</p>
         </div>
 
-        <div className="space-y-3 flex-1">
+        <div className="space-x-3 flex ">
 
           {roles.map((role) => (
             <button
               key={role.id}
               onClick={() => setSelectedRole(role.id)}
-              className={`w-full p-5 rounded-xl transition-all flex items-center space-x-4 text-left border ${selectedRole === role.id
-                ? "border-slate-900 bg-slate-50"
-                : "border-slate-100 bg-white hover:border-slate-200"
+              className={`w-full p-6 rounded-2xl transition-all flex flex-col items-start gap-4 text-left border-2 ${selectedRole === role.id
+                ? "border-slate-900 bg-slate-50 shadow-sm translate-y-[-2px]"
+                : "border-slate-100 bg-white hover:border-slate-300 hover:shadow-md"
                 }`}
             >
-              <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${selectedRole === role.id ? "border-slate-900" : "border-slate-300"
+              <div className={`w-5 h-5 rounded-full flex items-center justify-center transition-all ${selectedRole === role.id ? "" : ""
                 }`}>
-                {selectedRole === role.id && <div className="w-2.5 h-2.5 bg-slate-900 rounded-full" />}
+
+                <div className="rounded-full p-2">
+                  <role.icon size={50} className="text-black" />
+                </div>
               </div>
 
               <div>
@@ -97,6 +99,10 @@ const RoleSelection = ({ onRoleSelected, pickRole }) => {
             </button>
           ))}
         </div>
+
+        <p className="mt-8 text-sm text-slate-600">
+          Already have an account? <span onClick={goSign} className="text-blue-700 font-bold cursor-pointer hover:underline">Log in</span>
+        </p>
 
         <button
           onClick={handleRoleSubmit}
@@ -114,7 +120,7 @@ const RoleSelection = ({ onRoleSelected, pickRole }) => {
 // --- MAIN PAGE COMPONENT ---
 export default function SignupPage() {
   const [selectedRole, setSelectedRole] = useState(null);
-  const [currentStep, setCurrentStep] = useState('getStarted');
+  const [currentStep, setCurrentStep] = useState('selectRole');
   const location = useLocation();
 
   const handleStart = () => setCurrentStep('selectRole');
@@ -133,12 +139,12 @@ export default function SignupPage() {
 
   return (
     <div className="min-h-screen w-full bg-white">
-      {currentStep === 'getStarted' && (
+      {/* {currentStep === 'getStarted' && (
         <GetStarted onContinue={handleStart} onLogin={onLogin} />
-      )}
+      )} */}
 
       {currentStep === 'selectRole' && (
-        <RoleSelection onRoleSelected={handleRoleChoice} pickRole={() => setCurrentStep('getStarted')} />
+        <RoleSelection onRoleSelected={handleRoleChoice}  goSign={() => setCurrentStep('login')} />
       )}
 
       {currentStep === 'finalForm' && (
@@ -146,7 +152,7 @@ export default function SignupPage() {
       )}
 
       {currentStep === 'login' && (
-        <PatientLogin getUser={selectedRole} loggingIn={true} pickRole={() => setCurrentStep('getStarted')} clickCreate={() => setCurrentStep('finalForm')} />
+        <PatientLogin getUser={selectedRole} loggingIn={true} pickRole={() => setCurrentStep('selectRole')} clickCreate={() => setCurrentStep('finalForm')} />
       )}
     </div>
   );

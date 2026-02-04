@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { updateUserInfo } from '../services/userServices';
 import toast from 'react-hot-toast';
-import { Camera, Check, Loader2, Clock, Calendar, Building2, Search, X } from 'lucide-react';
+import { Camera, Check, User, Loader2, Clock, Calendar, Building2, Search, X } from 'lucide-react';
 
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const DEPT_OPTIONS = ["Addiction Medicine", "Adolescent Medicine", "Aerospace Medicine", "Allergy and Immunology",
@@ -152,23 +152,61 @@ const Header = ({ handleSave, loading, status, userData }) => (
   </div>
 );
 
-const ProfileSection = ({ previewUrl, handleImageChange, formData, userData }) => (
-  <div className="lg:col-span-4 flex flex-col items-center gap-6">
-    <div className="relative group w-48 h-48">
-      <div className="w-full h-full rounded-[3rem] overflow-hidden shadow-sm bg-slate-100">
-        {previewUrl ? <img src={previewUrl} className="w-full h-full object-cover" /> : <Camera className="m-auto mt-16 text-slate-300" size={40} />}
+const ProfileSection = ({ previewUrl, handleImageChange, formData, userData }) => {
+  // Logic: Only doctors/hospitals can change images
+  const canEditImage = userData?.role?.toLowerCase() !== 'patient';
+
+  return (
+    <div className="lg:col-span-4 flex flex-col items-center gap-6">
+      {/* IMAGE BLOCK */}
+      <div className="relative group">
+        {previewUrl ? (
+          <div className="w-full h-full rounded-[3.5rem] overflow-hidden bg-slate-100 border-4 border-white shadow-xl shadow-slate-200/50">
+
+            <img
+              src={previewUrl}
+              alt="Profile"
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            />
+          </div>
+
+        ) : (
+          ""
+        )}
+
+        {/* UPLOAD OVERLAY - Only renders if NOT a patient */}
+        {canEditImage && (
+          <label className="absolute inset-0 flex items-center justify-center bg-slate-900/40 opacity-0 group-hover:opacity-100 rounded-[3.5rem] transition-all cursor-pointer backdrop-blur-[2px]">
+            <div className="bg-white/20 p-4 rounded-2xl backdrop-blur-md border border-white/30">
+              <Camera className="text-white" size={28} />
+            </div>
+            <input
+              type="file"
+              className="hidden"
+              onChange={handleImageChange}
+              accept="image/*"
+            />
+          </label>
+        )}
       </div>
-      <label className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 rounded-[3rem] transition-all cursor-pointer">
-        <Camera className="text-white" size={32} />
-        <input type="file" className="hidden" onChange={handleImageChange} accept="image/*" />
-      </label>
+
+      {/* TEXT BLOCK */}
+      <div className="text-center">
+        <h3 className="text-xl font-black text-slate-900 uppercase tracking-tighter leading-tight">
+          {formData.name || "Identity Unset"}
+        </h3>
+
+        <div className="flex items-center justify-center gap-2 mt-2">
+          <span className="px-3 py-1 bg-slate-100 text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] rounded-lg border border-slate-200">
+            {userData?.role || 'Guest'}
+          </span>
+          {/* Visual "Matured" touch: Verification dot */}
+          <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(59,130,246,0.5)]"></span>
+        </div>
+      </div>
     </div>
-    <div className="text-center">
-      <h3 className="font-bold text-slate-900">{formData.name || "Set Name"}</h3>
-      <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mt-1">{userData?.role}</p>
-    </div>
-  </div>
-);
+  );
+};
 
 const FormSection = ({ formData, setFormData, userData, searchTerm, setSearchTerm, isOpen, setIsOpen, filteredOptions, toggleDay }) => (
   <div className="lg:col-span-8 space-y-8">

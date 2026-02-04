@@ -5,7 +5,6 @@ import { ref, get, query, orderByChild, equalTo, limitToFirst } from "firebase/d
 
 export const useDirectory = (limit = null) => {
   const [topDoctors, setTopDoctors] = useState([]);
-  const [hospitals, setHospitals] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -31,13 +30,7 @@ export const useDirectory = (limit = null) => {
         setTopDoctors(docs);
 
         // Fetch Hospitals
-        const hospitalsQuery = query(usersRef, ...getConstraints('hospital'));
-        const hospSnapshot = await get(hospitalsQuery);
-        const hosps = [];
-        hospSnapshot.forEach((child) => {
-          hosps.push({ id: child.key, ...child.val() });
-        });
-        setHospitals(hosps);
+       
 
       } catch (error) {
         console.error("Directory Fetch Error:", error);
@@ -49,5 +42,5 @@ export const useDirectory = (limit = null) => {
     fetchData();
   }, [limit]); // Re-run if limit changes
 
-  return { topDoctors, hospitals, loading };
+  return { topDoctors, loading };
 };

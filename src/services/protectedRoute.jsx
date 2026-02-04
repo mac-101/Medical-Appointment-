@@ -31,7 +31,7 @@ const ProtectedRoute = ({ children, element: Element }) => {
   }
 
   if (!user) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/signUp" state={{ from: location }} replace />;
   }
 
   // Inject userData into the child component automatically
