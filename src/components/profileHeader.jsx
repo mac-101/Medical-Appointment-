@@ -13,7 +13,8 @@ const ProfileHeader = ({ userData }) => {
       <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 rounded-full blur-[100px] -mr-32 -mt-32"></div>
 
       {/* Profile Image with Verification Badge */}
-      <div className="relative shrink-0">
+      {userData.role != 'patient' && (
+        <div className="relative shrink-0">
         <img
           src={userData.image?.url || "https://images.unsplash.com/photo-1559839734-2b71f1536780?q=80&w=200&h=200&auto=format&fit=crop"}
           alt="Profile"
@@ -23,6 +24,7 @@ const ProfileHeader = ({ userData }) => {
           <ShieldCheck size={20} />
         </div>
       </div>
+      )}
 
       {/* User Info */}
       <div className="flex-1 text-center md:text-left pb-4">

@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { MapPin, Hospital, User, ShieldCheck, Check, Clock, ArrowLeft, Loader2 } from 'lucide-react';
+import { MapPin, LogOut, Calendar, User, X, MenuIcon, Check, Clock, ArrowLeft, Loader2 } from 'lucide-react';
 import { db } from '../../firebase.config';
 import { ref, get } from 'firebase/database';
 import { Link } from 'react-router-dom';
+import { auth } from '../../firebase.config';
+import { signOut } from 'firebase/auth';
+import toast from 'react-hot-toast';
 import AppointmentBooking from '../components/AppointmentBooking';
 
 export default function ProfileId() {
@@ -12,6 +15,29 @@ export default function ProfileId() {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [booking, setBooking] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
+  const dropdownRef = useRef(null);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      toast.success("Signed out successfully");
+      navigate('/');
+    } catch (error) {
+      toast.error("Error signing out");
+    }
+  };
+
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -44,15 +70,59 @@ export default function ProfileId() {
           <button onClick={() => navigate(-1)} className="p-2 hover:bg-slate-100 rounded-full transition-colors">
             <ArrowLeft size={24} />
           </button>
-          <Link
-            to="/profile"
-            className="hidden md:flex items-center gap-3 p-1.5 pr-5 bg-slate-900 rounded-2xl hover:bg-blue-600 transition-all shadow-xl shadow-slate-200 active:scale-95"
-          >
-            <div className="w-8 h-8 bg-white/10 text-white rounded-xl flex items-center justify-center">
-              <User size={16} strokeWidth={2.5} />
-            </div>
-            <span className="text-[10px] roboto-font text-white  tracking-[0.15em]">Dashboard</span>
-          </Link>
+          {/* PROFILE DROPDOWN WRAPPER */}
+          <div className="relative" ref={dropdownRef}>
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="flex items-center gap-3 p-1.5 md:pl-4 md:bg-blue-600 rounded-2xl md:hover:scale-105 transition-all md:shadow-xl shadow-slate-200 active:scale-95 md:border-2 md:border-transparent md:focus:border-blue-500"
+            >
+              <span className="text-[13px] hidden md:block font-bold text-white tracking-tight">Account</span>
+              <div className="w-8 h-8 bg-white/10 hover:scale-110 text-black md:text-white rounded-xl flex items-center justify-center">
+                {isOpen ? <X size={16} /> : <MenuIcon size={16} strokeWidth={2.5} />}
+              </div>
+            </button>
+
+            {/* THE DROPDOWN BLOCK */}
+            {isOpen && (
+              <div className="absolute zoomIN right-0 mt-3 w-56 bg-white border border-slate-100 rounded-[2rem] shadow-2xl shadow-slate-200 p-2 animate-in fade-in zoom-in-95 duration-200">
+                <div className="px-4 py-3 border-b border-slate-50 mb-1">
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Quick Access</p>
+                </div>
+
+                <Link
+                  to="/profile"
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center gap-3 p-3 hover:bg-slate-50 rounded-2xl text-slate-700 transition-colors group"
+                >
+                  <div className="p-2 bg-blue-50 text-blue-600 rounded-lg group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                    <User size={16} />
+                  </div>
+                  <span className="text-sm font-bold">Dashboard</span>
+                </Link>
+
+                <Link
+                  to="/appointments"
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center gap-3 p-3 hover:bg-slate-50 rounded-2xl text-slate-700 transition-colors group"
+                >
+                  <div className="p-2 bg-blue-50 text-blue-600 rounded-lg group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                    <Calendar size={16} />
+                  </div>
+                  <span className="text-sm font-bold">Appointments</span>
+                </Link>
+
+                <button
+                  onClick={handleLogout}
+                  className="w-full flex items-center gap-3 p-3 hover:bg-red-50 rounded-2xl text-red-500 transition-colors group"
+                >
+                  <div className="p-2 bg-red-50 text-red-500 rounded-lg group-hover:bg-red-500 group-hover:text-white transition-colors">
+                    <LogOut size={16} />
+                  </div>
+                  <span className="text-sm font-bold">Logout</span>
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

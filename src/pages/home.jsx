@@ -14,9 +14,25 @@ export default function Home() {
   const [specialty, setSpecialty] = useState("");
   const [location, setLocation] = useState(""); // Added location state
   const [isOpen, setIsOpen] = useState(false);
-  const ALL_SPECIALTIES = [
-    "Cardiology", "Dentistry", "Dermatology", "General Practice", "Neurology",
-    "Obstetrics and Gynecology", "Pediatrics", "Psychiatry", "Urology"
+   const ALL_SPECIALTIES = [
+    "Addiction Medicine", "Adolescent Medicine", "Aerospace Medicine", "Allergy and Immunology",
+    "Anesthesiology", "Audiology", "Bariatric Surgery", "Cardiology", "Cardiothoracic Surgery",
+    "Child Psychiatry", "Chiropractic", "Clinical Genetics", "Colon and Rectal Surgery",
+    "Critical Care Medicine", "Cytopathology", "Dentistry", "Dermatology", "Diagnostic Radiology",
+    "Dietetics & Nutrition", "Emergency Medicine", "Endocrinology", "Family Medicine",
+    "Fertility Specialist", "Forensic Pathology", "Gastroenterology", "General Practice",
+    "General Surgery", "Geriatric Medicine", "Gynecologic Oncology", "Hematology",
+    "Hepatology", "Hospice and Palliative Medicine", "Infectious Disease", "Internal Medicine",
+    "Interventional Cardiology", "Medical Genetics", "Neonatology", "Nephrology",
+    "Neurology", "Neuropsychology", "Neurosurgery", "Nuclear Medicine", "Nursing",
+    "Obstetrics and Gynecology (OB-GYN)", "Occupational Medicine", "Oncology",
+    "Ophthalmology", "Optometry", "Oral and Maxillofacial Surgery", "Orthodontics",
+    "Orthopedic Surgery", "Otolaryngology (ENT)", "Pain Management", "Pathology",
+    "Pediatric Surgery", "Pediatrics", "Physical Medicine and Rehabilitation",
+    "Physical Therapy", "Plastic Surgery", "Podiatry", "Preventive Medicine",
+    "Psychiatry", "Psychology", "Pulmonology", "Radiation Oncology", "Radiology",
+    "Reproductive Endocrinology", "Rheumatology", "Sleep Medicine", "Sports Medicine",
+    "Thoracic Surgery", "Urology", "Vascular Surgery"
   ];
 
   useEffect(() => {

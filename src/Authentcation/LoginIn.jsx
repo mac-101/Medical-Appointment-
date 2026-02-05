@@ -37,7 +37,7 @@ const LoginPage = ({pickRole, create}) => {
           </button>
         
         <div className="mb-10 text-left">
-          <h1 className="text-4xl font-bold text-slate-900 tracking-tight">Sign In</h1>
+          <h1 className="text-4xl font-bold text-blue-700 tracking-tight">Sign In</h1>
           <p className="text-slate-500 mt-2">Enter your details to access Healthcore OS</p>
         </div>
 
@@ -72,10 +72,10 @@ const LoginPage = ({pickRole, create}) => {
           <button
             type="submit"
             disabled={isLoading}
-            className={`w-full py-4 mt-2 rounded-lg font-bold text-lg transition-all flex justify-center items-center ${
+            className={`w-full py-4 mt-10 rounded-lg font-bold text-lg transition-all flex justify-center items-center ${
               isLoading
-                ? "bg-slate-200 text-slate-400 cursor-not-allowed"
-                : "bg-[#0f172a] text-white hover:bg-[#1e293b] active:scale-[0.99]"
+                ? "bg-blue-200 text-slate-400 cursor-not-allowed"
+                : "bg-blue-700 text-white hover:bg-blue-800 active:scale-[0.99]"
             }`}
           >
             {isLoading ? "Signing in..." : "Sign In"}

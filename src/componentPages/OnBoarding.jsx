@@ -38,7 +38,7 @@ const Onboarding = ({ onFinish }) => {
   };
 
   return (
-    <div className="relative h-screen w-full overflow-hidden bg-black">
+    <div className="relative h-40 w-100 overflow-hidden bg-black">
       {/* BACKGROUND IMAGES LAYER */}
       {slides.map((slide, index) => (
         <div

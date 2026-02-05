@@ -60,7 +60,7 @@ const RoleSelection = ({ onRoleSelected, pickRole, goSign }) => {
 
   return (
     <div className="min-h-screen w-full bg-white flex flex-col items-center py-16 px-8">
-      <div className='relative max-w-2xl mx-auto min-h-[70vh] w-full flex flex-col'>
+      <div className='relative max-w-2xl mx-auto min-h-[80vh] w-full  h-full flex flex-col'>
 
         <button onClick={pickRole} className="text-slate-400 mb-8 hover:text-slate-900 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -69,7 +69,7 @@ const RoleSelection = ({ onRoleSelected, pickRole, goSign }) => {
         </button>
 
         <div className="mb-12 text-left">
-          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Select Role</h1>
+          <h1 className="text-3xl font text-blue-600 ">Select Role</h1>
           <p className="text-slate-500 mt-2">Choose how you will use the platform</p>
         </div>
 
@@ -80,15 +80,15 @@ const RoleSelection = ({ onRoleSelected, pickRole, goSign }) => {
               key={role.id}
               onClick={() => setSelectedRole(role.id)}
               className={`w-full p-6 rounded-2xl transition-all flex flex-col items-start gap-4 text-left border-2 ${selectedRole === role.id
-                ? "border-slate-900 bg-slate-50 shadow-sm translate-y-[-2px]"
-                : "border-slate-100 bg-white hover:border-slate-300 hover:shadow-md"
+                ? 'border-blue-200 bg-blue-50/30 shadow-sm'
+                : 'border-slate-50 bg-white hover:border-slate-200'
                 }`}
             >
               <div className={`w-5 h-5 rounded-full flex items-center justify-center transition-all ${selectedRole === role.id ? "" : ""
                 }`}>
 
                 <div className="rounded-full p-2">
-                  <role.icon size={50} className="text-black" />
+                  <role.icon size={50} className="text-blue-600" />
                 </div>
               </div>
 
@@ -107,7 +107,7 @@ const RoleSelection = ({ onRoleSelected, pickRole, goSign }) => {
         <button
           onClick={handleRoleSubmit}
           disabled={isProcessing}
-          className={`w-full py-4 rounded-xl font-bold text-lg transition-all mt-8 ${selectedRole ? "bg-slate-900 text-white active:scale-[0.98]" : "bg-slate-100 text-slate-400 cursor-not-allowed"
+          className={`w-full py-4 absolute bottom-4 rounded-xl font-bold text-lg transition-all mt-8 ${selectedRole ? "bg-blue-700 text-white active:scale-[0.98]" : "bg-blue-100 text-slate-400 cursor-not-allowed"
             }`}
         >
           {isProcessing ? "Loading..." : "Continue"}

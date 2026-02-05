@@ -17,8 +17,8 @@ const AppointmentDetail = ({ data, isModal, onClick, onUpdateStatus, role }) => 
     const isNotCancelled = data?.status?.toLowerCase() !== 'cancelled';
 
     return (
-        <div className={`bg-white rounded-4xl h-full md:max-w-lg shadow-xl md:shadow-none overflow-hidden`}>
-            <div className="h-2 bg-blue-600"></div>
+        <div className={`bg-white rounded-4xl h-full md:max-w-lg overflow-hidden`}>
+            {/* <div className="h-2 bg-blue-600"></div> */}
             <div className="p-6 md:p-8">
                 <div className="flex justify-between items-start">
                     <span className="text-[10px] font-bold text-blue-700 uppercase tracking-[0.2em] bg-blue-50 px-2 py-1 rounded">
