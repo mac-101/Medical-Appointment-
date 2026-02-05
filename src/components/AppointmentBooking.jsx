@@ -29,7 +29,6 @@ const AppointmentBooking = ({ onClose, specialistId, specialistType }) => {
   const auth = getAuth();
   const [date, setDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState(null);
-  const [selectedDept, setSelectedDept] = useState(null);
   const [specialistData, setSpecialistData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [bookingLoading, setBookingLoading] = useState(false);
@@ -60,7 +59,12 @@ const AppointmentBooking = ({ onClose, specialistId, specialistType }) => {
 
   // 4. Handle Confirm Booking
   const handleConfirm = async () => {
-    if (!auth.currentUser) return toast("Please login to book");
+    if (!auth.currentUser) {
+      navigate("/login")
+      toast("Please login to book");
+
+      return
+    }
 
     // Prevent self-booking
     if (auth.currentUser.uid === specialistId) {

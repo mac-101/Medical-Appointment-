@@ -1,14 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { MenuIcon, User, X, Activity, LogOut, ChevronDown, Calendar } from 'lucide-react';
+import { MenuIcon, User, X, Activity, LogOut, LogIn, Calendar } from 'lucide-react';
 import { auth } from '../../firebase.config';
-import { signOut } from 'firebase/auth';
+import { signOut, getAuth } from 'firebase/auth';
 import toast from 'react-hot-toast';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
+  const user = getAuth()
 
   // Handle Logout Logic
   const handleLogout = async () => {
@@ -20,6 +21,9 @@ export default function Navbar() {
       toast.error("Error signing out");
     }
   };
+  const signIn = () => {
+    navigate('/signUp')
+  }
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -69,36 +73,43 @@ export default function Navbar() {
                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Quick Access</p>
                 </div>
 
-                <Link
-                  to="/profile"
-                  onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-3 p-3 hover:bg-slate-50 rounded-2xl text-slate-700 transition-colors group"
-                >
-                  <div className="p-2 bg-blue-50 text-blue-600 rounded-lg group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                    <User size={16} />
-                  </div>
-                  <span className="text-sm font-bold">Dashboard</span>
-                </Link>
+                {user.currentUser && (
+                  <Link
+                    to="/profile"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center gap-3 p-3 hover:bg-slate-50 rounded-2xl text-slate-700 transition-colors group"
+                  >
+                    <div className="p-2 bg-blue-50 text-blue-600 rounded-lg group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                      <User size={16} />
+                    </div>
+                    <span className="text-sm font-bold">Dashboard</span>
+                  </Link>
+                )}
 
-                <Link
-                  to="/appointments"
-                  onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-3 p-3 hover:bg-slate-50 rounded-2xl text-slate-700 transition-colors group"
-                >
-                  <div className="p-2 bg-blue-50 text-blue-600 rounded-lg group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                    <Calendar size={16} />
-                  </div>
-                  <span className="text-sm font-bold">Appointments</span>
-                </Link>
+
+                {user.currentUser && (
+                  <Link
+                    to="/appointments"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center gap-3 p-3 hover:bg-slate-50 rounded-2xl text-slate-700 transition-colors group"
+                  >
+                    <div className="p-2 bg-blue-50 text-blue-600 rounded-lg group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                      <Calendar size={16} />
+                    </div>
+                    <span className="text-sm font-bold">Appointments</span>
+                  </Link>
+
+                )}
+
 
                 <button
-                  onClick={handleLogout}
-                  className="w-full flex items-center gap-3 p-3 hover:bg-red-50 rounded-2xl text-red-500 transition-colors group"
+                  onClick={user.currentUser ? (handleLogout) : (signIn)}
+                  className={`w-full flex items-center gap-3 p-3 transition-colors group ${user.currentUser ? 'hover:bg-red-50 rounded-2xl text-red-500' : 'hover:bg-blue-50 rounded-2xl text-blue-500'} `}
                 >
-                  <div className="p-2 bg-red-50 text-red-500 rounded-lg group-hover:bg-red-500 group-hover:text-white transition-colors">
-                    <LogOut size={16} />
+                  <div className={`p-2  group-hover:text-white transition-colors ${user.currentUser ? 'bg-red-50 text-red-500 rounded-lg group-hover:bg-red-500' : 'bg-blue-50 text-blue-500 rounded-lg group-hover:bg-blue-500'} `}>
+                    {user.currentUser?  <LogOut size={16} />: <LogIn size={16}/>}
                   </div>
-                  <span className="text-sm font-bold">Logout</span>
+                  <span className="text-sm font-bold">{user.currentUser ? 'Logout' : 'Sign Up'}</span>
                 </button>
               </div>
             )}
