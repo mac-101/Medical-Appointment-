@@ -16,9 +16,9 @@ const ProfileHeader = ({ userData }) => {
       {userData.role != 'patient' && (
         <div className="relative shrink-0">
         <img
-          src={userData.image?.url || "https://images.unsplash.com/photo-1559839734-2b71f1536780?q=80&w=200&h=200&auto=format&fit=crop"}
+          src={userData.image?.url || "https://api.dicebear.com/9.x/avataaars/svg?"}
           alt="Profile"
-          className="w-32 h-32 md:w-40 md:h-40 rounded-[2.5rem]  shadow-2xl object-cover bg-slate-800"
+          className="w-32 h-32 md:w-40 md:h-40 rounded-[2.5rem]  shadow-2xl object-cover "
         />
         <div className="absolute -bottom-2 -right-2 bg-blue-600 text-white p-2 rounded-xl ">
           <ShieldCheck size={20} />

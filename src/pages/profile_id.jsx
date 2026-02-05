@@ -133,7 +133,7 @@ export default function ProfileId() {
           <div className="md:col-span-7">
             <div className="bg-white p-4 rounded-4xl border border-slate-50 hover:border-blue-100 hover:shadow-[0_20px_50px_rgba(8,112,184,0.08)] transition-all duration-500">
               <img
-                src={profile.image?.url || "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1200"}
+                src={profile.image?.url || "https://api.dicebear.com/9.x/avataaars/svg?seed=leah"}
                 className="w-full aspect-square object-cover rounded-[1.5rem]"
                 alt=""
               />
