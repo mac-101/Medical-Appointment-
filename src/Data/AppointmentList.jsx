@@ -80,7 +80,7 @@ export default function AppointmentsList({ userRole }) {
   if (loading) return <div className="h-64 flex items-center justify-center"><Loader2 className="animate-spin text-blue-600" /></div>;
 
   return (
-    <div className="w-full p-2 space-y-6">
+    <div className={`w-full space-y-6 ${hide ? 'pt-4 px-2 md:px-4' : ''}`}>
       {hide && (
         <div>
           <button onClick={() => navigate(-1)} className="p-2 hover:bg-slate-100 rounded-full transition-colors">

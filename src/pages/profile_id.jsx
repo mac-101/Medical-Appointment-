@@ -126,7 +126,7 @@ export default function ProfileId() {
         </div>
       </div>
 
-      <main className="max-w-5xl mx-auto py-10 px-4">
+      <main className="max-w-5xl mx-auto py-5 px-4">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-8">
 
           {/* LEFT: IMAGE & STATS */}

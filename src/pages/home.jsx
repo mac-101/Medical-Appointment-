@@ -14,7 +14,7 @@ export default function Home() {
   const [specialty, setSpecialty] = useState("");
   const [location, setLocation] = useState(""); // Added location state
   const [isOpen, setIsOpen] = useState(false);
-   const ALL_SPECIALTIES = [
+  const ALL_SPECIALTIES = [
     "Addiction Medicine", "Adolescent Medicine", "Aerospace Medicine", "Allergy and Immunology",
     "Anesthesiology", "Audiology", "Bariatric Surgery", "Cardiology", "Cardiothoracic Surgery",
     "Child Psychiatry", "Chiropractic", "Clinical Genetics", "Colon and Rectal Surgery",
@@ -89,7 +89,7 @@ export default function Home() {
         </section>
       </header>
 
-      <main className="relative -mt-12 pb-10 md:pb-5 ">
+      <main className="relative -mt-12 pb-20 ">
         <div className="max-w-7xl bg-white rounded-t-[3.5rem] overflow-hidden mx-auto shadow-2xl border border-slate-100">
 
           {/* 2. FUNCTIONAL SEARCH AREA */}
@@ -165,25 +165,26 @@ export default function Home() {
                     ? "repeat(2, 1fr)" // Force exactly 2 columns on small mobile
                     : "repeat(auto-fill, minmax(200px, 1fr))" // Responsive "Discovery" blocks for desktop
                 }}
-              >                {topDoctors
-                .filter((doc) => {
-                  // 1. Check if specialty matches (or if specialty input is empty)
-                  const matchesSpecialty = specialty === "" ||
-                    doc.specialty.toLowerCase().includes(specialty.toLowerCase());
+              >
+                {topDoctors
+                  .filter((doc) => {
+                    // 1. Check if specialty matches (or if specialty input is empty)
+                    const matchesSpecialty = specialty === "" ||
+                      doc.specialty.toLowerCase().includes(specialty.toLowerCase());
 
-                  // 2. Check if location matches (or if location input is empty)
-                  const matchesLocation = location === "" ||
-                    doc.location.toLowerCase().includes(location.toLowerCase());
+                    // 2. Check if location matches (or if location input is empty)
+                    const matchesLocation = location === "" ||
+                      doc.location.toLowerCase().includes(location.toLowerCase());
 
-                  return matchesSpecialty && matchesLocation;
-                })
-                .map((doc) => (
-                  <DoctorCard
-                    key={doc.id}
-                    doc={doc}
-                    navigate={() => navigate(`doctor/${doc.id}`)}
-                  />
-                ))}
+                    return matchesSpecialty && matchesLocation;
+                  })
+                  .map((doc) => (
+                    <DoctorCard
+                      key={doc.id}
+                      doc={doc}
+                      navigate={() => navigate(`doctor/${doc.id}`)}
+                    />
+                  ))}
               </div>
             )}
           </section>

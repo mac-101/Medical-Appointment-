@@ -103,7 +103,7 @@ const AppointmentBooking = ({ onClose, specialistId, specialistType }) => {
 
   return (
     <div onClick={onClose} className="fixed md:relative inset-0 z-50 md:z-0 lg:backdrop-blur-md  flex items-end md:items-center justify-center ">
-      <div onClick={(e) => e.stopPropagation()} className="relative scrollUP w-full max-w-xl bg-white shadow-2xl h-[90lvh] md:h-auto md:max-h-[90vh] rounded-t-[2.5rem] md:rounded-3xl overflow-hidden flex flex-col">
+      <div onClick={(e) => e.stopPropagation()} className="relative scrollUP w-full max-w-xl bg-white shadow-sm h-[90lvh] md:h-auto md:max-h-[90vh] rounded-t-[2.5rem] md:rounded-3xl overflow-hidden flex flex-col">
 
         <header className="p-8 border-b border-gray-50 flex justify-between items-center bg-white sticky top-0 z-10">
           <div>

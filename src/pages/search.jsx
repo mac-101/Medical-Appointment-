@@ -79,7 +79,7 @@ export default function FindDoctors() {
             </div>
 
             {/* RESULTS GRID */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
               {filteredResults.slice(0, visibleCount).map((doc) => (
                 <DoctorCard key={doc.id} doc={doc} navigate={() => navigate(`/doctor/${doc.id}`)} />
               ))}
