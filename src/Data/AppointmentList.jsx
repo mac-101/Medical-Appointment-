@@ -82,9 +82,15 @@ export default function AppointmentsList({ userRole }) {
   return (
     <div className="w-full p-2 space-y-6">
       {hide && (
-        <button onClick={() => navigate(-1)} className="p-2 hover:bg-slate-100 rounded-full transition-colors">
+        <div>
+          <button onClick={() => navigate(-1)} className="p-2 hover:bg-slate-100 rounded-full transition-colors">
           <ArrowLeft size={24} />
         </button>
+
+        <h1 className="text-2xl font-bold text-slate-900">
+          {userRole === 'doctor' ? "Your Schedule" : "Your Appointments"}
+        </h1>
+        </div>
       )}
 
       <div className="relative">

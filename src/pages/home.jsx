@@ -89,8 +89,8 @@ export default function Home() {
         </section>
       </header>
 
-      <main className="relative -mt-12 pb-20 ">
-        <div className="max-w-7xl bg-white rounded-[3.5rem] overflow-hidden mx-auto shadow-2xl border border-slate-100">
+      <main className="relative -mt-12 pb-10 md:pb-5 ">
+        <div className="max-w-7xl bg-white rounded-t-[3.5rem] overflow-hidden mx-auto shadow-2xl border border-slate-100">
 
           {/* 2. FUNCTIONAL SEARCH AREA */}
           <div className="px-4 pt-12 pb-8 bg-slate-50/50 border-b border-slate-100">
@@ -163,7 +163,7 @@ export default function Home() {
                   display: "grid",
                   gridTemplateColumns: window.innerWidth < 640
                     ? "repeat(2, 1fr)" // Force exactly 2 columns on small mobile
-                    : "repeat(auto-fill, minmax(240px, 1fr))" // Responsive "Discovery" blocks for desktop
+                    : "repeat(auto-fill, minmax(200px, 1fr))" // Responsive "Discovery" blocks for desktop
                 }}
               >                {topDoctors
                 .filter((doc) => {
