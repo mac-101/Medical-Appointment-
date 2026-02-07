@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import heroImage from '../assets/hero.png'; 
+import FourImage from '../assets/Four.png'; 
+
 function Hero() {
     const [searchQuery, setSearchQuery] = useState('');
     
@@ -71,8 +72,8 @@ function Hero() {
             
             {/* Right Image/Illustration Section */}
             <div className='w-full md:w-[50%] h-full  rounded-lg p-5 mt-6 md:mt-0 md:ml-4 flex items-center justify-center '>
-                <div className='relative w-full h-64 md:h-full'>
-                   {/* <img src={heroImage} alt="Hero Illustration" className="w-full h-full object-cover rounded-lg" /> */}
+                <div className='relative w-full h-full md:h-full'>
+                   <img src={FourImage} alt="Hero Illustration" className="w-full h-full object-cover rounded-lg" />
                 </div>
             </div>
         </div>

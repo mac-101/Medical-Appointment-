@@ -4,7 +4,7 @@ const NavBAr = () => {
   const [open, setOpen] = useState(false)
 
   const links = [
-      { name: 'About Us', href: '#about' },
+      
     { name: 'How it Works', href: '#how' },
     { name: 'Contact', href: '#contact' },
   ]

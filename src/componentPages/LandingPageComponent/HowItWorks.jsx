@@ -187,7 +187,7 @@ const HowItWorks = () => {
         </div>
 
         {/* Stats Section */}
-        <div className="mt-20 bg-linear-to-r from-blue-50 to-indigo-50 rounded-2xl p-8">
+        {/* <div className="mt-20 bg-linear-to-r from-blue-50 to-indigo-50 rounded-2xl p-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div className="text-center p-4">
               <div className="text-3xl md:text-4xl font-bold text-blue-600 mb-2">
@@ -214,7 +214,7 @@ const HowItWorks = () => {
               <div className="text-gray-700 font-medium">Support Available</div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
