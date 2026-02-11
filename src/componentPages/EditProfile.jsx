@@ -196,6 +196,8 @@ const EditProfile = ({ userData }) => {
             )}
           </div>
 
+          {isDoctor && (
+
           <div className="space-y-2">
             <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest">Professional Bio</label>
             <textarea
@@ -204,6 +206,7 @@ const EditProfile = ({ userData }) => {
               onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
             />
           </div>
+      )}
 
           {/* AVAILABILITY */}
           {isDoctor && (
