@@ -52,10 +52,10 @@ const Hero = () => {
                 {/* <p className="text-xl max-w-sm text-blue-600 font-serif">
                     Make appointment with top doctors anytime, from any location.
                 </p> */}
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font  leading-tight mb-15">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font  leading-tight mb-15 reveal" data-animation="zoom-in" data-delay="0.2s">
                     Book Appointment With Specialist <br /> Anytime, Anywhere
                 </h1>
-                <div className="flex flex-col md:flex-row items-center justify-between w-full gap-6">
+                <div className="flex flex-col md:flex-row items-center justify-between w-full gap-6 reveal" data-animation="zoom-in" data-delay="0.2s">
                     <p className="text-sm  md:text-lg text-gray-200 max-w-xl mb-8">
                         Access top-tier health consultations from the comfort of your home or on the go.
                         Our platform connects you with experienced professionals around the clock.

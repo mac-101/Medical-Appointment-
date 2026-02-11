@@ -16,14 +16,14 @@ const Community = () => {
 
           {/* Section 1: Collaborations */}
           <div className="flex flex-col md:flex-row items-center gap-16">
-            <div className="w-full md:w-1/2">
+            <div className="w-full md:w-1/2 reveal" data-animation="zoom-in" data-delay="0.2s">
               <img
                 src="https://api.dicebear.com/9.x/avataaars/svg?seed=leah"
                 className="rounded-3xl h-96 w-full object-cover shadow-xs"
                 alt="Collab"
               />
             </div>
-            <div className="md:w-1/2">
+            <div className="md:w-1/2 reveal" data-animation="fade-right" data-delay="0.2s">
               <h3 className="text-3xl font-bold mb-6">Discover Our Collaborations</h3>
               <p className="text-gray-500 mb-8 leading-relaxed">
                 Together, we work to enhance health services, promote wellness initiatives,
@@ -38,14 +38,14 @@ const Community = () => {
 
           {/* Section 2: Join as a Doctor (THE MIDDLE SECTION) */}
           <div className="flex flex-col md:flex-row-reverse items-center gap-16">
-            <div className="w-full md:w-1/2">
+            <div className="w-full md:w-1/2 reveal" data-animation="zoom-in" data-delay="0.2s">
               <img
                 src="https://api.dicebear.com/9.x/avataaars/svg?seed=happy"
                 className="rounded-3xl h-96 w-full object-cover shadow-xs"
                 alt="Doctor Joining"
               />
             </div>
-            <div className="md:w-1/2">
+            <div className="md:w-1/2 reveal" data-animation="fade-left" data-delay="0.2s">
               <h3 className="text-3xl font-bold mb-6">Are You a Medical Professional?</h3>
               <p className="text-gray-500 mb-8 leading-relaxed">
                 Join our elite network of doctors and healthcare providers. Help us
@@ -62,14 +62,14 @@ const Community = () => {
 
           {/* Section 3: Community Initiatives */}
           <div className="flex flex-col md:flex-row items-center gap-16">
-            <div className="w-full md:w-1/2">
+            <div className="w-full md:w-1/2 reveal" data-animation="zoom-in" data-delay="0.2s">
               <img
-                src="https://api.dicebear.com/9.x/avataaars/svg?seed"
+                src="https://api.dicebear.com/9.x/avataaars/svg?seed=initiatives"
                 className="rounded-3xl h-96 w-full object-cover shadow-xs"
                 alt="Initiatives"
               />
             </div>
-            <div className="md:w-1/2">
+            <div className="md:w-1/2 reveal" data-animation="fade-right" data-delay="0.2s">
               <h3 className="text-3xl font-bold mb-6">Explore Our Initiatives</h3>
               <p className="text-gray-500 mb-8 leading-relaxed">
                 From fitness and nutrition programs to mental health and chronic

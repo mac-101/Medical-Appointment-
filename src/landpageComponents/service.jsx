@@ -3,16 +3,16 @@ import { MapPin, BookIcon } from 'lucide-react';
 
 const Services = () => {
   return (
-    <section id='howitworks' className="py-20 bg-white">
+    <section id='howitworks' className="py-20 bg-white " >
       
 
       <div className="max-w-7xl mx-auto px-6 md:px-10 grid md:grid-cols-2 gap-16 items-center">
-        <div className="relative hidden md:block rounded-sm overflow-hidden shadow-sm max-h-150">
+        <div className="relative hidden md:block rounded-sm overflow-hidden shadow-sm max-h-150 reveal" data-animation="zoom-in" data-delay="0.2s">
           <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?q=80&w=1200&auto=format&fit=crop" alt="Cooking" />
           
         </div>
 
-        <div>
+        <div className="reveal" data-animation="fade-left" data-delay="0.2s">
           <span className="text-blue-600 font-semibold font px-4 py-1 rounded-full text-sm">
             Book an Appointment
           </span>

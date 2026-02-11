@@ -1,10 +1,10 @@
-import {useState} from 'react';
+import { useState } from 'react';
 
 
 
 const NewsCard = ({ image, title, tags, content }) => {
 
-  const [isOpen , setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const showmore = () => {
     setIsOpen(!isOpen);
   }
@@ -26,7 +26,7 @@ const NewsCard = ({ image, title, tags, content }) => {
           <p className="text-gray-600 mt-2">{content}</p>
 
         )}
-        
+
       </div>
     </div>
   )
@@ -68,7 +68,17 @@ const News = () => {
             gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))"
           }}
         >
-          {blogs.map((blog, idx) => <NewsCard key={idx} {...blog} />)}
+          {blogs.map((blog, idx) =>
+
+            <div
+              key={idx}
+              className='reveal' data-animation="fade-up" data-delay={`${idx * 0.2}s`}
+            >
+              <NewsCard key={idx} {...blog} />
+
+            </div>
+          )
+          }
         </div>
       </div>
     </section>
