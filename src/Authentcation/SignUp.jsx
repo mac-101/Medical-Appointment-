@@ -69,7 +69,7 @@ const RoleSelection = ({ onRoleSelected, pickRole, goSign }) => {
         </button>
 
         <div className="mb-12 text-left">
-          <h1 className="text-3xl font text-blue-600 ">Select Role</h1>
+          <h1 className="text-3xl font text-blue-600/90 ">Select Role</h1>
           <p className="text-slate-500 mt-2">Choose how you will use the platform</p>
         </div>
 
@@ -88,7 +88,7 @@ const RoleSelection = ({ onRoleSelected, pickRole, goSign }) => {
                 }`}>
 
                 <div className="rounded-full p-2">
-                  <role.icon size={50} className="text-blue-600" />
+                  <role.icon size={50} className="text-blue-500" />
                 </div>
               </div>
 
@@ -107,7 +107,7 @@ const RoleSelection = ({ onRoleSelected, pickRole, goSign }) => {
         <button
           onClick={handleRoleSubmit}
           disabled={isProcessing}
-          className={`w-full py-4 absolute bottom-4 rounded-xl font-bold text-lg transition-all mt-8 ${selectedRole ? "bg-blue-700 text-white active:scale-[0.98]" : "bg-blue-100 text-slate-400 cursor-not-allowed"
+          className={`w-full py-4 absolute bottom-4 rounded-xl font-bold text-lg transition-all mt-8 ${selectedRole ? "bg-blue-600 text-white active:scale-[0.98]" : "bg-blue-100 text-slate-400 cursor-not-allowed"
             }`}
         >
           {isProcessing ? "Loading..." : "Continue"}

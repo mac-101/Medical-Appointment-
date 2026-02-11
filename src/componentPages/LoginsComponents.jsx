@@ -113,7 +113,7 @@ const PatientLogin = ({ getUser, loggingIn, pickRole, clickCreate }) => {
               </button>
 
               <div className="mb-10">
-                <h1 className="text-4xl font-bold text-blue-700 tracking-tight">{displayTitle}</h1>
+                <h1 className="text-4xl font-bold text-blue-600/80 font">{displayTitle}</h1>
                 <p className="text-slate-500 mt-2">Enter your details to create an account</p>
               </div>
 
@@ -240,7 +240,7 @@ const PatientLogin = ({ getUser, loggingIn, pickRole, clickCreate }) => {
                   disabled={isLoading}
                   className={`p-4 mt-4 rounded-lg font-bold text-lg transition-all flex justify-center items-center ${isLoading
                     ? "bg-blue-200 text-slate-400"
-                    : "bg-blue-700 text-white hover:bg-blue-800 active:scale-[0.99]"
+                    : "bg-blue-600/80 text-white hover:bg-blue-700/80 active:scale-[0.99]"
                     }`}
                 >
                   {isLoading ? "Processing..." : "Create Account"}

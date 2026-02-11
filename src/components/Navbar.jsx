@@ -43,7 +43,16 @@ export default function Navbar() {
         {/* LOGO */}
         <Link to="/" className="flex items-center gap-2 group">
           <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white transition-transform group-hover:scale-105 shadow-lg shadow-slate-200">
-            <Activity size={20} strokeWidth={3} />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="2"
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
           </div>
           <h1 className="text-slate-900 font-black text-xl tracking-tighter uppercase">
             Health<span className="text-blue-600">Core</span>
@@ -107,7 +116,7 @@ export default function Navbar() {
                   className={`w-full flex items-center gap-3 p-3 transition-colors group ${user.currentUser ? 'hover:bg-red-50 rounded-2xl text-red-500' : 'hover:bg-blue-50 rounded-2xl text-blue-500'} `}
                 >
                   <div className={`p-2  group-hover:text-white transition-colors ${user.currentUser ? 'bg-red-50 text-red-500 rounded-lg group-hover:bg-red-500' : 'bg-blue-50 text-blue-500 rounded-lg group-hover:bg-blue-500'} `}>
-                    {user.currentUser?  <LogOut size={16} />: <LogIn size={16}/>}
+                    {user.currentUser ? <LogOut size={16} /> : <LogIn size={16} />}
                   </div>
                   <span className="text-sm font-bold">{user.currentUser ? 'Logout' : 'Sign Up'}</span>
                 </button>

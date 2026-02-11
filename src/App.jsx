@@ -9,7 +9,8 @@ import Appointment from "./pages/appointment.jsx";
 import Profile from "./pages/profile.jsx";
 import SignupPage from "./Authentcation/SignUp.jsx";
 import ScrollToTop from './components/ScrollTop.jsx'
-import FirstPage from "./componentPages/OnBoarding.jsx";
+import LandingPage from "./pages/landingPage.jsx";
+import FirstTimeWrapper from "./services/firstTimeWraper.jsx";
 import ProtectedRoute from "./services/protectedRoute.jsx";
 import { AuthProvider } from "./services/useAuthContext.jsx";
 import { Toaster } from "react-hot-toast";
@@ -51,7 +52,7 @@ function AppContent() {
               </ProtectedRoute>
             }
           />
-          <Route path="/landingpage" element={<FirstPage />} />
+          <Route path="/landingpage" element={<LandingPage />} />
           <Route path="/emergency" element={<Emergency />} />
           <Route path='/login' element={<SignupPage />} />
           <Route path="/signup" element={<SignupPage />} />
@@ -69,7 +70,9 @@ function App() {
     <AuthProvider>
       <Router>
         <ScrollToTop />
-        <AppContent /> {/* Now useLocation works because it's INSIDE Router */}
+        <FirstTimeWrapper>
+          <AppContent /> {/* Now useLocation works because it's INSIDE Router */}
+        </FirstTimeWrapper>
       </Router>
     </AuthProvider>
   );
