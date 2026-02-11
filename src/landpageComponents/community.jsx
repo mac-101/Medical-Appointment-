@@ -18,7 +18,7 @@ const Community = () => {
           <div className="flex flex-col md:flex-row items-center gap-16">
             <div className="w-full md:w-1/2">
               <img
-                src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80"
+                src="https://api.dicebear.com/9.x/avataaars/svg?seed=leah"
                 className="rounded-3xl h-96 w-full object-cover shadow-xs"
                 alt="Collab"
               />
@@ -40,7 +40,7 @@ const Community = () => {
           <div className="flex flex-col md:flex-row-reverse items-center gap-16">
             <div className="w-full md:w-1/2">
               <img
-                src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80"
+                src="https://api.dicebear.com/9.x/avataaars/svg?seed=happy"
                 className="rounded-3xl h-96 w-full object-cover shadow-xs"
                 alt="Doctor Joining"
               />
@@ -64,7 +64,7 @@ const Community = () => {
           <div className="flex flex-col md:flex-row items-center gap-16">
             <div className="w-full md:w-1/2">
               <img
-                src="https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?auto=format&fit=crop&q=80"
+                src="https://api.dicebear.com/9.x/avataaars/svg?seed"
                 className="rounded-3xl h-96 w-full object-cover shadow-xs"
                 alt="Initiatives"
               />

@@ -62,7 +62,12 @@ const News = () => {
           <h2 className="text-4xl font-bold mt-4 mb-4">Latest Health News and Tips</h2>
           <p className="text-gray-500">Stay informed with the latest updates, expert advice, and practical tips.</p>
         </div>
-        <div className="grid md:grid-cols-3 gap-4">
+        <div className="grid gap-4"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))"
+          }}
+        >
           {blogs.map((blog, idx) => <NewsCard key={idx} {...blog} />)}
         </div>
       </div>

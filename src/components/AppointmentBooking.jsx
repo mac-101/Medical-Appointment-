@@ -148,7 +148,7 @@ const AppointmentBooking = ({ onClose, specialistId, specialistType }) => {
             // UPDATED DISABLE LOGIC: Must have time AND (if hospital) must have dept
             disabled={!selectedTime || !date || bookingLoading}
             onClick={handleConfirm}
-            className="w-full bg-blue-600 disabled:bg-gray-200 text-white py-4 rounded-2xl text-sm font shadow-xl flex items-center justify-center gap-2 active:scale-95 transition-all"
+            className="w-full bg-blue-600 disabled:bg-gray-200 text-white py-4 rounded-2xl text-sm font  flex items-center justify-center gap-2 active:scale-95 transition-all"
           >
             {bookingLoading ? <Loader2 className="animate-spin" size={16} /> : <><Check size={16} /> Confirm Booking</>}
           </button>
