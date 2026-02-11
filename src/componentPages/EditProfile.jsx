@@ -28,6 +28,8 @@ const EditProfile = ({ userData }) => {
     availableDays: userData?.availableDays || []
   });
 
+  const isDoctor = userData.role === "doctor"
+
   // Filter specialty options based on search
   const filteredSpecialties = DEPT_OPTIONS.filter(opt =>
     opt.toLowerCase().includes(searchTerm.toLowerCase())
@@ -141,6 +143,8 @@ const EditProfile = ({ userData }) => {
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               />
             </div>
+
+            {isDoctor && (  
             <div className="space-y-2">
               <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest">Location</label>
               <input
@@ -219,6 +223,7 @@ const EditProfile = ({ userData }) => {
               ))}
             </div>
           </div>
+        )}
         </div>
       </div>
     </div>
