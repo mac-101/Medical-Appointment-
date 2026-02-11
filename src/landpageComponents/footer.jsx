@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const Footer = () => {
   return (
     <footer className="bg-gray-900 text-white pt-20 pb-10">
-      <div className="max-w-7xl mx-auto px-10">
+      <div className="max-w-7xl mx-auto px-5 md:px-10">
 
         {/* Updated CTA Bar for Appointments */}
         <div className="bg-blue-600 rounded-3xl p-10 flex flex-col md:flex-row justify-between items-center mb-24 -mt-32 shadow-2xl">
