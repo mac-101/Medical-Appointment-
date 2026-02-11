@@ -48,12 +48,12 @@ const Hero = () => {
             </nav>
 
             {/* Hero Content */}
-            <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 flex flex-col justify-center h-[calc(100%-100px)]">
-                <p className="text-xl max-w-sm text-blue-600 font-serif">
+            <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 flex flex-col justify-center md:justify-end md:pb-20  h-[calc(100%-100px)]">
+                {/* <p className="text-xl max-w-sm text-blue-600 font-serif">
                     Make appointment with top doctors anytime, from any location.
-                </p>
+                </p> */}
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font  leading-tight mb-15">
-                    Appointment With Specialist <br /> Anytime, Anywhere
+                    Book Appointment With Specialist <br /> Anytime, Anywhere
                 </h1>
                 <div className="flex flex-col md:flex-row items-center justify-between w-full gap-6">
                     <p className="text-sm  md:text-lg text-gray-200 max-w-xl mb-8">
