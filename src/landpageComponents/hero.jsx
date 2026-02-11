@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 const Hero = () => {
     return (
-        <header className="relative h-screen min-h-175 w-full text-white">
+        <header className="relative h-[100dvh] min-h-100 w-full text-white">
             {/* Background Image Overlay */}
             <div className="absolute inset-0 z-0">
                 <img
@@ -48,14 +48,14 @@ const Hero = () => {
             </nav>
 
             {/* Hero Content */}
-            <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 flex flex-col justify-center md:justify-end md:pb-20  h-[calc(100%-100px)]">
+            <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 flex flex-col justify-center md:justify-end md:pb-30 lg:pb-20  h-[calc(100%-100px)]">
                 {/* <p className="text-xl max-w-sm text-blue-600 font-serif">
                     Make appointment with top doctors anytime, from any location.
                 </p> */}
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font  leading-tight mb-15 reveal" data-animation="zoom-in" data-delay="0.2s">
                     Book Appointment With Specialist <br /> Anytime, Anywhere
                 </h1>
-                <div className="flex flex-col md:flex-row items-center justify-between w-full gap-6 reveal" data-animation="zoom-in" data-delay="0.2s">
+                <div className="flex flex-col lg:flex-row items-center justify-between w-full gap-6 reveal" data-animation="zoom-in" data-delay="0.2s">
                     <p className="text-sm  md:text-lg text-gray-200 max-w-xl mb-8">
                         Access top-tier health consultations from the comfort of your home or on the go.
                         Our platform connects you with experienced professionals around the clock.
