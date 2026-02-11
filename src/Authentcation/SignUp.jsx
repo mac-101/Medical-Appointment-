@@ -3,46 +3,48 @@ import { useLocation } from "react-router-dom";
 import { PatientLogin } from "../componentPages/LoginsComponents.jsx";
 import toast from "react-hot-toast";
 import { Stethoscope, User2Icon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 
-// --- COMPONENT 1: GET STARTED (PLAIN) ---
-const GetStarted = ({ onContinue, onLogin }) => {
+// // --- COMPONENT 1: GET STARTED (PLAIN) ---
+// const GetStarted = ({ onContinue, onLogin }) => {
 
-  return (
-    <div className="relative h-screen w-full bg-white flex flex-col items-center justify-between py-16 px-8 transition-all">
-      <div className="flex flex-col items-center mt-10 text-center">
-        {/* Minimal Logo Space */}
-        <div className="w-16 h-16 mb-6 flex items-center justify-center bg-slate-900 rounded-2xl text-white">
-          <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M19 3H5c-1.1 0-2.9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
-          </svg>
-        </div>
-        <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Healthcore OS</h1>
-        <p className="text-slate-500 font-medium mt-1 uppercase tracking-[0.2em] text-[10px]">Inspiring Health Everyday</p>
-      </div>
+//   return (
+//     <div className="relative h-screen w-full bg-white flex flex-col items-center justify-between py-16 px-8 transition-all">
+//       <div className="flex flex-col items-center mt-10 text-center">
+//         {/* Minimal Logo Space */}
+//         <div className="w-16 h-16 mb-6 flex items-center justify-center bg-slate-900 rounded-2xl text-white">
+//           <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
+//             <path d="M19 3H5c-1.1 0-2.9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
+//           </svg>
+//         </div>
+//         <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Healthcore OS</h1>
+//         <p className="text-slate-500 font-medium mt-1 uppercase tracking-[0.2em] text-[10px]">Inspiring Health Everyday</p>
+//       </div>
 
-      <div className="text-center">
-        <h2 className="text-2xl font-semibold text-slate-900">Stay healthy and fit</h2>
-        <p className="text-slate-500 mt-2">Let's get started with your account</p>
-      </div>
+//       <div className="text-center">
+//         <h2 className="text-2xl font-semibold text-slate-900">Stay healthy and fit</h2>
+//         <p className="text-slate-500 mt-2">Let's get started with your account</p>
+//       </div>
 
-      <div className="w-full max-w-sm space-y-3 mb-10">
-        <button onClick={onLogin} className="w-full py-4 bg-slate-900 text-white font-semibold text-lg rounded-xl hover:bg-slate-800 active:scale-[0.98] transition-all">
-          Sign In
-        </button>
-        <button onClick={onContinue} className="w-full py-4 bg-white border border-slate-200 text-slate-900 font-semibold text-lg rounded-xl hover:bg-slate-50 active:scale-[0.98] transition-all">
-          Create Account
-        </button>
-      </div>
-      <p className="absolute bottom-6 text-slate-400 text-[10px] font-medium uppercase tracking-widest">© Ayon Bepary Design</p>
-    </div>
-  );
-};
+//       <div className="w-full max-w-sm space-y-3 mb-10">
+//         <button onClick={onLogin} className="w-full py-4 bg-slate-900 text-white font-semibold text-lg rounded-xl hover:bg-slate-800 active:scale-[0.98] transition-all">
+//           Sign In
+//         </button>
+//         <button onClick={onContinue} className="w-full py-4 bg-white border border-slate-200 text-slate-900 font-semibold text-lg rounded-xl hover:bg-slate-50 active:scale-[0.98] transition-all">
+//           Create Account
+//         </button>
+//       </div>
+//       <p className="absolute bottom-6 text-slate-400 text-[10px] font-medium uppercase tracking-widest">© Ayon Bepary Design</p>
+//     </div>
+//   );
+// };
 
 // --- COMPONENT 2: ROLE SELECTION (PLAIN) ---
 const RoleSelection = ({ onRoleSelected, pickRole, goSign }) => {
   const [selectedRole, setSelectedRole] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const navigate = useNavigate()
 
   const roles = [
     { id: 'patient', title: 'Patient', desc: 'I want to book an appointment', icon: User2Icon },
@@ -62,7 +64,7 @@ const RoleSelection = ({ onRoleSelected, pickRole, goSign }) => {
     <div className="min-h-screen w-full bg-white flex flex-col items-center py-16 px-8">
       <div className='relative max-w-2xl mx-auto min-h-[80vh] w-full  h-full flex flex-col'>
 
-        <button onClick={pickRole} className="text-slate-400 mb-8 hover:text-slate-900 transition-colors">
+        <button onClick={() => navigate('/landingPage')} className="text-slate-400 mb-8 hover:text-slate-900 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
