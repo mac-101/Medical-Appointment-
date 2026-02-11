@@ -28,7 +28,7 @@ const EditProfile = ({ userData }) => {
     availableDays: userData?.availableDays || []
   });
 
-  const isDoctor = userData.role === "doctor"
+  const isDoctor = userData?.role === "doctor" || false;
 
   // Filter specialty options based on search
   const filteredSpecialties = DEPT_OPTIONS.filter(opt =>
