@@ -78,8 +78,6 @@ function ScrollObserver() {
           el.style.animationDelay = el.dataset.delay || '0s';
           el.style.animationDuration = el.dataset.duration || '0.6s';
           el.classList.add(animation, 'opacity-100');
-        } else {
-          el.classList.remove(animation, 'opacity-100');
         }
       });
     }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
