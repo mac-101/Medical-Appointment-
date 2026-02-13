@@ -7,6 +7,7 @@ import Search from "./pages/search.jsx";
 import Emergency from "./pages/emergency.jsx"
 import Appointment from "./pages/appointment.jsx";
 import Profile from "./pages/profile.jsx";
+import DocPage from "./landpageComponents/document.jsx";
 import SignupPage from "./Authentcation/SignUp.jsx";
 import ScrollToTop from './components/ScrollTop.jsx'
 import LandingPage from "./pages/landingPage.jsx";
@@ -56,6 +57,7 @@ function AppContent() {
           <Route path="/emergency" element={<Emergency />} />
           <Route path='/login' element={<SignupPage />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="/document" element={<DocPage />} />
           <Route path="/doctor/:id" element={<ProfileId />} />
           <Route path="/hospital/:id" element={<ProfileId />} />
         </Routes>
@@ -78,6 +80,8 @@ function ScrollObserver() {
           el.style.animationDelay = el.dataset.delay || '0s';
           el.style.animationDuration = el.dataset.duration || '0.6s';
           el.classList.add(animation, 'opacity-100');
+        }else {
+          el.classList.remove(animation, 'opacity-100');
         }
       });
     }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });

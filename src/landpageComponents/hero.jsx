@@ -9,7 +9,7 @@ const Hero = () => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <header className="relative h-screen min-h-175 w-full text-white">
+    <header className="relative h-dvh min-h-175 w-full text-white">
       {/* Background Image Overlay */}
       <div className="absolute inset-0 z-0">
         <img
@@ -21,7 +21,7 @@ const Hero = () => {
       </div>
 
       {/* Navbar */}
-      <div className={`relative w-full  z-400   `}>
+      <div className={`relative w-full  z-400 `}>
         <nav className="relative z-10 flex items-center justify-between px-4 md:px-10 py-6 max-w-7xl mx-auto">
           <div className="text-2xl font-bold flex items-center gap-2">
             <Link to="/" className="flex items-center gap-2 group">
@@ -45,7 +45,7 @@ const Hero = () => {
           <div className="hidden md:flex gap-8 text-sm font-medium">
             <a className='hover:scale-115 hover:text-blue-600' href="/signUp">Join as provider</a>
             <a className='hover:scale-115 hover:text-blue-600' href="/">Find care</a>
-            <a className='hover:scale-115 hover:text-blue-600' href="/docs">Docs</a>
+            <a className='hover:scale-115 hover:text-blue-600' href="/document">Docs</a>
             <a className='hover:scale-115 hover:text-blue-600' href="/">Sponsor</a>
           </div>
           <div className='flex items-center gap-2'>
@@ -65,7 +65,7 @@ const Hero = () => {
             <div className="flex flex-col text-center gap-2 text-lg w-full font-medium">
               <a className='hover:scale-105 hover:backdrop-blur-sm w-full p-4' href="/signUp">Join as provider</a>
               <a className='hover:scale-105 hover:backdrop-blur-sm w-full p-4' href="/">Find care</a>
-              <a className='hover:scale-105 hover:backdrop-blur-sm w-full p-4' href="/docs">Docs</a>
+              <a className='hover:scale-105 hover:backdrop-blur-sm w-full p-4' href="/document">Docs</a>
               <a className='hover:scale-105 hover:backdrop-blur-sm w-full p-4' href="/">Sponsor</a>
             </div>
 
@@ -74,7 +74,7 @@ const Hero = () => {
 
       </div>
       {/* Hero Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 flex flex-col justify-center  h-[calc(100%-100px)]">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 flex flex-col justify-center lg:justify-end h-[calc(100%-100px)]">
         {/* <p className="text-xl max-w-sm text-blue-600 font-serif">
                     Make appointment with top doctors anytime, from any location.
                 </p> */}
