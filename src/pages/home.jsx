@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDirectory } from '../Data/MockData';
 import { DoctorCard } from '../components/doctorCard';
@@ -8,11 +8,14 @@ import { Search, AlertCircle, User, ChevronRight, Stethoscope, MapPin, Activity,
 export default function Home() {
   const navigate = useNavigate();
   const { userData } = useAuth();
-  const dropdownRef = useRef(null); // Added for functional closing
+  const dropdownRef = useRef(null); 
 
-  const { topDoctors, loading: directoryLoading } = useDirectory(50);
+  const [limit, setLimit] = useState(30);
+
+  const { topDoctors, loading: directoryLoading } = useDirectory(limit);
+  
   const [specialty, setSpecialty] = useState("");
-  const [location, setLocation] = useState(""); // Added location state
+  const [location, setLocation] = useState(""); 
   const [isOpen, setIsOpen] = useState(false);
   const ALL_SPECIALTIES = [
     "Addiction Medicine", "Adolescent Medicine", "Aerospace Medicine", "Allergy and Immunology",
@@ -45,14 +48,30 @@ export default function Home() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleSearch = (e) => {
+  const handleLoadMore = () => {
+    setLimit(prevLimit => prevLimit + 10);
+  };
+  
+  const handleSearch = useCallback((e) => {
     if (e.key === 'Enter') {
       const searchTerm = specialty || location;
       if (searchTerm.trim() !== "") {
         navigate('/search', { state: { incomingSearch: searchTerm } });
       }
     }
-  };
+  }, [specialty, location, navigate]);
+
+  // IMPROVED: Memoized filter logic to prevent lag during typing
+  const filteredDoctors = useMemo(() => {
+    if (!topDoctors) return [];
+    return topDoctors.filter((doc) => {
+      const matchesSpecialty = specialty === "" || 
+        doc.specialty.toLowerCase().includes(specialty.toLowerCase());
+      const matchesLocation = location === "" || 
+        doc.location.toLowerCase().includes(location.toLowerCase());
+      return matchesSpecialty && matchesLocation;
+    });
+  }, [topDoctors, specialty, location]);
 
   const InlineLoading = () => (
     <div className="flex space-x-2 py-10 justify-center w-full">
@@ -67,7 +86,6 @@ export default function Home() {
 
       {/* 1. System Header */}
       <header className="px-6 md:px-16 pt-8 pb-20 flex justify-between items-center max-w-7xl mx-auto rounded-b-[3rem] shadow-xl">
-        {/* SIMPLE HERO SECTION */}
         <section className="px-8 pt-16 pb-10 text-center md:text-left md:flex items-center justify-between gap-10">
           <div className="md:w-3/5">
             <h2 className="text-5xl font md:text-7xl leading-16 text-slate-900  uppercase mb-6">
@@ -79,7 +97,6 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Visual side - simple & matured */}
           <div className="hidden md:flex md:w-2/5 justify-end">
             <div className="relative">
               <div className="absolute -inset-4 bg-blue-500 rounded-full blur-3xl"></div>
@@ -138,8 +155,6 @@ export default function Home() {
                 )}
               </div>
             </div>
-
-
           </div>
 
           {/* 3. DOCTOR GRID */}
@@ -154,7 +169,7 @@ export default function Home() {
               </Link>
             </div>
 
-            {directoryLoading ? (
+            {directoryLoading && filteredDoctors.length === 0 ? (
               <InlineLoading />
             ) : (
               <div
@@ -162,31 +177,30 @@ export default function Home() {
                 style={{
                   display: "grid",
                   gridTemplateColumns: window.innerWidth < 640
-                    ? "repeat(2, 1fr)" // Force exactly 2 columns on small mobile
-                    : "repeat(auto-fill, minmax(200px, 1fr))" // Responsive "Discovery" blocks for desktop
+                    ? "repeat(2, 1fr)" 
+                    : "repeat(auto-fill, minmax(200px, 1fr))" 
                 }}
               >
-                {topDoctors
-                  .filter((doc) => {
-                    // 1. Check if specialty matches (or if specialty input is empty)
-                    const matchesSpecialty = specialty === "" ||
-                      doc.specialty.toLowerCase().includes(specialty.toLowerCase());
-
-                    // 2. Check if location matches (or if location input is empty)
-                    const matchesLocation = location === "" ||
-                      doc.location.toLowerCase().includes(location.toLowerCase());
-
-                    return matchesSpecialty && matchesLocation;
-                  })
-                  .map((doc) => (
-                    <DoctorCard
-                      key={doc.id}
-                      doc={doc}
-                      navigate={() => navigate(`doctor/${doc.id}`)}
-                    />
-                  ))}
+                {filteredDoctors.map((doc) => (
+                  <DoctorCard
+                    key={doc.id}
+                    doc={doc}
+                    navigate={() => navigate(`doctor/${doc.id}`)}
+                  />
+                ))}
               </div>
             )}
+            
+            <div className="flex flex-col items-center mt-8 gap-4">
+              {directoryLoading && filteredDoctors.length > 0 && <InlineLoading />}
+              <button
+                onClick={handleLoadMore}
+                disabled={directoryLoading}
+                className="px-6 py-3 bg-blue-600 text-white rounded-full font-bold hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {directoryLoading ? "Loading..." : "Load More Doctors"}
+              </button>
+            </div>
           </section>
 
         </div>
