@@ -8,8 +8,6 @@ import { getAuth } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
-
-// 1. Helper function to turn "09:00" and "17:00" into ["09:00 AM", ...]
 const generateTimeSlots = (startTime, endTime) => {
   if (!startTime || !endTime) return [];
   const slots = [];
@@ -20,7 +18,7 @@ const generateTimeSlots = (startTime, endTime) => {
     slots.push(
       current.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })
     );
-    current.setMinutes(current.getMinutes() + 60); // 1 hour intervals
+    current.setMinutes(current.getMinutes() + 60); 
   }
   return slots;
 };
@@ -57,31 +55,28 @@ const AppointmentBooking = ({ onClose, specialistId, specialistType }) => {
     fetchDetails();
   }, [specialistId]);
 
-  // FUNCTIONALITY ADDITION: Disable dates not in availableDays
+  // FIXED FUNCTIONALITY: Matches the "Mon", "Tue" format from your EditProfile
   const isDayDisabled = ({ date, view }) => {
     if (view === 'month') {
-      // If specialist hasn't set any days, don't disable everything, or disable all (based on your preference)
+      // 1. If no data yet or no days selected, allow all to prevent total lockout
       if (!specialistData?.availableDays || specialistData.availableDays.length === 0) return false;
 
-      // Get the day name (e.g., "Monday")
-      const dayName = date.toLocaleDateString('en-US', { weekday: 'long' });
+      // 2. Get the short day name (Mon, Tue, etc.) to match your EditProfile DAYS array
+      const dayName = date.toLocaleDateString('en-US', { weekday: 'short' });
       
-      // Return true to DISABLE the tile if the day is NOT in the availableDays array
+      // 3. Disable if the day is NOT in the specialist's availableDays list
       return !specialistData.availableDays.includes(dayName);
     }
     return false;
   };
 
-  // 4. Handle Confirm Booking
   const handleConfirm = async () => {
     if (!auth.currentUser) {
       navigate("/login")
       toast("Please login to book");
-
       return
     }
 
-    // Prevent self-booking
     if (auth.currentUser.uid === specialistId) {
       return toast.error("You cannot book an appointment with yourself.");
     }
@@ -135,7 +130,7 @@ const AppointmentBooking = ({ onClose, specialistId, specialistType }) => {
                   onChange={setDate} 
                   value={date} 
                   minDate={new Date()} 
-                  tileDisabled={isDayDisabled} // ADDED FUNCTIONALITY
+                  tileDisabled={isDayDisabled} 
                   className="border-none shadow-none" 
                 />
               </div>
