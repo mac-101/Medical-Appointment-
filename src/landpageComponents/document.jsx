@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { Link } from 'react-router-dom';
 import { Shield, Activity, Users, Globe, ChevronRight, FileText, HeartPulse } from 'lucide-react';
 
 const DocPage = () => {
