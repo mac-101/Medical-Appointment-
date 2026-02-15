@@ -32,7 +32,7 @@ function AppContent() {
   const isSearchPage = location.pathname === '/search' || location.pathname === '/appointments';
 
   const shouldHideFooter = isProfilePage || isSignupPage || landing || document ;
-  const shouldHideNavbar = isSearchPage || isSignupPage || landing || isProfilePage;
+  const shouldHideNavbar = isSearchPage || isSignupPage || landing || isProfilePage || document;
 
   return (
     <div className="App min-h-screen flex flex-col">
