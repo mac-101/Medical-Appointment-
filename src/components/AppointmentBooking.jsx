@@ -57,6 +57,21 @@ const AppointmentBooking = ({ onClose, specialistId, specialistType }) => {
     fetchDetails();
   }, [specialistId]);
 
+  // FUNCTIONALITY ADDITION: Disable dates not in availableDays
+  const isDayDisabled = ({ date, view }) => {
+    if (view === 'month') {
+      // If specialist hasn't set any days, don't disable everything, or disable all (based on your preference)
+      if (!specialistData?.availableDays || specialistData.availableDays.length === 0) return false;
+
+      // Get the day name (e.g., "Monday")
+      const dayName = date.toLocaleDateString('en-US', { weekday: 'long' });
+      
+      // Return true to DISABLE the tile if the day is NOT in the availableDays array
+      return !specialistData.availableDays.includes(dayName);
+    }
+    return false;
+  };
+
   // 4. Handle Confirm Booking
   const handleConfirm = async () => {
     if (!auth.currentUser) {
@@ -80,7 +95,6 @@ const AppointmentBooking = ({ onClose, specialistId, specialistType }) => {
       specialistName: specialistData.name,
       date: date.toISOString().split('T')[0],
       time: selectedTime,
-      // CHANGE: Store the name string, not the whole object
       specialty: specialistData.specialty || specialistData.department || "General",
       status: 'pending',
       createdAt: new Date().toISOString()
@@ -117,10 +131,14 @@ const AppointmentBooking = ({ onClose, specialistId, specialistType }) => {
           {loading ? <div className="py-20 flex justify-center"><Loader2 className="animate-spin text-blue-600" /></div> : (
             <>
               <div className="modern-calendar-wrapper flex justify-center">
-                <Calendar onChange={setDate} value={date} minDate={new Date()} className="border-none shadow-none" />
+                <Calendar 
+                  onChange={setDate} 
+                  value={date} 
+                  minDate={new Date()} 
+                  tileDisabled={isDayDisabled} // ADDED FUNCTIONALITY
+                  className="border-none shadow-none" 
+                />
               </div>
-
-
 
               <section>
                 <h3 className="text-[15px] text-gray-400 mb-4">Available Slots</h3>
@@ -145,7 +163,6 @@ const AppointmentBooking = ({ onClose, specialistId, specialistType }) => {
 
         <footer className="p-6 bg-white border-t border-gray-50 sticky bottom-0">
           <button
-            // UPDATED DISABLE LOGIC: Must have time AND (if hospital) must have dept
             disabled={!selectedTime || !date || bookingLoading}
             onClick={handleConfirm}
             className="w-full bg-blue-600 disabled:bg-gray-200 text-white py-4 rounded-2xl text-sm font  flex items-center justify-center gap-2 active:scale-95 transition-all"
