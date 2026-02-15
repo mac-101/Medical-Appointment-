@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield, Activity, Users, Globe, ChevronRight, FileText } from 'lucide-react';
+import { Shield, Activity, Users, Globe, ChevronRight, FileText, HeartPulse } from 'lucide-react';
 
 const DocPage = () => {
   const sections = [
@@ -18,10 +18,10 @@ const DocPage = () => {
             Official Documentation
           </span>
           <h1 className="text-5xl md:text-6xl font-black tracking-tighter mb-6">
-            The HealTrust <span className="text-blue-600">Framework.</span>
+            The Health <span className="text-blue-600">Core</span> Protocol.
           </h1>
           <p className="text-xl text-slate-500 max-w-2xl leading-relaxed font-medium">
-            Defining the global standard for seamless medical aid, digital health rights, and provider-patient transparency.
+            Defining the Nigerian standard for verified medical specialist access, digital patient rights, and healthcare transparency.
           </p>
         </div>
       </header>
@@ -59,10 +59,10 @@ const DocPage = () => {
               </div>
               <div className="prose prose-slate max-w-none">
                 <p className="text-lg text-slate-600 leading-relaxed mb-6">
-                  At HealTrust, we view medical aid not as a premium service, but as a fundamental human right. Our protocol is designed to eliminate the <strong>"Access Gap"</strong>—the friction caused by geography, bureaucracy, and socio-economic status.
+                  At <strong>Health Core</strong>, we believe quality healthcare shouldn't depend on who you know. Our protocol is built to bridge the gap between Nigeria's top specialists and the patients who need them most.
                 </p>
                 <blockquote className="border-l-4 border-blue-600 pl-6 my-8 italic text-xl text-slate-700 font-medium">
-                  "Our mandate is to dissolve the distance between a patient’s symptom and a doctor’s solution."
+                  "Our mandate is to ensure every Nigerian has a verified specialist within reach, regardless of their location or status."
                 </blockquote>
               </div>
             </section>
@@ -79,13 +79,13 @@ const DocPage = () => {
                 <div className="bg-slate-50 p-8 rounded-[2.5rem] border border-slate-100">
                   <h4 className="font-black text-blue-600 uppercase tracking-widest text-xs mb-4">Verification Standards</h4>
                   <p className="text-slate-600 font-medium leading-relaxed">
-                    Every provider on our network undergoes the <strong>Multi-Tier Credentialing Process</strong>. This includes primary source verification of medical licenses, clinical history audits, and digital-first bedside manner training.
+                    Every doctor on the Health Core network undergoes rigorous vetting. We verify MDCN licenses, hospital affiliations, and professional certifications to ensure you're in safe hands.
                   </p>
                 </div>
                 <div className="bg-slate-50 p-8 rounded-[2.5rem] border border-slate-100">
-                  <h4 className="font-black text-blue-600 uppercase tracking-widest text-xs mb-4">Data Sovereignty</h4>
+                  <h4 className="font-black text-blue-600 uppercase tracking-widest text-xs mb-4">Digital Sovereignty</h4>
                   <p className="text-slate-600 font-medium leading-relaxed">
-                    Seamless care requires data mobility. Our infrastructure ensures your medical history follows you across our network, encrypted end-to-end, owned entirely by you.
+                    Your medical data is yours. Health Core uses secure cloud infrastructure to ensure your booking history and medical preferences are encrypted, private, and accessible only to you and your chosen providers.
                   </p>
                 </div>
               </div>
@@ -100,30 +100,30 @@ const DocPage = () => {
                 <h2 className="text-3xl font-black tracking-tight">03. Medical Aid Initiatives</h2>
               </div>
               <p className="text-lg text-slate-600 leading-relaxed mb-10">
-                We dedicate 15% of our platform’s operational capacity to public health initiatives. This is how we transform a booking site into a medical aid engine.
+                Health Core isn't just a directory; it's a social enterprise. We partner with local clinics to provide resources and digital literacy tools to healthcare providers across the country.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="p-6 border-2 border-slate-100 rounded-3xl">
-                  <h5 className="font-bold text-slate-900 mb-2">Pro-Bono Triage</h5>
-                  <p className="text-sm text-slate-500">Free digital screening for underserved communities during health outbreaks.</p>
+                  <h5 className="font-bold text-slate-900 mb-2">Community Triage</h5>
+                  <p className="text-sm text-slate-500">Connecting underserved rural areas to specialist consultations through our digital gateway.</p>
                 </div>
                 <div className="p-6 border-2 border-slate-100 rounded-3xl">
-                  <h5 className="font-bold text-slate-900 mb-2">Health Literacy Doc</h5>
-                  <p className="text-sm text-slate-500">Open-source medical resources verified by our lead specialists.</p>
+                  <h5 className="font-bold text-slate-900 mb-2">Health Core Open-Docs</h5>
+                  <p className="text-sm text-slate-500">A verified repository of medical articles focused on common health challenges in West Africa.</p>
                 </div>
               </div>
             </section>
 
             {/* FINAL CTA BOX */}
             <section className="bg-blue-600 rounded-[3rem] p-12 text-white text-center relative overflow-hidden">
-               <div className="relative z-10">
-                 <h2 className="text-3xl font-black mb-4">Be Part of the Ecosystem</h2>
-                 <p className="text-blue-100 mb-8 max-w-md mx-auto">Join the 5,000+ professionals and patients redefining medical aid.</p>
-                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <button className="bg-white text-blue-600 px-8 py-4 rounded-2xl font-black hover:scale-105 transition-all">Get Started</button>
-                    <button className="bg-blue-700 text-white px-8 py-4 rounded-2xl font-black border border-blue-500">Contact Board</button>
-                 </div>
-               </div>
+                <div className="relative z-10">
+                  <h2 className="text-3xl font-black mb-4">Join the Health Core Network</h2>
+                  <p className="text-blue-100 mb-8 max-w-md mx-auto">Help us redefine the standard of care for millions of Nigerians.</p>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                     <button className="bg-white text-blue-600 px-8 py-4 rounded-2xl font-black hover:scale-105 transition-all">Start Searching</button>
+                     <button className="bg-blue-700 text-white px-8 py-4 rounded-2xl font-black border border-blue-500">Partner With Us</button>
+                  </div>
+                </div>
             </section>
 
           </main>
