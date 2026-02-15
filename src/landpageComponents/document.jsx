@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Shield, Activity, Users, Globe, ChevronRight, FileText, HeartPulse } from 'lucide-react';
 
 const DocPage = () => {
@@ -9,8 +9,63 @@ const DocPage = () => {
     { id: 'standards', title: 'Collaboration Standards', icon: <Users size={20} /> }
   ];
 
+  const [isOpen, setIsOpen ] = useState(false)
+
   return (
     <div className="min-h-screen bg-white font-sans text-slate-900">
+      {/* Navbar */}
+      <div className={`relative w-full  z-400 `}>
+        <nav className="relative z-10 flex items-center justify-between px-4 md:px-10 py-6 max-w-7xl mx-auto">
+          <div className="text-2xl font-bold flex items-center gap-2">
+            <Link to="/" className="flex items-center gap-2 group">
+              <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white transition-transform group-hover:scale-105 shadow-lg shadow-slate-200">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2"
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+              </div>
+              <h1 className="text-black font-black text-xl tracking-tighter uppercase">
+                Health<span className="text-blue-600">Core</span>
+              </h1>
+            </Link>
+          </div>
+          <div className="hidden md:flex gap-8 text-sm font-medium">
+            <a className='hover:scale-115 hover:text-blue-600' href="/signUp">Join as provider</a>
+            <a className='hover:scale-115 hover:text-blue-600' href="/">Find care</a>
+            <a className='hover:scale-115 hover:text-blue-600' href="/document">Docs</a>
+            <a className='hover:scale-115 hover:text-blue-600' href="/">Sponsor</a>
+          </div>
+          <div className='flex items-center gap-2'>
+            <a href="/signUp" >
+              <button className="bg-gray-200/20 backdrop-blur-md px-6 py-2 rounded-full border border-white/30 hover:bg-white hover:text-blue-900 transition">
+                Sign Up
+              </button>
+            </a>
+            <button className='md:hidden' onClick={() => setIsOpen(!isOpen)}>
+              <MenuIcon />
+
+            </button>
+          </div>
+        </nav>
+        {isOpen && (
+          <div className={`text-white absolute top-22.9 md:hidden w-full ${isOpen && "bg-black/50 backdrop-blur-2xl"} `}>
+            <div className="flex flex-col text-center gap-2 text-lg w-full font-medium">
+              <a className='hover:scale-105 hover:backdrop-blur-sm w-full p-4' href="/signUp">Join as provider</a>
+              <a className='hover:scale-105 hover:backdrop-blur-sm w-full p-4' href="/">Find care</a>
+              <a className='hover:scale-105 hover:backdrop-blur-sm w-full p-4' href="/document">Docs</a>
+              <a className='hover:scale-105 hover:backdrop-blur-sm w-full p-4' href="/">Sponsor</a>
+            </div>
+
+          </div>
+        )}
+
+      </div>
       {/* HERO SECTION */}
       <header className="py-24 bg-slate-50 border-b border-slate-100">
         <div className="max-w-5xl mx-auto px-6">
