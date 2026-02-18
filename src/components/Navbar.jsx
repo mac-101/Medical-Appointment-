@@ -10,7 +10,7 @@ export default function Navbar() {
         {/* Logo - Always visible */}
         <Link to="/" className="text-xl font-black text-blue-600 tracking-tighter flex items-center gap-2">
           <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white text-sm">H</div>
-          <span>HealthCore</span>
+          <span>MedAccess</span>
         </Link>
         
         {/* Desktop Links - Hidden on Mobile */}
