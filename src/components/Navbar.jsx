@@ -54,8 +54,8 @@ export default function Navbar() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
             </svg>
           </div>
-          <h1 className="text-slate-900 font-black text-xl tracking-tighter uppercase">
-            Health<span className="text-blue-600">Core</span>
+          <h1 className="text-black font-black text-xl tracking-tighter uppercase">
+            Med<span className="text-blue-600">Access</span>
           </h1>
         </Link>
 
