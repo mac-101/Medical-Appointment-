@@ -18,7 +18,7 @@ import { useNavigate } from "react-router-dom";
 //             <path d="M19 3H5c-1.1 0-2.9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
 //           </svg>
 //         </div>
-//         <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Healthcore OS</h1>
+//         <h1 className="text-3xl font-bold text-slate-900 tracking-tight">MedAccess OS</h1>
 //         <p className="text-slate-500 font-medium mt-1 uppercase tracking-[0.2em] text-[10px]">Inspiring Health Everyday</p>
 //       </div>
 
