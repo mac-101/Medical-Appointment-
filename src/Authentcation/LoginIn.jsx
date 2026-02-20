@@ -38,7 +38,7 @@ const LoginPage = ({pickRole, create}) => {
         
         <div className="mb-10 text-left">
           <h1 className="text-4xl font-bold text-blue-600/80 font tracking-tight">Sign In</h1>
-          <p className="text-slate-500 mt-2">Enter your details to access MedAccess OS</p>
+          <p className="text-slate-500 mt-2">Enter your details to access MedAccess</p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-5">
