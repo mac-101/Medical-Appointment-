@@ -36,7 +36,7 @@ const Footer = () => {
                 </svg>
               </div>
               <h1 className="text-white font-black text-xl tracking-tighter uppercase">
-                Health<span className="text-blue-600">Core</span>
+                Med<span className="text-blue-600">Access</span>
               </h1>
             </Link>
             <p className="text-gray-400 mb-6 max-w-sm">

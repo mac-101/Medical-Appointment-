@@ -38,7 +38,7 @@ const Hero = () => {
                 </svg>
               </div>
               <h1 className="text-black font-black text-xl tracking-tighter uppercase">
-                Health<span className="text-blue-600">Core</span>
+                Med<span className="text-blue-600">Access</span>
               </h1>
             </Link>
           </div>
