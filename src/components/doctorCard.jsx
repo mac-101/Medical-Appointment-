@@ -1,5 +1,6 @@
 import { Hospital, Star, MapPin } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import pic from '../assets/avatar (1).svg'
 
 export const DoctorCard = ({ doc }) => {
     const navigate = useNavigate();
@@ -13,7 +14,7 @@ export const DoctorCard = ({ doc }) => {
             {/* Image Container with Zoom & Badge */}
             <div className="relative aspect-[4/4] mb-3 overflow-hidden rounded-[1.7rem] bg-slate-100">
                 <img
-                    src={doc.image?.url || "https://api.dicebear.com/9.x/avataaars/svg?seed=leah"}
+                    src={doc.image?.url || pic }
                     alt={doc.name}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />

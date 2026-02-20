@@ -1,4 +1,7 @@
 import React from 'react';
+import pic1 from '../assets/avatar.svg'
+import pic2 from '../assets/avatar (1).svg'
+import pic3 from '../assets/avatar (2).svg'
 
 const Community = () => {
   return (
@@ -18,7 +21,7 @@ const Community = () => {
           <div className="flex flex-col md:flex-row items-center gap-16">
             <div className="w-full md:w-1/2 reveal" data-animation="zoom-in" data-delay="0.2s">
               <img
-                src="https://api.dicebear.com/9.x/avataaars/svg?seed=leah"
+                src={pic2}
                 className="rounded-3xl h-96 w-full object-cover shadow-xs"
                 alt="Collab"
               />
@@ -40,7 +43,7 @@ const Community = () => {
           <div className="flex flex-col md:flex-row-reverse items-center gap-16">
             <div className="w-full md:w-1/2 reveal" data-animation="zoom-in" data-delay="0.2s">
               <img
-                src="https://api.dicebear.com/9.x/avataaars/svg?seed=happy"
+                src={pic3}
                 className="rounded-3xl h-96 w-full object-cover shadow-xs"
                 alt="Doctor Joining"
               />
@@ -64,7 +67,7 @@ const Community = () => {
           <div className="flex flex-col md:flex-row items-center gap-16">
             <div className="w-full md:w-1/2 reveal" data-animation="zoom-in" data-delay="0.2s">
               <img
-                src="https://api.dicebear.com/9.x/avataaars/svg?seed=initiatives"
+                src={pic1}
                 className="rounded-3xl h-96 w-full object-cover shadow-xs"
                 alt="Initiatives"
               />
